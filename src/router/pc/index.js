@@ -7,7 +7,7 @@ let router = new Router({
   routes: [
     {
       path: '/',
-      component: resolve => require(['@/components/pc/HelloWorld'], resolve),
+      component: resolve => require(['@/components/pc/Home'], resolve),
       meta: { title: '首页' }
     },
   ]
