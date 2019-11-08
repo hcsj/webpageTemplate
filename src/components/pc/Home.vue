@@ -622,9 +622,11 @@ export default {
       position: relative;
       padding: 15px;
       transition: 0.5s;
+      border: 2px dashed transparent;
       &:hover {
         background: white;
         box-shadow: 2px 2px 5px #ccc;
+        border: 2px dashed $base;
       }
       &:hover::after {
         opacity: 1;
