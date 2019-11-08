@@ -1,12 +1,29 @@
 <template>
   <div id="app">
     <router-view/>
+     <transition name="el-fade-in-linear">
+    <loading v-if="loadingShow"></loading>
+     </transition>
   </div>
 </template>
 
 <script>
+import loading from '../common/Loading.vue'
 export default {
-  name: 'App'
+  name: 'App',
+  components:{
+    loading
+  },
+  data(){
+    return{
+      loadingShow:true
+    }
+  },
+  mounted(){
+   setTimeout(() => {
+     this.loadingShow = false
+   }, 1500);
+  }
 }
 </script>
 
