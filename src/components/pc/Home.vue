@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div id="banner">
+    <head-nav :class="headNavShow?'head-nav-show':''" ref="head-nav"></head-nav>
+    <div id="banner" ref="go0">
       <div class="swiper-container">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(i,index) in list" :key="index">
@@ -14,7 +15,7 @@
         <div class="swiper-pagination"></div>
       </div>
     </div>
-    <div id="module">
+    <div id="module" ref="go1">
       <div class="module">
         <h2>行业优势</h2>
         <p class="English">Advantage</p>
@@ -31,7 +32,7 @@
         </div>
       </div>
     </div>
-    <div id="module" style=" background: #f6f7f8;">
+    <div id="module" ref="go2" style=" background: #f6f7f8;">
       <div class="module">
         <h2>交易服务</h2>
         <p class="English">Transaction Service</p>
@@ -72,7 +73,7 @@
         </div>
       </div>
     </div>
-    <div id="module">
+    <div id="module" ref="go3">
       <div class="module">
         <h2>业务介绍</h2>
         <p class="English">Business Introduction</p>
@@ -105,7 +106,7 @@
         </div>
       </div>
     </div>
-    <div id="module" style=" background: #f6f7f8;">
+    <div id="module" ref="go4" style=" background: #f6f7f8;">
       <div class="module">
         <h2>新闻资讯</h2>
         <p class="English">News</p>
@@ -139,16 +140,53 @@
         </div>
       </div>
     </div>
+    <div id="module" ref="go5">
+      <div class="module">
+        <h2>关于我们</h2>
+        <p class="English">About Us</p>
+        <div class="content-aboutUs">
+          <div
+            class="aboutUs"
+            v-for="(i,index) in aboutUsList"
+            :key="index"
+            :style="` transition-delay: ${index/10}s`"
+          >
+            <div class="aboutUs-hover">
+              <div class="msg">
+                <div class="msg-t">{{i.content}}</div>
+                <div class="more">
+                  <section>
+                    <span>查看更多</span>
+                    <i class="el-icon-arrow-right"></i>
+                  </section>
+                </div>
+              </div>
+              <div class="img">
+                <div class="bck1" :style="` animation-delay: ${-index}s`"></div>
+                <div class="bck2" :style="` animation-delay: ${-index*2}s`"></div>
+                <div class="img-url"></div>
+                <h3>{{i.title}}</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import Swiper from "swiper";
+import headNav from "./common/HeadNav.vue";
 export default {
   name: "Home",
+  components: {
+    "head-nav": headNav
+  },
   data() {
     return {
       realIndex: 0,
+      headNavShow: false,
       items: [],
       list: [
         {
@@ -212,13 +250,29 @@ export default {
           title: "新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯",
           img: false
         }
+      ],
+      aboutUsList: [
+        {
+          title: "中心介绍",
+          content:
+            '东北亚创新金融资产交易中心(以下简称 "东金中心" ) 是在吉林省人民政府的指导和大力支持下，于2014年11月7日省政府批准设立的综合性金融资产交易平台，是由长春市国资委下属长发金融控股有限公司、申夏资产共同出资组建的综合性金融资产交易平台，归属地方金融工作办公室监管。申夏资产共同出资组建的综合性金融资产交易平台，归属地方金融工作办公室监管。申夏资产共同出'
+        },
+        {
+          title: "法律申明",
+          content:
+            "本声明包含网络浏览及使用的有关条款。在您浏览及使用本网站及相关网页（以下简称“本网站”）前，请您务必仔细阅读并透彻理解本声明，您可以选择不浏览、不使用本网站及相关网页，如果您浏览及使用本网站及相关网页，您的行为均表示认可并接受本声明全部内容。一、本网站旨在向客户和其他公众介绍吉林东北亚创新金融资产交易中心有限公司（以下“简称东金中心”）提供的产品与服务，以及"
+        },
+        {
+          title: "常见问题",
+          content:
+            "1、东北亚创新金融资产交易中心是一家怎样的公司？东北亚创新金融资产交易中心（以下简称东金中心），于2014年11月7日批准设立。在省金融办大力推动下设立，注册资本2亿元整。2、电子合同有效吗？根据我国合同法第十条“当事人订立合同，有书面形式,口头形式和其他形式。”第十一条“书面形式是指合同书，信件和数据电文（包括电报，电传，传真，电子数据交换和电子邮件）等可"
+        }
       ]
     };
   },
   mounted() {
     let _this = this;
     _this.items = document.querySelectorAll("#module");
-    console.log(_this.items);
     window.addEventListener("scroll", this.handleScroll);
     this.getBanner();
   },
@@ -285,6 +339,48 @@ export default {
       }
       return strArr;
     },
+    //点击导航栏滚动到指定位置
+    goAssignBlock(el, index) {
+      let _this = this;
+      _this.$refs["head-nav"].navActiveIndex = index;
+      let speed = 80;
+      let windowH = window.innerHeight; //浏览器窗口高度
+      let h = this.$refs[el].offsetHeight; //模块内容高度
+      let t = this.$refs[el].offsetTop; //模块相对于内容顶部的距离
+      let top = t - (windowH - h) / 2; //需要滚动到的位置，若改为 t 则滚动到模块顶部位置，此处是滚动到模块相对于窗口垂直居中的位置
+      let scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop; //滚动条距离顶部高度
+      let currentTop = scrollTop; //默认滚动位置为当前滚动条位置，若改为0，则每次都会从顶部滚动到指定位置
+      let requestId;
+      //采用requestAnimationFrame，平滑动画
+      function step() {
+        //判断让滚动条向上滚还是向下滚
+        if (scrollTop < top) {
+          if (currentTop <= top) {
+            //   window.scrollTo(x,y) y为上下滚动位置
+            window.scrollTo(0, currentTop);
+            requestId = window.requestAnimationFrame(step);
+          } else {
+            window.cancelAnimationFrame(requestId);
+          }
+          //向下滚动
+          currentTop += speed;
+        } else {
+          if (top <= currentTop) {
+            //注：此处 - speed 是解决居中时存在的问题，可自行设置或去掉
+            window.scrollTo(0, currentTop - speed);
+            requestId = window.requestAnimationFrame(step);
+          } else {
+            window.cancelAnimationFrame(requestId);
+          }
+          //向上滚动
+          currentTop -= speed;
+        }
+      }
+      window.requestAnimationFrame(step);
+    },
     //判断 模块 是否达到可视范围
     isElementInViewport(el) {
       // getBoundingClientRect()用于获得页面中某个元素的左，上，右和下分别相对浏览器视窗的位置。
@@ -300,10 +396,25 @@ export default {
     //监听滚轮方法
     handleScroll(val) {
       let _this = this;
+      let scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      if (scrollTop > _this.windowH - 80) {
+        _this.headNavShow = true;
+      } else {
+        _this.headNavShow = false;
+      }
       //每次滚轮滚动都会遍历 模块数组，从而添加样式
       for (let i = 0; i < _this.items.length; i++) {
         //如果 模块 达到可视范围，那么添加样式
         if (_this.isElementInViewport(_this.items[i])) {
+          //滚动时导航栏下标随之改变
+          if (scrollTop < _this.windowH/1.5) {
+            _this.$refs["head-nav"].navActiveIndex = 0;
+          } else {
+            _this.$refs["head-nav"].navActiveIndex = i + 1;
+          }
           _this.items[i].classList.add("in-view");
         } else {
           //每次滚动时都会出现过度效果
@@ -317,6 +428,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+.head-nav-show {
+  background: rgba(0, 0, 0, 0.753);
+  box-shadow: 0 0 5px black;
+}
 #banner {
   width: 100%;
   position: relative;
@@ -372,6 +487,7 @@ export default {
     opacity: 0;
     transition: 1s;
   }
+  // 行业优势
   .content-Advantage {
     margin-top: 50px;
     width: 100%;
@@ -389,9 +505,9 @@ export default {
         background: $base;
         border-radius: 50%;
         cursor: pointer;
-        transition:0.5s;
+        transition: 0.5s;
         &:hover {
-           opacity: 0.8;
+          opacity: 0.8;
         }
       }
       .icon {
@@ -419,6 +535,7 @@ export default {
       }
     }
   }
+  //交易服务
   .content-Transaction {
     margin-top: 50px;
     .top {
@@ -508,6 +625,7 @@ export default {
       }
     }
   }
+  //业务介绍
   .content-Business {
     margin-top: 50px;
     .top {
@@ -614,6 +732,7 @@ export default {
       }
     }
   }
+  //新闻资讯
   .content-News {
     margin: 0 auto;
     margin-top: 50px;
@@ -663,6 +782,8 @@ export default {
           text-overflow: ellipsis;
           text-align: left;
           word-break: break-all;
+          color: #808080;
+          font-size: 15px;
         }
         .time {
           min-width: 200px;
@@ -702,7 +823,8 @@ export default {
             word-wrap: break-word;
             overflow: hidden;
             word-break: break-all;
-            color: #424242;
+            color: #808080;
+            font-size: 15px;
           }
           .time {
             position: absolute;
@@ -731,10 +853,10 @@ export default {
       opacity: 0;
       transition: 0.5s;
       section {
-        font-size: 15px;
+        font-size: 14px;
         cursor: pointer;
         transition: 0.5s;
-        color: #808080;
+        color: #b6b6b6;
         i {
           transition: 0.5s;
         }
@@ -745,6 +867,193 @@ export default {
           transform: translateX(10px);
         }
       }
+    }
+  }
+  // 关于我们
+  .content-aboutUs {
+    margin: 0 auto;
+    // max-width: 800px;
+    margin-top: 50px;
+    //  background: red;
+    .aboutUs {
+      transition: 0.5s;
+      width: 100%;
+      height: 200px;
+      display: flex;
+      margin-bottom: 10px;
+      .aboutUs-hover {
+        width: 100%;
+        height: 200px;
+        display: flex;
+        border: 2px dashed transparent;
+        transition: 0.5s;
+        position: relative;
+        &:hover {
+          background: #f6f7f8;
+          box-shadow: 2px 2px 5px #ccc;
+          border: 2px dashed $base;
+        }
+        &:hover .img-url {
+          opacity: 1;
+        }
+        &::after {
+          content: "";
+          width: 20px;
+          height: 20px;
+          position: absolute;
+          top: calc(50% - 10px);
+          // left: -50px;
+          background: $base;
+          transition: 0.5s;
+          opacity: 0;
+        }
+      }
+      .msg {
+        padding: 20px;
+        width: 50%;
+        height: 100%;
+        text-align: left;
+        line-height: 1.5rem;
+        color: #808080;
+        font-size: 15px;
+        cursor: default;
+        position: relative;
+        .msg-t {
+          display: -webkit-box;
+          /*! autoprefixer: off */
+          -webkit-box-orient: vertical;
+          /* autoprefixer: on */
+          -webkit-line-clamp: 5;
+          word-wrap: break-word;
+          overflow: hidden;
+          word-break: break-all;
+        }
+        .more {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          transition: 0.5s;
+          position: absolute;
+          bottom: 20px;
+          right: 20px;
+          section {
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.5s;
+            color: #b6b6b6;
+            i {
+              transition: 0.5s;
+            }
+            &:hover {
+              color: $base;
+            }
+            &:hover i {
+              transform: translateX(10px);
+            }
+          }
+        }
+      }
+      .img {
+        overflow: hidden;
+        width: 50%;
+        height: 100%;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        overflow: hidden;
+        text-shadow: 0 0 5px #747474;
+        h3 {
+          position: relative;
+          z-index: 5;
+        }
+        .bck1,
+        .bck2,
+        .img-url {
+          transition: 0.5s;
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          clip-path: polygon(50% 25%, 60% 65%, 40% 65%);
+        }
+        //存放图片处
+        .img-url {
+          opacity: 0;
+          background: $base;
+          clip-path: none;
+        }
+        .bck1 {
+          opacity: 0.8;
+          background: #6a90f8;
+          animation: zhuan 8s linear infinite;
+        }
+        .bck2 {
+          background: #6a90f8;
+          opacity: 0.5;
+          animation: zhuan 10s linear infinite;
+        }
+      }
+      @keyframes zhuan {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    }
+    .aboutUs:nth-child(2) {
+      .bck1 {
+        background: orangered;
+      }
+      .bck2 {
+        background: orangered;
+      }
+      .img-url {
+        background: orangered;
+      }
+    }
+    .aboutUs:nth-child(3) {
+      .bck1 {
+        background: #00ff80;
+      }
+      .bck2 {
+        background: #00ff80;
+      }
+      .img-url {
+        background: #00ff80;
+      }
+    }
+    .aboutUs:nth-child(2n) .aboutUs-hover {
+      &:hover::after {
+        opacity: 1;
+        transform: translateX(20px);
+      }
+    }
+    .aboutUs:nth-child(2n + 1) .aboutUs-hover {
+      flex-direction: row-reverse;
+      &:hover::after {
+        opacity: 1;
+        transform: translateX(-20px);
+      }
+    }
+    .aboutUs:nth-child(2n) .aboutUs-hover:after {
+      clip-path: polygon(0% 0%, 50% 50%, 0% 100%);
+      left: -50px;
+    }
+    .aboutUs:nth-child(2n + 1) .aboutUs-hover:after {
+      clip-path: polygon(50% 50%, 100% 0%, 100% 100%);
+      right: -50px;
+    }
+    .aboutUs:nth-child(2n) {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+    .aboutUs:nth-child(2n + 1) {
+      opacity: 0;
+      transform: translateX(-50px);
     }
   }
 }
@@ -827,6 +1136,16 @@ export default {
     }
     .more {
       opacity: 1 !important;
+    }
+  }
+  .content-aboutUs {
+    .aboutUs:nth-child(2n) {
+      opacity: 1 !important;
+      transform: translateX(0px) !important;
+    }
+    .aboutUs:nth-child(2n + 1) {
+      opacity: 1 !important;
+      transform: translateX(0px) !important;
     }
   }
 }
