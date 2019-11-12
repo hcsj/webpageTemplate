@@ -7,9 +7,10 @@
       <div class="nav-tab">
         <span
           class="tab"
-          :class="navActiveIndex == index?'tab-active':''"
+          :class="$route.name == i.name?'tab-active':''"
           v-for="(i,index) in navList"
           :key="index"
+          @click="skip(i.name)"
         >{{i.title}}</span>
       </div>
     </div>
@@ -18,29 +19,40 @@
 
 <script>
 export default {
-  watch:{
-   $router(){
-     
-   }
+  watch: {
+    $router() {}
   },
   data() {
     return {
-      navActiveIndex: 0,
       navList: [
         {
-          title: "首页"
+          title: "首页",
+          name: "Home"
         },
         {
-          title: "业务介绍"
+          title: "业务介绍",
+          name: "BusinessIntroduction"
         },
         {
-          title: "新闻资讯"
+          title: "新闻资讯",
+          name: "Home"
         },
         {
-          title: "关于我们"
+          title: "关于我们",
+          name: "AboutUs"
         }
       ]
     };
+  },
+  methods:{
+    skip(name){
+      if (name == this.$route.name) {
+        return
+      }
+      this.$router.push({
+        name:name
+      })
+    }
   }
 };
 </script>
@@ -96,16 +108,16 @@ export default {
           bottom: 0;
           left: 0;
           opacity: 0;
-          transition:0.5s;
+          transition: 0.5s;
           //   transform: scaleX(0);
           //   transform-origin: right;
           border-radius: 3px;
         }
         &:hover::after {
-            opacity: 1;
-        //   transition: transform 0.5s;
-        //   transform: scaleX(1);
-        //   transform-origin: left;
+          opacity: 1;
+          //   transition: transform 0.5s;
+          //   transform: scaleX(1);
+          //   transform-origin: left;
         }
       }
     }
@@ -113,7 +125,7 @@ export default {
 }
 .tab-active {
   &::after {
-         opacity: 1 !important;
+    opacity: 1 !important;
     // transform: scaleX(1) !important;
     // transform-origin: left !important;
   }

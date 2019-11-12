@@ -278,11 +278,17 @@ export default {
       ]
     };
   },
+  created(){
+  
+  },
   mounted() {
     let _this = this;
     _this.items = document.querySelectorAll("#module");
     window.addEventListener("scroll", this.handleScroll);
     this.getBanner();
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
     //获取轮播图方法
@@ -419,16 +425,19 @@ export default {
         _this.rightNavShow = true;
       } else {
         _this.rightNavShow = false;
+        _this.$refs["right-nav"].btnActive = false;
       }
       //每次滚轮滚动都会遍历 模块数组，从而添加样式
       for (let i = 0; i < _this.items.length; i++) {
         //如果 模块 达到可视范围，那么添加样式
         if (_this.isElementInViewport(_this.items[i])) {
           // //滚动时导航栏下标随之改变
-          if (scrollTop < _this.windowH/1.7) {
-            _this.$refs["right-nav"].navActiveIndex = _this.$refs["right-nav"].tabList[0].title;
+          if (scrollTop < _this.windowH / 1.7) {
+            _this.$refs["right-nav"].navActiveIndex =
+              _this.$refs["right-nav"].tabList[0].title;
           } else {
-            _this.$refs["right-nav"].navActiveIndex = _this.$refs["right-nav"].tabList[i].title;
+            _this.$refs["right-nav"].navActiveIndex =
+              _this.$refs["right-nav"].tabList[i].title;
           }
           _this.items[i].classList.add("in-view");
         } else {

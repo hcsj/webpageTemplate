@@ -6,9 +6,22 @@ Vue.use(Router)
 let router = new Router({
   routes: [
     {
+      name:'Home',
       path: '/',
       component: resolve => require(['@/components/pc/Home'], resolve),
       meta: { title: '首页' }
+    },
+    {
+      name:'AboutUs',
+      path: '/AboutUs',
+      component: resolve => require(['@/components/pc/page/AboutUs'], resolve),
+      meta: { title: '关于我们' }
+    },
+    {
+      name:'BusinessIntroduction',
+      path: '/BusinessIntroduction',
+      component: resolve => require(['@/components/pc/page/BusinessIntroduction'], resolve),
+      meta: { title: '业务介绍' }
     },
   ]
 })
