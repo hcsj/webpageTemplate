@@ -173,23 +173,28 @@
       </div>
     </div>
     <foot-nav></foot-nav>
+    <right-nav ref="right-nav" :class="rightNavShow?'right-nav-show':''"></right-nav>
   </div>
 </template>
 
 <script>
 import Swiper from "swiper";
 import headNav from "./common/HeadNav.vue";
-import footNav from './common/FootNav.vue'
+import footNav from "./common/FootNav.vue";
+import rightNav from "./common/RightNav.vue";
 export default {
   name: "Home",
   components: {
     "head-nav": headNav,
-    "foot-nav":footNav
+    "foot-nav": footNav,
+    "right-nav": rightNav
   },
   data() {
     return {
       realIndex: 0,
       headNavShow: false,
+      rightNavShow: false,
+      leftNavShow: false,
       items: [],
       list: [
         {
@@ -345,7 +350,7 @@ export default {
     //点击导航栏滚动到指定位置
     goAssignBlock(el, index) {
       let _this = this;
-      _this.$refs["head-nav"].navActiveIndex = index;
+      _this.$refs["right-nav"].btnActive = false;
       let speed = 80;
       let windowH = window.innerHeight; //浏览器窗口高度
       let h = this.$refs[el].offsetHeight; //模块内容高度
@@ -405,18 +410,25 @@ export default {
         document.body.scrollTop;
       if (scrollTop > _this.windowH - 80) {
         _this.headNavShow = true;
+        _this.leftNavShow = true;
       } else {
         _this.headNavShow = false;
+        _this.leftNavShow = false;
+      }
+      if (scrollTop > _this.windowH / 3) {
+        _this.rightNavShow = true;
+      } else {
+        _this.rightNavShow = false;
       }
       //每次滚轮滚动都会遍历 模块数组，从而添加样式
       for (let i = 0; i < _this.items.length; i++) {
         //如果 模块 达到可视范围，那么添加样式
         if (_this.isElementInViewport(_this.items[i])) {
-          //滚动时导航栏下标随之改变
+          // //滚动时导航栏下标随之改变
           if (scrollTop < _this.windowH/1.7) {
-            _this.$refs["head-nav"].navActiveIndex = 0;
+            _this.$refs["right-nav"].navActiveIndex = _this.$refs["right-nav"].tabList[0].title;
           } else {
-            _this.$refs["head-nav"].navActiveIndex = i + 1;
+            _this.$refs["right-nav"].navActiveIndex = _this.$refs["right-nav"].tabList[i].title;
           }
           _this.items[i].classList.add("in-view");
         } else {
@@ -434,6 +446,10 @@ export default {
 .head-nav-show {
   background: rgba(0, 0, 0, 0.753);
   box-shadow: 0 0 5px black;
+}
+.right-nav-show {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
 #banner {
   width: 100%;

@@ -10,7 +10,6 @@
           :class="navActiveIndex == index?'tab-active':''"
           v-for="(i,index) in navList"
           :key="index"
-          @click="$parent.goAssignBlock('go'+ index,index)"
         >{{i.title}}</span>
       </div>
     </div>
@@ -19,18 +18,17 @@
 
 <script>
 export default {
+  watch:{
+   $router(){
+     
+   }
+  },
   data() {
     return {
       navActiveIndex: 0,
       navList: [
         {
           title: "首页"
-        },
-        {
-          title: "行业优势"
-        },
-        {
-          title: "交易规则"
         },
         {
           title: "业务介绍"
