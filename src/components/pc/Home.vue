@@ -172,16 +172,19 @@
         </div>
       </div>
     </div>
+    <foot-nav></foot-nav>
   </div>
 </template>
 
 <script>
 import Swiper from "swiper";
 import headNav from "./common/HeadNav.vue";
+import footNav from './common/FootNav.vue'
 export default {
   name: "Home",
   components: {
-    "head-nav": headNav
+    "head-nav": headNav,
+    "foot-nav":footNav
   },
   data() {
     return {
@@ -410,7 +413,7 @@ export default {
         //如果 模块 达到可视范围，那么添加样式
         if (_this.isElementInViewport(_this.items[i])) {
           //滚动时导航栏下标随之改变
-          if (scrollTop < _this.windowH/1.5) {
+          if (scrollTop < _this.windowH/1.7) {
             _this.$refs["head-nav"].navActiveIndex = 0;
           } else {
             _this.$refs["head-nav"].navActiveIndex = i + 1;
