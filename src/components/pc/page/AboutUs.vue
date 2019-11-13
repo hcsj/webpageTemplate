@@ -326,4 +326,11 @@ mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
 
 <style lang="scss" scoped>
 
+// 头部导航栏样式
+.head-nav-show {
+  background: rgba(0, 0, 0, 0.753);
+  box-shadow: 0 0 5px black;
+  position: absolute !important;
+}
+
 </style>

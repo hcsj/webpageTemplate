@@ -23,6 +23,12 @@ let router = new Router({
       component: resolve => require(['@/components/pc/page/BusinessIntroduction'], resolve),
       meta: { title: '业务介绍' }
     },
+    {
+      name:'News',
+      path: '/News',
+      component: resolve => require(['@/components/pc/page/News'], resolve),
+      meta: { title: '新闻资讯' }
+    },
   ]
 })
 /**

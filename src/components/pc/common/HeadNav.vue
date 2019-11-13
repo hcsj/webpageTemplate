@@ -35,7 +35,7 @@ export default {
         },
         {
           title: "新闻资讯",
-          name: "Home"
+          name: "News"
         },
         {
           title: "关于我们",

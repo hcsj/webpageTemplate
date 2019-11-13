@@ -6,27 +6,50 @@
 body {
   overflow: auto;
   min-width: 1200px;
+  &::-webkit-scrollbar {
+    opacity: 0;
+    background: transparent !important;
+    width: 3px; //y轴滚轮的宽
+    // height: 5px; //x轴滚轮的高
+  }
+  &::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    // border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #e7e7e7;
+  }
+  &::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    // -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    // border-radius: 10px;
+    background: transparent;
+    //  -webkit-scrollBar-track-color:black;
+  }
 }
 body,
 html {
   height: 100%;
 }
-
-// 头部导航栏样式
-.head-nav-show {
-  background: rgba(0, 0, 0, 0.753);
-  box-shadow: 0 0 5px black;
-  position: absolute !important;
+/***loading 自定义样式**/
+.el-loading-spinner{
+  i{
+    font-size: 2rem;
+    color: white;
+  }
+  .el-loading-text{
+        
+  }
 }
 
 //其他内容样式
 #article-box {
-  margin-top: 80px;
   min-height: 600px;
   padding: 20px 0;
   #article-tab {
+    margin-top: 80px;
     transition: 0.5s;
     position: sticky;
+    z-index: 88;
     top: 0px;
     padding: 20px 0;
     background: rgba(255, 255, 255, 0.726);
@@ -79,6 +102,12 @@ html {
       }
       .msg {
         padding: 20px 0;
+      }
+      .noticeTitle{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: break-all;
       }
     }
   }

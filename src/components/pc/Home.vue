@@ -116,23 +116,24 @@
             v-for="(i,index) in NewsList"
             :key="index"
             :style="` transition-delay: ${index/10}s`"
+            @click="openNews(i)"
           >
             <div class="news-hover">
-              <div class="news-noImg" v-if="!i.img">
-                <p>{{i.title}}</p>
-                <span class="time">{{i.date}}</span>
+              <div class="news-noImg" v-if="!i.imgUrl">
+                <p>{{i.noticeTitle}}</p>
+                <span class="time">{{dateFormatting(i.createTime)}}</span>
               </div>
               <div v-else class="news-Img">
                 <div class="text">
-                  <p>{{i.title}}</p>
-                  <span class="time">{{i.date}}</span>
+                  <p>{{i.noticeTitle}}</p>
+                  <span class="time">{{dateFormatting(i.createTime)}}</span>
                 </div>
                 <div class="img">IMG</div>
               </div>
             </div>
           </div>
           <div class="more">
-            <section>
+            <section @click="skip('News')">
               <span>查看更多</span>
               <i class="el-icon-arrow-right"></i>
             </section>
@@ -174,11 +175,13 @@
     </div>
     <foot-nav></foot-nav>
     <right-nav ref="right-nav" :class="rightNavShow?'right-nav-show':''"></right-nav>
+    <view-article ref="viewArticle" :ArticleContent="Article" :ArticleTitle="Article_title"></view-article>
   </div>
 </template>
 
 <script>
 import Swiper from "swiper";
+import viewArticle from "./common/ViewArticle.vue";
 import headNav from "./common/HeadNav.vue";
 import footNav from "./common/FootNav.vue";
 import rightNav from "./common/RightNav.vue";
@@ -187,7 +190,8 @@ export default {
   components: {
     "head-nav": headNav,
     "foot-nav": footNav,
-    "right-nav": rightNav
+    "right-nav": rightNav,
+    "view-article": viewArticle
   },
   data() {
     return {
@@ -196,6 +200,8 @@ export default {
       rightNavShow: false,
       leftNavShow: false,
       items: [],
+      Article: "",
+      Article_title: "",
       list: [
         {
           text: "BANNER1"
@@ -278,8 +284,8 @@ export default {
       ]
     };
   },
-  created(){
-  
+  created() {
+    this.getNewsPage();
   },
   mounted() {
     let _this = this;
@@ -291,6 +297,15 @@ export default {
     window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
+    skip(name){
+      this.$router.push({
+        name:name
+      })
+    },
+    //时间格式转换
+    dateFormatting(val) {
+      return this.$moment(val).format("YYYY-MM-DD");
+    },
     //获取轮播图方法
     getBanner() {
       let _this = this;
@@ -445,6 +460,33 @@ export default {
           //   _this.items[i].classList.remove("in-view");
         }
       }
+    },
+    //获取公司和行业新闻
+    getNewsPage() {
+      let _this = this;
+      let params = {
+        templateId: "",
+        pageNumber: 0,
+        pageSize: 5
+      };
+      this.$axios
+        .post("website/website/getNewsList", params)
+        .then(res => {
+          console.log(res);
+          let resData = res.data;
+          if (resData.retCode == "N00000") {
+            _this.NewsList = resData.body.content;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    //首页打开新闻资讯
+    openNews(row) {
+      this.$refs.viewArticle.ViewArticleShow = true;
+      this.Article = row.noticeText;
+      this.Article_title = row.noticeTitle;
     }
   }
 };
@@ -840,6 +882,7 @@ export default {
           font-size: 20px;
         }
         .text {
+          min-width: 200px;
           position: relative;
           p {
             text-align: left;
