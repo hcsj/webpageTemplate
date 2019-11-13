@@ -297,10 +297,10 @@ export default {
     window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
-    skip(name){
+    skip(name) {
       this.$router.push({
-        name:name
-      })
+        name: name
+      });
     },
     //时间格式转换
     dateFormatting(val) {

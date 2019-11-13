@@ -12,6 +12,12 @@
           :key="index"
           @click="skip(i.name)"
         >{{i.title}}</span>
+        <div id="user">
+          <div class="user-img">
+            <i class="el-icon-user"></i>
+          </div>
+          <span class="login-text">登录</span>
+        </div>
       </div>
     </div>
   </div>
@@ -44,14 +50,15 @@ export default {
       ]
     };
   },
-  methods:{
-    skip(name){
+  methods: {
+    skip(name) {
+      window.scrollTo(0, 0);
       if (name == this.$route.name) {
-        return
+        return;
       }
       this.$router.push({
-        name:name
-      })
+        name: name
+      });
     }
   }
 };
@@ -118,6 +125,27 @@ export default {
           //   transition: transform 0.5s;
           //   transform: scaleX(1);
           //   transform-origin: left;
+        }
+      }
+      #user {
+        cursor: pointer;
+        margin-left: 50px;
+        display: flex;
+        align-items: center;
+        .user-img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          i {
+            font-size: 1.5rem;
+          }
+        }
+        .login-text {
+          margin-left: 5px;
+          font-size: 13px;
         }
       }
     }
