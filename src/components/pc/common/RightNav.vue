@@ -24,6 +24,10 @@
       <div class="btn-hint">交易查询</div>
       <i class="el-icon-search" style="color:white"></i>
     </div>
+    <div class="btn" style="background:#67C23A;">
+      <div class="btn-hint" style="left:-165px">客服电话 : 0439-6660660</div>
+      <i class="el-icon-phone" style="color:white"></i>
+    </div>
     <div class="btn" @click="backTop()">
       <i class="el-icon-top"></i>
     </div>
@@ -88,6 +92,7 @@ export default {
       opacity: 1;
     }
     .btn-hint {
+      display: inline-block;
       transition: 0.5s;
       background: white;
       padding: 6px;

@@ -16,20 +16,25 @@
           <div class="user-img">
             <i class="el-icon-user"></i>
           </div>
-          <span class="login-text">登录</span>
+          <span @click="loginShow = true" class="login-text">登录</span>
         </div>
       </div>
+    </div>
+    <div class="login-alert" v-if="loginShow">
+      <login-box></login-box>
     </div>
   </div>
 </template>
 
 <script>
+import LoginBox from "../common/LoginBox.vue";
 export default {
-  watch: {
-    $router() {}
+  components: {
+    "login-box": LoginBox
   },
   data() {
     return {
+      loginShow: false,
       navList: [
         {
           title: "首页",
@@ -73,6 +78,7 @@ export default {
   z-index: 99;
   transition: 0.5s;
   color: white;
+  min-width: 1200px;
   .nav {
     width: 100%;
     max-width: 1200px;
@@ -128,7 +134,6 @@ export default {
         }
       }
       #user {
-        cursor: pointer;
         margin-left: 50px;
         display: flex;
         align-items: center;
@@ -144,6 +149,7 @@ export default {
           }
         }
         .login-text {
+          cursor: pointer;
           margin-left: 5px;
           font-size: 13px;
         }
@@ -157,5 +163,18 @@ export default {
     // transform: scaleX(1) !important;
     // transform-origin: left !important;
   }
+}
+
+.login-alert {
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.575);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
