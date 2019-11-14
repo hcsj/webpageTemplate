@@ -88,6 +88,9 @@ export default {
     font-weight: bold;
     color: #808080;
     cursor: pointer;
+    i{
+        font-weight: bold;
+    }
     &:hover {
       color: #f55151;
     }
@@ -151,10 +154,11 @@ export default {
     transition: 0.5s;
      box-shadow: 0 0 5px transparent;
     &:active {
-      background: rgb(28, 110, 218);
+      background: $base;
+      opacity: 0.8;
     }
     &:hover {
-      box-shadow: 0px 2px 5px $base;
+      box-shadow: 0px 0px 5px $base;
     }
   }
 }

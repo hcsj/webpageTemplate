@@ -155,7 +155,7 @@ export default {
   z-index: -1;
 }
 canvas {
-  opacity: 0.5;
+  opacity: 0.8;
   position: absolute;
   left: 0;
   top: 0;

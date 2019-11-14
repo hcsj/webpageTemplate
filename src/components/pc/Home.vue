@@ -680,7 +680,7 @@ export default {
             transition: 0.5s;
             width: 200px;
             height: 200px;
-            background: #6a90f8;
+            background: $base;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -873,7 +873,7 @@ export default {
           margin-left: 20px;
           min-width: 200px;
           height: 100px;
-          background: #6a90f8;
+          background: $base;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -1057,11 +1057,11 @@ export default {
         }
         .bck1 {
           opacity: 0.8;
-          background: #6a90f8;
+          background: $base;
           animation: zhuan 8s linear infinite;
         }
         .bck2 {
-          background: #6a90f8;
+          background: $base;
           opacity: 0.5;
           animation: zhuan 10s linear infinite;
         }
