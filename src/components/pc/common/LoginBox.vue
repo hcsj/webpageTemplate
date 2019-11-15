@@ -1,6 +1,6 @@
 <template>
   <div id="login-box">
-    <span class="close">
+    <span class="close" v-if="closeLogin">
       <i class="el-icon-close" @click="$parent.loginShow = false"></i>
     </span>
     <div class="title">会员登录</div>
@@ -26,6 +26,9 @@
 
 <script>
 export default {
+  props: {
+    closeLogin: { default: true } //是否显示关闭 x 号
+  },
   data() {
     return {
       mobileNumber: "",
@@ -88,8 +91,8 @@ export default {
     font-weight: bold;
     color: #808080;
     cursor: pointer;
-    i{
-        font-weight: bold;
+    i {
+      font-weight: bold;
     }
     &:hover {
       color: #f55151;
@@ -152,7 +155,7 @@ export default {
     cursor: pointer;
     user-select: none;
     transition: 0.5s;
-     box-shadow: 0 0 5px transparent;
+    box-shadow: 0 0 5px transparent;
     &:active {
       background: $base;
       opacity: 0.8;

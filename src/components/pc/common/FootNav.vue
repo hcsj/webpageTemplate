@@ -1,6 +1,6 @@
 <template>
   <div class="footNav">
-    <div id="wave" :style="`height:${waveAllHeight}px`">
+    <div id="wave" :style="`height:${waveAllHeight}px;background:${waveBck}`">
       <div class="wave-box">
         <canvas id="wave1"></canvas>
         <canvas id="wave2"></canvas>
@@ -46,6 +46,9 @@
 
 <script>
 export default {
+  props:{
+  waveBck:{default:'white'}
+  },
   data() {
     return {
       waveAllHeight: 400, //波浪的整体高度
@@ -54,9 +57,9 @@ export default {
     };
   },
   mounted() {
-    this.wavePlay("wave1", 140, "hsl(230, 97%, 61%)", 1500);
-    this.wavePlay("wave2", 140, "hsl(180, 97%, 61%)", 3000);
-    this.wavePlay("wave3", 140, "hsl(224, 86%, 60%)", 2500);
+    this.wavePlay("wave1", 140, "hsl(230, 97%, 61%, 0.7)", 1500);
+    this.wavePlay("wave2", 140, "hsl(180, 97%, 61%, 0.7)", 3000);
+    this.wavePlay("wave3", 140, "hsl(224, 86%, 60%, 0.7)", 2500);
   },
   methods: {
     //  * 底部波浪
@@ -136,6 +139,7 @@ export default {
   overflow: hidden;
   position: absolute;
   bottom: 0;
+  // background: transparent;
   h1 {
     text-align: center;
     color: white;
@@ -152,10 +156,9 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: -1;
+  // z-index: -1;
 }
 canvas {
-  opacity: 0.8;
   position: absolute;
   left: 0;
   top: 0;

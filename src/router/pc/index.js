@@ -29,6 +29,12 @@ let router = new Router({
       component: resolve => require(['@/components/pc/page/News'], resolve),
       meta: { title: '新闻资讯' }
     },
+    {
+      name:'login',
+      path: '/login',
+      component: resolve => require(['@/components/pc/page/Login'], resolve),
+      meta: { title: '登录' }
+    },
   ]
 })
 /**

@@ -6,6 +6,7 @@
       <i class="el-icon-close" @click="ViewArticleShow = false"></i>
       <div class="Article-title" v-if="ArticleTitle">{{ArticleTitle}}</div>
       <div class="Article" v-html="ArticleContent"></div>
+      <div class="bck"></div>
     </div>
   </div>
 </template>
@@ -63,7 +64,7 @@ export default {
     min-width: 500px;
     margin: 0 auto;
     position: relative;
-    background: white;
+    background: rgba(255, 255, 255, 0.808);
     box-shadow: 0px 0px 5px rgb(0, 0, 0);
     transition: 0.5s;
     display: flex;
@@ -165,6 +166,26 @@ export default {
       }
       img {
         width: 100% !important;
+      }
+    }
+    .bck{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: white;
+      opacity: 0.8;
+      top: 0;
+      transform: rotate(2deg);
+      &::after{
+        content: '';
+        width: 100%;
+        height: 100%;
+        background: white;
+        opacity: 0.5;
+        position: absolute;
+        transform: rotate(-4deg);
+        left: 0;
+        top: 0;
       }
     }
   }

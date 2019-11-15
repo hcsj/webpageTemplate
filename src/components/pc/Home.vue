@@ -1,6 +1,22 @@
 <template>
   <div>
     <head-nav :class="headNavShow?'head-nav-show':''" ref="head-nav"></head-nav>
+    <div class="notice-inform" v-if="NoticeList.length">
+      <div class="notice">
+        <i class="el-icon-s-flag"></i>
+        <ul :style="`animation-duration: ${NoticeList.length*2}s;`">
+          <li v-for="(i,index) in NoticeList" :key="index">
+            <span class="title">{{i.title}}</span>
+            <span class="time">{{i.time}}</span>
+          </li>
+          <li>
+            <span class="title">{{NoticeList[0].title}}</span>
+            <span class="time">{{NoticeList[0].time}}</span>
+          </li>
+        </ul>
+        <span class="more">查看更多</span>
+      </div>
+    </div>
     <div id="banner" ref="go0">
       <div class="swiper-container">
         <div class="swiper-wrapper">
@@ -13,6 +29,10 @@
           </div>
         </div>
         <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev swiper-button-white"></div>
+        <!--左箭头。如果放置在swiper-container外面，需要自定义样式。-->
+        <div class="swiper-button-next swiper-button-white"></div>
+        <!--右箭头。如果放置在swiper-container外面，需要自定义样式。-->
       </div>
     </div>
     <div id="module" ref="go1">
@@ -214,6 +234,28 @@ export default {
         }
       ],
       windowH: window.innerHeight,
+      NoticeList: [
+        {
+          title: "你好! 欢迎进入东北亚金融资产交易中心",
+          time: "2019-11-15"
+        },
+        {
+          title: "欢迎进入东北亚金融资产交易中心",
+          time: "2019-11-02"
+        },
+        {
+          title: "你好! 欢迎进入东北亚金融资产交易中心",
+          time: "2019-11-05"
+        },
+        {
+          title: "欢迎进入东北亚金融资产交易中心",
+          time: "2019-11-04"
+        },
+        {
+          title: "东北亚金融资产交易中心",
+          time: "2019-11-01"
+        }
+      ],
       AdvantageList: [
         {
           icon: "el-icon-s-order",
@@ -322,6 +364,11 @@ export default {
         //显示底部小圆点
         pagination: {
           el: ".swiper-pagination"
+        },
+        //显示左右切换
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev"
         },
         autoplay: {
           delay: 5000 //4秒切换一次
@@ -495,12 +542,110 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .head-nav-show {
-  background: rgba(0, 0, 0, 0.753);
+  background: $headNav_bck;
   box-shadow: 0 0 5px black;
 }
 .right-nav-show {
   opacity: 1 !important;
   transform: translateY(0) !important;
+}
+.notice-inform {
+  width: 100%;
+  height: 40px;
+  position: absolute;
+  top: 80px;
+  left: 0;
+  z-index: 9;
+  display: flex;
+  justify-content: center;
+  // filter: drop-shadow(0px 2px 5px rgb(58, 58, 58));
+  .notice {
+    width: 50%;
+    padding-right: 20px;
+    padding-left: 10px;
+    max-width: 1200px;
+    background: rgba(255, 255, 255, 0.582);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    color: #949494;
+    transition: 0.5s;
+    clip-path: polygon(
+      0 50%,
+      20px 0,
+      calc(100% - 10px) 0,
+      calc(100% - 25px) 15%,
+      calc(100% - 0px) 30%,
+      calc(100% - 20px) 45%,
+      calc(100% - 5px) 60%,
+      calc(100% - 30px) 75%,
+      calc(100% - 0px) 100%,
+      95% 100%,
+      20px 100%
+    );
+    &:hover {
+      background: rgba(255, 255, 255, 0.87);
+    }
+    i {
+      font-size: 1rem;
+      min-width: 50px;
+      color: $base;
+    }
+    .more {
+      cursor: pointer;
+      font-size: 13px;
+      min-width: 100px;
+      &:hover {
+        color: $base;
+        text-decoration: underline;
+      }
+    }
+    ul {
+      align-self: flex-start;
+      width: 100%;
+      margin: 0 auto;
+      list-style: none;
+      animation: noticeMove linear infinite;
+      animation-delay: 2s;
+      &:hover {
+        animation-play-state: paused;
+      }
+      li {
+        display: block;
+        height: 40px;
+        line-height: 40px;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        cursor: pointer;
+        // &:hover {
+        //   color: $base;
+        //   text-decoration: underline;
+        // }
+        .title {
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-size: 14px;
+        }
+        .time {
+          min-width: 100px;
+          font-size: 14px;
+        }
+      }
+    }
+    @keyframes noticeMove {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(calc(-100% + 40px));
+      }
+    }
+  }
 }
 #banner {
   width: 100%;
@@ -534,6 +679,21 @@ export default {
       }
     }
   }
+  .swiper-button-prev,
+.swiper-button-next {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: 0.5s;
+  // margin:0 1rem;
+}
+.swiper-container:hover .swiper-button-prev {
+  opacity: 1;
+  left: 40px;
+}
+.swiper-container:hover .swiper-button-next {
+  opacity: 1;
+  right: 40px;
+}
 }
 #module {
   width: 100%;

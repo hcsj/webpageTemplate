@@ -3,6 +3,7 @@
     <div class="nav">
       <div class="logo">
         <i class="el-icon-knife-fork"></i>
+        <!-- <img src="@/assets/img/logo1.png" alt=""> -->
       </div>
       <div class="nav-tab">
         <span
@@ -12,7 +13,7 @@
           :key="index"
           @click="skip(i.name)"
         >{{i.title}}</span>
-        <div id="user">
+        <div id="user" v-if="head_loginShow">
           <div class="user-img">
             <i class="el-icon-user"></i>
           </div>
@@ -29,6 +30,9 @@
 <script>
 import LoginBox from "../common/LoginBox.vue";
 export default {
+  props:{
+     head_loginShow:{default:true} //是否显示头部栏上的登录
+  },
   components: {
     "login-box": LoginBox
   },
@@ -88,6 +92,7 @@ export default {
     display: flex;
     justify-content: space-between;
     .logo {
+      width: 200px;
       min-width: 200px;
       //   background: red;
       display: flex;
@@ -96,6 +101,10 @@ export default {
       i {
         font-size: 3rem;
         color: white;
+      }
+      img{
+        width: 100%;
+        transform: scale(0.6)
       }
     }
     .nav-tab {
