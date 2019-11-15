@@ -48,17 +48,12 @@
                 </section>
               </div>
               <div class="input-box" :class="form1.password?'input-box-focus':''">
-                <input type="text" maxlength="11" v-model="form1.password" placeholder="请设置登录密码" />
+                <input type="password" v-model="form1.password" placeholder="请设置登录密码" />
                 <span class="line"></span>
                 <i class="el-icon-key"></i>
               </div>
               <div class="input-box" :class="form1.confirmPassword?'input-box-focus':''">
-                <input
-                  type="text"
-                  maxlength="11"
-                  v-model="form1.confirmPassword"
-                  placeholder="请再次确认登录密码"
-                />
+                <input type="password" v-model="form1.confirmPassword" placeholder="请再次确认登录密码" />
                 <span class="line"></span>
                 <i class="el-icon-key"></i>
               </div>
