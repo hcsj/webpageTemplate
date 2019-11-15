@@ -6,7 +6,7 @@ Vue.use(Router)
 let router = new Router({
   routes: [
     {
-      name:'Home',
+      name:'home',
       path: '/',
       component: resolve => require(['@/components/pc/Home'], resolve),
       meta: { title: '首页' }
@@ -34,6 +34,12 @@ let router = new Router({
       path: '/login',
       component: resolve => require(['@/components/pc/page/Login'], resolve),
       meta: { title: '登录' }
+    },
+    {
+      name:'register',
+      path: '/register',
+      component: resolve => require(['@/components/pc/page/Register'], resolve),
+      meta: { title: '注册' }
     },
   ]
 })

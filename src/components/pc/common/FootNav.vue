@@ -57,9 +57,9 @@ export default {
     };
   },
   mounted() {
-    this.wavePlay("wave1", 140, "hsl(230, 97%, 61%, 0.7)", 1500);
-    this.wavePlay("wave2", 140, "hsl(180, 97%, 61%, 0.7)", 3000);
-    this.wavePlay("wave3", 140, "hsl(224, 86%, 60%, 0.7)", 2500);
+    this.wavePlay("wave1", 140, "hsl(200, 97%, 61%, 0.6)", 1500);
+    this.wavePlay("wave2", 140, "hsl(180, 97%, 61%, 0.6)", 3000);
+    this.wavePlay("wave3", 140, "hsl(177, 67%, 44%, 0.6)", 2500);
   },
   methods: {
     //  * 底部波浪
@@ -226,7 +226,7 @@ canvas {
         color: white;
         font-weight: bold;
         font-size: 1.5rem;
-        background: rgb(50, 200, 205);
+        background: rgb(41, 230, 243);
       }
       p {
         text-align: center;

@@ -42,7 +42,7 @@ export default {
       navList: [
         {
           title: "首页",
-          name: "Home"
+          name: "home"
         },
         {
           title: "业务介绍",

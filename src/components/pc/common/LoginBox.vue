@@ -19,7 +19,7 @@
     <div class="button-login">登录</div>
     <div class="bottom-msg">
       <span>忘记密码?</span>
-      <span class="to-register">免费注册</span>
+      <span class="to-register" @click="skip('register')">免费注册</span>
     </div>
   </div>
 </template>
@@ -34,6 +34,13 @@ export default {
       mobileNumber: "",
       password: ""
     };
+  },
+  methods:{
+    skip(name){
+      this.$router.push({
+        name:name
+      })
+    }
   }
 };
 </script>
@@ -177,56 +184,5 @@ export default {
     // filter: blur(0)
   }
 }
-.input-box {
-  height: 40px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin: 10px 0;
-  .line {
-    transition: 0.5s;
-    width: 5px;
-    height: 5px;
-    background: $base;
-    opacity: 0.8;
-    position: absolute;
-    left: 0;
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  i {
-    position: absolute;
-    left: 5px;
-    font-size: 1.5rem;
-    color: #4b4b4b;
-    transition: 0.5s;
-  }
-  input {
-    color: #5c5c5c;
-    display: inline-block;
-    transition: 0.5s;
-    width: 100%;
-    height: 100%;
-    border: none;
-    background: transparent;
-    border-bottom: 1px solid rgb(238, 238, 238);
-    padding-left: 50px;
-    padding-right: 10px;
-    font-size: 15px;
-    outline: none;
-    position: relative;
-    &:focus ~ .line {
-      transform: translateX(-10px);
-      opacity: 1;
-    }
-  }
-}
-.input-box-focus {
-  i {
-    color: $base !important;
-  }
-  input {
-    border-bottom: 1px solid #a0cfff !important;
-  }
-}
+
 </style>
