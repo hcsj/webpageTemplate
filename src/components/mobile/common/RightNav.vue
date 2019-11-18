@@ -1,0 +1,226 @@
+<template>
+  <div class="rightNav">
+    <!-- 右侧隐藏蓝 -->
+    <div class="user">
+      <div class="user-msg">
+        <div class="user-img">
+          <i class="el-icon-user"></i>
+        </div>
+        <p class="user-name">未登录</p>
+      </div>
+    </div>
+    <ul class="tab-nav">
+      <li v-for="(i,index) in navList" :key="index">
+        <div class="nav" @click="openNav(index,i.list.length)">
+          <i class="el-icon-s-home"></i>
+          <span>{{i.title}}</span>
+          <i v-if="i.list.length" id="right-btn" class="el-icon-arrow-right"></i>
+        </div>
+        <div class="nav-n-box" ref="nav-n-box">
+          <div class="nav-n" v-for="(n,index) in i.list" :key="index">{{n.title}}</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      navList: [
+        {
+          title: "首页",
+          name: "home",
+          list: []
+        },
+        {
+          title: "业务介绍",
+          name: "BusinessIntroduction",
+          list: [
+            {
+              title: "交易规则",
+              name: "BusinessIntroduction"
+            },
+            {
+              title: "政策法规",
+              name: "BusinessIntroduction"
+            }
+          ]
+        },
+        {
+          title: "新闻资讯",
+          name: "News",
+          list: [
+            {
+              title: "公告通知",
+              name: "BusinessIntroduction"
+            },
+            {
+              title: "公司新闻",
+              name: "BusinessIntroduction"
+            },
+            {
+              title: "行业资讯",
+              name: "BusinessIntroduction"
+            }
+          ]
+        },
+        {
+          title: "关于我们",
+          name: "AboutUs",
+          list: [
+            {
+              title: "中心介绍",
+              name: "BusinessIntroduction"
+            },
+            {
+              title: "法律申明",
+              name: "BusinessIntroduction"
+            },
+            {
+              title: "常见问题",
+              name: "BusinessIntroduction"
+            }
+          ]
+        },
+        {
+          title: "登录",
+          name: "AboutUs",
+          list: []
+        },
+        {
+          title: "注册",
+          name: "AboutUs",
+          list: []
+        },
+      ]
+    };
+  },
+  methods: {
+    openNav(index, num) {
+      let _this = this;
+      let nav = document.querySelectorAll(".nav");
+      let items = document.querySelectorAll(".nav-n-box");
+      for (let i = 0; i < nav.length; i++) {
+        // nav[index].classList.contains("nav-n-box-active") 判断标签内是否含有该class属性，以布尔值类型返回
+        if (
+          items[i].style.height == "" ||
+          items[i].style.height == "0rem" ||
+          nav[index].classList.contains("nav-n-box-active")
+        ) {
+          let height = items[index].style.height;
+          items[index].style.height = height;
+        } else {
+          items[i].style.height = "0rem";
+        }
+        nav[i].classList.remove("nav-n-box-active");
+      }
+      if (
+        items[index].style.height == "" ||
+        items[index].style.height == "0rem"
+      ) {
+        items[index].style.height = num * 2 + "rem";
+        nav[index].classList.add("nav-n-box-active");
+      } else {
+        items[index].style.height = "0rem";
+        nav[index].classList.remove("nav-n-box-active");
+      }
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.rightNav {
+  position: fixed;
+  width: 65%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  background: white;
+  z-index: 100;
+  box-shadow: -2px 0 5px rgb(54, 54, 54);
+  .user {
+    height: 12rem;
+    background: $base;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .user-msg {
+      .user-img {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        i {
+          font-size: 2rem;
+          color: #808080;
+        }
+      }
+      .user-name {
+        margin: 1rem 0;
+        font-weight: bold;
+        color: white;
+      }
+    }
+  }
+  .tab-nav {
+    padding: 1rem;
+    list-style: none;
+    li {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      .nav {
+        padding: 1rem 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        i {
+          transition: 0.3s;
+          color: $base;
+        }
+        span {
+          display: inline-block;
+          width: 100%;
+          text-align: left;
+          color: #808080;
+          font-size: 0.88rem;
+          margin-left: 1rem;
+        }
+      }
+      .nav-n-box {
+        transition: 0.3s;
+        width: 100%;
+        height: 0;
+        overflow: hidden;
+        .nav-n {
+          width: 100%;
+          font-size: 0.88rem;
+          color: #808080;
+          height: 2rem;
+          text-align: left;
+          padding-left: 2rem;
+          line-height: 2rem;
+          &:active {
+            background: $base;
+            color: white;
+            opacity: 0.5;
+          }
+        }
+      }
+    }
+  }
+}
+.nav-n-box-active {
+  #right-btn {
+    transform: rotate(90deg) !important;
+  }
+}
+</style>

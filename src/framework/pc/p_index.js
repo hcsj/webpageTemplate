@@ -8,7 +8,7 @@ import router from '../../router/pc/index'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
-import '@/assets/css/index.scss'
+import '@/assets/css/pc_index.scss'
 import 'swiper/css/swiper.css';
 import anime from "animejs/lib/anime.es.js";
 // 时间格式化工具

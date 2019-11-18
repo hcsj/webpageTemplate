@@ -6,8 +6,9 @@ Vue.use(Router)
 let router = new Router({
   routes: [
     {
+      name:'home',
       path: '/',
-      component: resolve => require(['@/components/mobile/HelloWorld'], resolve),
+      component: resolve => require(['@/components/mobile/Home'], resolve),
       meta: { title: '首页' }
     },
   ]

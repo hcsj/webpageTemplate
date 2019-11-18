@@ -680,20 +680,20 @@ export default {
     }
   }
   .swiper-button-prev,
-.swiper-button-next {
-  opacity: 0;
-  transform: scale(0.8);
-  transition: 0.5s;
-  // margin:0 1rem;
-}
-.swiper-container:hover .swiper-button-prev {
-  opacity: 1;
-  left: 40px;
-}
-.swiper-container:hover .swiper-button-next {
-  opacity: 1;
-  right: 40px;
-}
+  .swiper-button-next {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: 0.5s;
+    // margin:0 1rem;
+  }
+  .swiper-container:hover .swiper-button-prev {
+    opacity: 1;
+    left: 40px;
+  }
+  .swiper-container:hover .swiper-button-next {
+    opacity: 1;
+    right: 40px;
+  }
 }
 #module {
   width: 100%;
