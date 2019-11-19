@@ -51,7 +51,7 @@ export default {
   },
   data() {
     return {
-      waveAllHeight: 500, //波浪的整体高度
+      waveAllHeight: 550, //波浪的整体高度
       waveCount: 4, //波浪个数
       waveHeight: 15 //波浪起伏高度
     };
@@ -238,7 +238,7 @@ canvas {
     }
   }
   .c-b {
-    height: 100px;
+    height: 150px;
     color: white;
     font-size: 13px;
     display: flex;

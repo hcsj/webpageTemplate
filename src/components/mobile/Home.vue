@@ -142,10 +142,10 @@
         <p class="English">About Us</p>
         <div class="content-aboutUs">
           <div
+          id="block"
             class="aboutUs"
             v-for="(i,index) in aboutUsList"
             :key="index"
-            :style="` transition-delay: ${index/10}s`"
           >
             <div class="aboutUs-hover">
               <div class="msg">
@@ -870,7 +870,7 @@ export default {
       opacity: 0;
       transition: 0.5s;
       section {
-        font-size: 14px;
+        font-size: 0.75rem;
         cursor: pointer;
         transition: 0.5s;
         color: #b6b6b6;
@@ -933,7 +933,7 @@ export default {
         text-align: left;
         line-height: 1.5rem;
         color: #808080;
-        font-size: 15px;
+        font-size: 0.88rem;
         cursor: default;
         position: relative;
         .msg-t {
@@ -956,7 +956,7 @@ export default {
           bottom: 20px;
           right: 20px;
           section {
-            font-size: 14px;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: 0.5s;
             color: #b6b6b6;
