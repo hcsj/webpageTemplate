@@ -167,7 +167,7 @@ canvas {
   position: relative;
   z-index: 5;
   width: 100%;
-  max-width: 1000px;
+  // max-width: 1000px;
   padding: 10px;
   //   background: red;
   .c-t {
@@ -201,9 +201,10 @@ canvas {
       }
     }
     .c-t-r {
+      width: 100%;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-around;
       color: white;
       cursor: default;
       &:hover section {
@@ -220,8 +221,8 @@ canvas {
         }
       }
       .QRCode {
-        width: 100px;
-        height: 100px;
+        width: 90px;
+        height: 90px;
         display: flex;
         justify-content: center;
         align-items: center;
