@@ -1083,9 +1083,8 @@ mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
         window.open(row.url, "_blank");
       } else {
         this.$router.push({
-          name: "ViewArticle",
-          params: {
-            title: "",
+          path: "/ViewArticle",
+          query: {
             content: row.content
           }
         });

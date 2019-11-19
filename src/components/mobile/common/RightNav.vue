@@ -1,5 +1,8 @@
 <template>
   <div class="rightNav">
+    <div class="rightNav-logo">
+      <img src="@/assets/img/logo1.png" alt />
+    </div>
     <!-- 右侧隐藏蓝 -->
     <div class="user">
       <div class="user-msg">
@@ -177,6 +180,19 @@ export default {
   background: white;
   z-index: 100;
   box-shadow: -2px 0 5px rgb(54, 54, 54);
+  .rightNav-logo {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    right: 0;
+    img {
+      margin: 0 auto;
+      opacity: 0.8;
+      display: block;
+      width: 70px;
+      margin-bottom: 2rem;
+    }
+  }
   .user {
     height: 12rem;
     background: $base;

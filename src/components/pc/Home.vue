@@ -560,6 +560,7 @@ export default {
   justify-content: center;
   // filter: drop-shadow(0px 2px 5px rgb(58, 58, 58));
   .notice {
+    text-align: center;
     width: 50%;
     padding-right: 20px;
     padding-left: 10px;

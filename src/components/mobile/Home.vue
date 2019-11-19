@@ -437,8 +437,8 @@ export default {
     //首页打开新闻资讯
     openNews(row) {
       this.$router.push({
-        name: "ViewArticle",
-        params: {
+        path: "/ViewArticle",
+        query: {
           title: row.noticeTitle,
           content: row.noticeText
         }
@@ -460,6 +460,7 @@ export default {
   justify-content: center;
   // filter: drop-shadow(0px 2px 5px rgb(58, 58, 58));
   .notice {
+    text-align: center;
     width: 90%;
     padding-right: 40px;
     padding-left: 10px;

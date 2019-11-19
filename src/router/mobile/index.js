@@ -13,7 +13,7 @@ let router = new Router({
     },
     {
       name: 'ViewArticle',
-      path: '/viewArticle/:title/:content',
+      path: '/viewArticle',
       component: resolve => require(['@/components/mobile/common/ViewArticle'], resolve),
       meta: { title: '文章阅读页' }
     },

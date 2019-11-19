@@ -23,8 +23,8 @@ export default {
     };
   },
   created() {
-    this.headerTitle = this.$route.params.title;
-    this.ArticleContent = this.$route.params.content;
+    this.headerTitle = this.$route.query.title;
+    this.ArticleContent = this.$route.query.content;
   }
 };
 </script>
