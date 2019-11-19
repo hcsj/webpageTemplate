@@ -1,12 +1,12 @@
 <template>
   <div class="footNav">
-    <div id="wave" :style="`height:${waveAllHeight}px;background:${waveBck}`">
+    <!-- <div id="wave" :style="`height:${waveAllHeight}px;background:${waveBck}`">
       <div class="wave-box">
         <canvas id="wave1"></canvas>
         <canvas id="wave2"></canvas>
         <canvas id="wave3"></canvas>
       </div>
-    </div>
+    </div> -->
     <div class="content">
       <div class="c-t">
         <div class="c-t-l">
@@ -57,9 +57,9 @@ export default {
     };
   },
   mounted() {
-    this.wavePlay("wave1", 140, "hsl(200, 97%, 61%, 0.6)", 1500);
-    this.wavePlay("wave2", 140, "hsl(180, 97%, 61%, 0.6)", 3000);
-    this.wavePlay("wave3", 140, "hsl(177, 67%, 44%, 0.6)", 2500);
+    // this.wavePlay("wave1", 140, "hsl(200, 97%, 61%, 0.6)", 1500);
+    // this.wavePlay("wave2", 140, "hsl(180, 97%, 61%, 0.6)", 3000);
+    // this.wavePlay("wave3", 140, "hsl(177, 67%, 44%, 0.6)", 2500);
   },
   methods: {
     //  * 底部波浪
@@ -128,11 +128,13 @@ export default {
 <style lang="scss" scoped>
 .footNav {
   width: 100%;
-  height: 500px;
+  height: 450px;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  background: $base;
+  opacity: 0.9;
 }
 #wave {
   width: 100%;
@@ -171,7 +173,7 @@ canvas {
   padding: 10px;
   //   background: red;
   .c-t {
-    height: 320px;
+    height: 300px;
     // background: blue;
     display: flex;
     flex-wrap: wrap;

@@ -1,7 +1,7 @@
 <template>
-  <div class="overall">
+  <div class="logo-overall">
     <div class="logo-box">
-      <img src="@/assets/img/logo.png" alt />
+      <img src="@/assets/img/logo1.png" alt />
     </div>
   </div>
 </template>
@@ -11,7 +11,7 @@ export default {};
 </script>
 
 <style lang="scss">
-.overall {
+.logo-overall {
   position: fixed;
   top: 0;
   left: 0;
@@ -24,8 +24,7 @@ export default {};
   background: white;
 }
 .logo-box {
-  width: 153px;
-  height: 78px;
+  width: 100px;
   position: relative;
   &::before {
     content: "";
@@ -47,6 +46,7 @@ export default {};
   }
   // background: red;
   img {
+    width: 100%;
     display: block;
     position: absolute;
     top: 0;

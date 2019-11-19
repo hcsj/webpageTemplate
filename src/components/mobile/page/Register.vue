@@ -1,36 +1,10 @@
 <template>
   <div>
-    <head-nav :class="'head-nav-show'"></head-nav>
+      <head-nav class="head-nav-show" :headerTitle="stepList[activeIndex - 1].title"></head-nav>
     <div class="register-webpage">
-      <div class="bck">
-        <img src="@/assets/img/logo1.png" alt />
-      </div>
       <div class="register">
-        <div class="register-title">会员注册</div>
         <!-- 步骤条盒子 -->
         <div class="steps-box">
-          <!-- 步骤条 -->
-          <div class="Article-steps" :class="stepList.length <= activeIndex ? 'step-over':''">
-            <!-- 步骤条背景进度条 -->
-            <div class="plan-line">
-              <span
-                class="plan"
-                :style="`width:${activeIndex*(100/(stepList.length - 1)) - (100/(stepList.length - 1)/2)}%`"
-              ></span>
-            </div>
-            <!-- 每步部分 -->
-            <span
-              class="step"
-              v-for="(i,index) in stepList"
-              :key="index"
-              :class="activeIndex == i.stepIndex || i.stepIndex<=activeIndex ? 'step-active':''"
-            >
-              <span class="step-num">
-                <span class="num">{{i.stepIndex}}</span>
-              </span>
-              <p class="title">{{i.title}}</p>
-            </span>
-          </div>
           <!-- 步骤条对应内容 -->
           <div class="Article-content">
             <div class="content" v-if="activeIndex == 1">
@@ -76,19 +50,17 @@
           </div>
         </div>
       </div>
+      <div class="bck">
+        <img src="@/assets/img/logo1.png" alt />
+      </div>
     </div>
-    <foot-nav :waveBck="'#ececec'"></foot-nav>
   </div>
 </template>
 
 <script>
 import headNav from "../common/HeadNav.vue";
-import LoginBox from "../common/LoginBox.vue";
-import footNav from "../common/FootNav.vue";
 export default {
   components: {
-    "login-box": LoginBox,
-    "foot-nav": footNav,
     "head-nav": headNav
   },
   data() {
@@ -141,17 +113,17 @@ export default {
   position: absolute !important;
 }
 .register-webpage {
-  //   position: absolute;
-  margin-top: 80px;
   width: 100%;
   height: 100%;
-  min-height: 700px;
-  background: #ececec;
+  background: #f3f3f3;
   display: flex;
   justify-content: center;
-  position: relative;
+  position: absolute;
+  min-height: 500px;
   .register {
+    text-align: center;
     width: 100%;
+    padding-top: 3rem;
     max-width: 600px;
     .register-title {
       margin: 30px 0;
@@ -189,105 +161,31 @@ export default {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    top: 0;
+    bottom: 0;
     img {
+      opacity: 0.8;
       display: block;
-      width: 200px;
-      height: 50px;
-      transform: scale(0.5);
+      width: 70px;
+      margin-bottom: 2rem;
     }
   }
 }
 
 //步骤条样式
 .steps-box {
-  padding-bottom: 50px;
   user-select: none;
   width: 100%;
   position: relative;
-  // <!-- 步骤条背景进度条 -->
-  .plan-line {
-    display: block;
-    margin: 0 auto;
-    position: absolute;
-    top: 24px;
-    left: 2.5%;
-    background: #ccc;
-    width: 95%;
-    height: 2px;
-    overflow: hidden;
-    .plan {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 2px;
-      transition: 0.5s;
-      background: $base;
-      opacity: 0.5;
-    }
-  }
-  .Article-steps {
-    display: flex;
-    justify-content: space-between;
-    .step {
-      .title {
-        font-size: 15px;
-        font-weight: 200;
-        color: #808080;
-        margin-top: 5px;
-      }
-      .step-num {
-        width: 50px;
-        height: 50px;
-        display: inline-block;
-        line-height: 50px;
-        background: #c0c0c0;
-        clip-path: polygon(50% 0, 100% 85%, 0 85%);
-        color: white;
-        font-weight: bold;
-        transition: 0.5s;
-        .num {
-          transition: 0.5s;
-          display: inline-block;
-        }
-      }
-    }
-  }
-
-  //当前所在位置样式
-  .step-active {
-    .step-num {
-      background: $base !important;
-      transform: rotate(90deg);
-      .num {
-        transform: rotate(-90deg);
-      }
-    }
-    .title {
-      color: $base !important;
-    }
-  }
-
-  //全部完成样式
-  .step-over {
-    .plan {
-      background: #91f062 !important;
-    }
-    .step-num {
-      background: #67c23a !important;
-    }
-    .title {
-      color: #67c23a !important;
-    }
-  }
+  z-index: 5;
   //对应内容
   .Article-content {
     padding: 20px;
     .btn {
-      width: 250px;
+      text-align: center;
+      width: 100%;
       display: block;
       margin: 0px auto;
-      margin-top: 50px;
+      margin-top: 2rem;
       background: $base;
       color: white;
       padding: 10px;

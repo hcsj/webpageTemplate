@@ -35,20 +35,14 @@ export default {
   width: 100%;
   height: 100%;
   top: 0;
-
   .Article-logo {
     width: 5rem;
-    position: absolute;
+    position: fixed;
     bottom: 1rem;
     left: calc(50% - 2.5rem);
-    opacity: 0.7;
     img{
         width: 100%;
     }
   }
-}
-.head-nav-show {
-  background: $headNav_bck;
-  box-shadow: 0 0 5px black;
 }
 </style>

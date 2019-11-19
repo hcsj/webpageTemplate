@@ -139,6 +139,7 @@ export default {
       }
     }
     .Article {
+      width: 100%;
       padding: 0px 70px;
       overflow-y: auto;
       overflow-x: hidden;

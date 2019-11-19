@@ -449,10 +449,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.head-nav-show {
-  background: $headNav_bck;
-  box-shadow: 0 0 5px black;
-}
 .notice-inform {
   width: 100%;
   height: 40px;
@@ -603,6 +599,7 @@ export default {
   width: 100%;
   padding: 3rem 0;
   overflow: hidden;
+  text-align: center;
   .module {
     max-width: 1000px;
     width: 100%;
@@ -633,12 +630,12 @@ export default {
     .block {
       transition: 0.5s;
       width: 100%;
-      margin: 1rem 0;
+      margin: 1.5rem 0;
       // opacity: 0;
       // transform: translateY(3rem) scale(0.5);
       .icon-hover {
-        width: 10rem;
-        height: 10rem;
+        width: 9rem;
+        height: 9rem;
         margin: 0 auto;
         display: flex;
         justify-content: center;
@@ -656,7 +653,7 @@ export default {
         // transform: scale(0.3);
         // opacity: 0;
         i {
-          font-size: 5rem;
+          font-size: 4rem;
           color: white;
         }
       }
@@ -668,12 +665,14 @@ export default {
         font-size: 1rem;
       }
       p {
+        margin: 0 auto;
         margin-top: 10px;
         transition: 1s;
         // transform: translateY(50px);
         // opacity: 0;
         font-size: 0.88rem;
         color: #a8a8a8;
+        max-width: 100px;
       }
     }
   }
@@ -814,26 +813,26 @@ export default {
         justify-content: space-between;
         align-items: center;
         cursor: pointer;
-        &:hover {
-          background: #f3f3f3;
-        }
-        &:hover .date {
-          transform: translateX(5px);
-          clip-path: polygon(
-            0 100%,
-            0 0,
-            calc(100% - 10px) 0,
-            100% 10px,
-            100% 100%
-          );
-        }
-        &:hover .msg {
-          transform: translateX(-5px);
-        }
-        &:hover i {
-          transform: translateX(10px);
-          color: $base;
-        }
+        // &:hover {
+        //   background: #f3f3f3;
+        // }
+        // &:hover .date {
+        //   transform: translateX(5px);
+        //   clip-path: polygon(
+        //     0 100%,
+        //     0 0,
+        //     calc(100% - 10px) 0,
+        //     100% 10px,
+        //     100% 100%
+        //   );
+        // }
+        // &:hover .msg {
+        //   transform: translateX(-5px);
+        // }
+        // &:hover i {
+        //   transform: translateX(10px);
+        //   color: $base;
+        // }
       }
       .tab-msg {
         transition: 0.5s;
@@ -859,9 +858,9 @@ export default {
           }
         }
         .msg {
-          padding: 0 10px;
+          // padding: 0 10px;
           transition: 0.5s;
-          margin-left: 10px;
+          // margin-left: 10px;
           width: calc(100% - 70px);
           height: 50px;
           display: flex;

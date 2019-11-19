@@ -28,7 +28,7 @@ export default {
 // 头部导航栏样式
 .head-nav-show {
   background: $headNav_bck;
-  box-shadow: 0 0 5px black;
+  box-shadow: 0 0 5px #5c5c5c;
   position: absolute !important;
 }
 .login-webpage {

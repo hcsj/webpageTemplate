@@ -1,79 +1,35 @@
 <template>
   <div>
-    <head-nav class="head-nav-show"></head-nav>
-    <div id="article-box">
-      <div id="article-tab" :class="navShow?'article-tab-active':''">
-        <div class="article-tab">
-          <span
-            @click="changeActiveIndex(i.title)"
-            class="tab"
-            :class="activeIndex == i.title?'tab-active':''"
-            v-for="(i,index) in AboutUsList"
-            :key="index"
-          >{{i.title}}</span>
-        </div>
-      </div>
-
-      <div class="article-box">
-        <div class="article-content">
-          <el-table
-            :data="list"
-            style="width: 100%"
-            @row-click="handleClick"
-            :row-style="{ cursor: 'pointer'}"
-          >
-            <el-table-column prop="date" label="日期" width="100">
-              <template slot-scope="scope">
-                <div class="date">
-                  <section>
-                    <h3>{{dateFormatting(scope.row.date)}}</h3>
-                  </section>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="text" label="内容"></el-table-column>
-            <el-table-column prop="date" label="时间" width="180"></el-table-column>
-            <el-table-column label="操作" width="50">
-              <template slot-scope="scope">
-                <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
+    <head-nav class="head-nav-show" :headerTitle="headerTitle"></head-nav>
+    <div class="BusinessIntroduction-content">
+      <div class="tab-msg" v-for="(i,index) in list" :key="index" @click="handleClick(i)">
+        <div class="tab-msg-hover">
+          <div class="date">
+            <section>
+              <h3>{{dateFormatting_day(i.date)}}</h3>
+              <p>{{dateFormatting(i.date)}}</p>
+            </section>
+          </div>
+          <div class="msg">
+            <span class="m">{{i.text}}</span>
+            <i class="el-icon-arrow-right"></i>
+          </div>
         </div>
       </div>
     </div>
-    <foot-nav></foot-nav>
-    <view-article ref="viewArticle" :ArticleContent="Article"></view-article>
   </div>
 </template>
 
 <script>
-import viewArticle from "../common/ViewArticle.vue";
 import headNav from "../common/HeadNav.vue";
-import footNav from "../common/FootNav.vue";
 export default {
-  name: "AboutUs",
   components: {
-    "head-nav": headNav,
-    "foot-nav": footNav,
-    "view-article": viewArticle
+    "head-nav": headNav
   },
   data() {
     return {
-      activeIndex: "交易规则",
-      windowH: window.innerHeight,
-      navShow: false,
-      Article: "",
-      AboutUsList: [
-        {
-          title: "交易规则",
-          msg: `msg1`
-        },
-        {
-          title: "政策法规",
-          msg: "msg2"
-        }
-      ],
+      headerTitle: "",
+      list: [],
       CaseList: [
         // {
         //   date: "2018/12/01",
@@ -125,7 +81,7 @@ export default {
           content: `<div class=WordSection1 style='layout-grid:15.6pt'>
 
 <p class=MsoNormal align=center style='text-align:center;mso-pagination:widow-orphan;
-'><span style='font-size:18.0pt;font-family:宋体;mso-ascii-font-family:
+background:white'><span style='font-size:18.0pt;font-family:宋体;mso-ascii-font-family:
 "microsoft yahei";mso-hansi-font-family:"microsoft yahei";mso-bidi-font-family:
 宋体;color:#255A8E;mso-font-kerning:0pt'>中国人民银行关于促进互联网金融健康发展的指导意见</span><span
 lang=EN-US style='font-size:18.0pt;font-family:"microsoft yahei",serif;
@@ -481,7 +437,7 @@ font-family:"microsoft yahei",serif;mso-fareast-font-family:宋体;mso-bidi-font
           content: `<div class=WordSection1 style='layout-grid:15.6pt'>
 
 <p class=MsoNormal align=center style='text-align:center;mso-pagination:widow-orphan;
-'><span style='font-size:18.0pt;font-family:宋体;mso-ascii-font-family:
+background:white'><span style='font-size:18.0pt;font-family:宋体;mso-ascii-font-family:
 "microsoft yahei";mso-hansi-font-family:"microsoft yahei";mso-bidi-font-family:
 宋体;color:#255A8E;mso-font-kerning:0pt'>中国银监会关于</span><span lang=EN-US
 style='font-size:18.0pt;font-family:"microsoft yahei",serif;mso-fareast-font-family:
@@ -778,7 +734,7 @@ mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
           content: `<div class=WordSection1 style='layout-grid:15.6pt'>
 
 <p class=MsoNormal align=center style='text-align:center;mso-pagination:widow-orphan;
-'><span style='font-size:18.0pt;font-family:宋体;mso-ascii-font-family:
+background:white'><span style='font-size:18.0pt;font-family:宋体;mso-ascii-font-family:
 "microsoft yahei";mso-hansi-font-family:"microsoft yahei";mso-bidi-font-family:
 宋体;color:#255A8E;mso-font-kerning:0pt'>银监会进一步规范银行业金融机构信贷资产转让业务的通知</span><span
 lang=EN-US style='font-size:18.0pt;font-family:"microsoft yahei",serif;
@@ -1090,51 +1046,49 @@ mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
 
 `
         }
-      ],
-      list: []
+      ]
     };
   },
-  mounted() {
-    window.addEventListener("scroll", this.handleScroll);
-    this.list = this.CaseList;
+  watch: {
+    $route(newVal, oldVal) {
+      let _this = this;
+      _this.headerTitle = _this.$route.query.title;
+      if (_this.headerTitle == "交易规则") {
+        _this.list = _this.CaseList;
+      } else if (_this.headerTitle == "政策法规") {
+        _this.list = _this.PolicyList;
+      }
+    }
   },
-  destroyed() {
-    window.removeEventListener("scroll", this.handleScroll);
+  created() {
+    let _this = this;
+    _this.headerTitle = _this.$route.query.title;
+    if (_this.headerTitle == "交易规则") {
+      _this.list = _this.CaseList;
+    } else if (_this.headerTitle == "政策法规") {
+      _this.list = _this.PolicyList;
+    }
   },
   methods: {
-    changeActiveIndex(index) {
-      window.scrollTo(0, 0);
-      if (index == "政策法规") {
-        this.list = this.PolicyList;
-      } else {
-        this.list = this.CaseList;
-      }
-      this.activeIndex = index;
-    },
     //时间格式转换
-    dateFormatting(val) {
+    dateFormatting_day(val) {
       return this.$moment(val).format("DD");
     },
-    //监听滚轮方法
-    handleScroll(val) {
-      let _this = this;
-      let scrollTop =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop;
-      if (scrollTop > 100) {
-        _this.navShow = true;
-      } else {
-        _this.navShow = false;
-      }
+    dateFormatting(val) {
+      return this.$moment(val).format("YYYY-MM");
     },
     //查看详情
     handleClick(row) {
       if (row.url) {
         window.open(row.url, "_blank");
       } else {
-        this.$refs.viewArticle.ViewArticleShow = true;
-        this.Article = row.content;
+        this.$router.push({
+          name: "ViewArticle",
+          params: {
+            title: "",
+            content: row.content
+          }
+        });
       }
     }
   }
@@ -1142,23 +1096,62 @@ mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
 </script>
 
 <style lang="scss" scoped>
-
-// 头部导航栏样式
-.head-nav-show {
- background: $headNav_bck;
-  box-shadow: 0 0 5px #5c5c5c;
-  position: absolute !important;
-}
-
-.date {
-  width: 40px;
-  height: 40px;
-  background: #ebebeb;
-  color: #808080;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  clip-path: polygon(10px 0, 100% 0, 100% 100%, 0% 100%, 0 10px);
-  text-align: center;
+.BusinessIntroduction-content {
+  padding: 1rem;
+  padding-top: 4rem;
+  .tab-msg-hover {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+  }
+  .tab-msg {
+    transition: 0.5s;
+    margin-bottom: 10px;
+    .date {
+      text-align: center;
+      transition: 0.5s;
+      width: 50px;
+      height: 50px;
+      min-width: 50px;
+      background: $base;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      clip-path: polygon(10px 0, 100% 0, 100% 100%, 0% 100%, 0 10px);
+      section {
+        transform: scale(0.85);
+        p {
+          font-size: 12px;
+        }
+      }
+    }
+    .msg {
+      //   padding: 0 10px;
+      transition: 0.5s;
+      width: calc(100% - 70px);
+      height: 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px dashed #ccc;
+      .m {
+        width: 100%;
+        display: inline-block;
+        font-size: 0.88rem;
+        font-weight: 200;
+        transition: 0.5s;
+        color: #808080;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        word-break: break-all;
+      }
+      i {
+        transition: 0.5s;
+      }
+    }
+  }
 }
 </style>

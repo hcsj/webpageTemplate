@@ -1,60 +1,88 @@
 <template>
-  <div id="login-box">
-    <span class="close" v-if="closeLogin">
-      <i class="el-icon-close" @click="$parent.loginShow = false"></i>
-    </span>
-    <div class="title">会员登录</div>
-    <div class="login">
-      <div class="input-box" :class="mobileNumber?'input-box-focus':''">
-        <input type="text" maxlength="11" v-model="mobileNumber" placeholder="请输入账号" />
-        <span class="line"></span>
-        <i class="el-icon-user"></i>
+  <div>
+    <div class="login-webpage">
+      <div class="bck">
+        <img src="@/assets/img/logo1.png" alt />
       </div>
-      <div class="input-box" :class="password?'input-box-focus':''">
-        <input type="password" v-model="password" placeholder="请输入密码" />
-        <span class="line"></span>
-        <i class="el-icon-key"></i>
+      <div id="login-box">
+        <div class="title">会员登录</div>
+        <div class="login">
+          <div class="input-box" :class="mobileNumber?'input-box-focus':''">
+            <input type="text" maxlength="11" v-model="mobileNumber" placeholder="请输入账号" />
+            <span class="line"></span>
+            <i class="el-icon-user"></i>
+          </div>
+          <div class="input-box" :class="password?'input-box-focus':''">
+            <input type="password" v-model="password" placeholder="请输入密码" />
+            <span class="line"></span>
+            <i class="el-icon-key"></i>
+          </div>
+        </div>
+        <div class="button-login">登录</div>
+        <div class="bottom-msg">
+          <span>忘记密码?</span>
+          <span class="to-register" @click="skip('register')">免费注册</span>
+        </div>
       </div>
-    </div>
-    <div class="button-login">登录</div>
-    <div class="bottom-msg">
-      <span>忘记密码?</span>
-      <span class="to-register" @click="skip('register')">免费注册</span>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    closeLogin: { default: true } //是否显示关闭 x 号
-  },
   data() {
     return {
       mobileNumber: "",
       password: ""
     };
   },
-  methods:{
-    skip(name){
+  methods: {
+    skip(name) {
       this.$router.push({
-        name:name
-      })
+        name: name
+      });
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.login-webpage {
+  width: 100%;
+  height: 100%;
+  //   min-height: 700px;
+  background: #f3f3f3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  min-height: 500px;
+  .bck {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    top: 0;
+    img {
+      opacity: 0.8;
+      display: block;
+      width: 70px;
+      margin-bottom: 2rem;
+    }
+  }
+}
+
 #login-box {
+  overflow: hidden;
   text-align: center;
   width: 400px;
   height: 420px;
-  background: rgba(255, 255, 255, 0.856);
   position: relative;
+  top: -2rem;
   padding: 40px;
   transition: 0.5s;
-  animation: loginBox 0.5s ease both 1;
   &::after,
   &::before {
     content: "";
@@ -87,26 +115,8 @@ export default {
       transform: rotate(4deg);
     }
   }
-  //   border-radius: 5px;
-  .close {
-    transition: 0.3s;
-    position: absolute;
-    right: 15px;
-    top: 15px;
-    z-index: 5;
-    font-size: 1.5rem;
-    z-index: 88;
-    font-weight: bold;
-    color: #808080;
-    cursor: pointer;
-    i {
-      font-weight: bold;
-    }
-    &:hover {
-      color: #f55151;
-    }
-  }
   .title {
+    margin: 0 auto;
     display: inline-block;
     color: #4b4b4b;
     padding: 8px 40px;
@@ -173,17 +183,4 @@ export default {
     }
   }
 }
-@keyframes loginBox {
-  0% {
-    opacity: 0;
-    transform: scale(0.5);
-    // filter: blur(5px)
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-    // filter: blur(0)
-  }
-}
-
 </style>

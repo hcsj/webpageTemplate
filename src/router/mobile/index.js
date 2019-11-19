@@ -6,16 +6,40 @@ Vue.use(Router)
 let router = new Router({
   routes: [
     {
-      name:'home',
+      name: 'home',
       path: '/',
       component: resolve => require(['@/components/mobile/Home'], resolve),
       meta: { title: '首页' }
     },
     {
-      name:'ViewArticle',
+      name: 'ViewArticle',
       path: '/viewArticle/:title/:content',
       component: resolve => require(['@/components/mobile/common/ViewArticle'], resolve),
       meta: { title: '文章阅读页' }
+    },
+    {
+      name: 'AboutUs',
+      path: '/AboutUs',
+      component: resolve => require(['@/components/mobile/page/AboutUs'], resolve),
+      meta: { title: '关于我们' }
+    },
+    {
+      name: 'BusinessIntroduction',
+      path: '/BusinessIntroduction',
+      component: resolve => require(['@/components/mobile/page/BusinessIntroduction'], resolve),
+      meta: { title: '业务介绍' }
+    },
+    {
+      name: 'login',
+      path: '/login',
+      component: resolve => require(['@/components/mobile/page/Login'], resolve),
+      meta: { title: '登录' }
+    },
+    {
+      name: 'register',
+      path: '/register',
+      component: resolve => require(['@/components/mobile/page/Register'], resolve),
+      meta: { title: '注册' }
     },
   ]
 })

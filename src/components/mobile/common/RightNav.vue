@@ -11,13 +11,18 @@
     </div>
     <ul class="tab-nav">
       <li v-for="(i,index) in navList" :key="index">
-        <div class="right-nav" @click="openNav(index,i.list.length)">
+        <div class="right-nav" @click="openNav(index,i.list.length,i)">
           <i class="el-icon-s-home"></i>
-          <span>{{i.title}}</span>
+          <span :class="nowRoute == i.name ? 'right-nav-title':''">{{i.title}}</span>
           <i v-if="i.list.length" id="right-btn" class="el-icon-arrow-right"></i>
         </div>
         <div class="nav-n-box" ref="nav-n-box">
-          <div class="nav-n" v-for="(n,index) in i.list" :key="index">{{n.title}}</div>
+          <div
+            class="nav-n"
+            v-for="(n,index) in i.list"
+            @click="openNav_n(i,n)"
+            :key="index"
+          >{{n.title}}</div>
         </div>
       </li>
     </ul>
@@ -28,6 +33,7 @@
 export default {
   data() {
     return {
+      nowRoute: "home",
       navList: [
         {
           title: "首页",
@@ -86,21 +92,20 @@ export default {
         },
         {
           title: "登录",
-          name: "AboutUs",
+          name: "login",
           list: []
         },
         {
           title: "注册",
-          name: "AboutUs",
+          name: "register",
           list: []
         }
       ]
     };
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
-    openNav(index, num) {
+    openNav(index, num, val) {
       let _this = this;
       let nav = document.querySelectorAll(".right-nav"); //获取父级菜单栏，以便添加选中样式
       let items = document.querySelectorAll(".nav-n-box"); //获取容纳子级菜单栏的容器，以便动态设置高度，实现下拉效果
@@ -138,6 +143,25 @@ export default {
         nav[index].classList.remove("nav-n-box-active");
       }
       //------------------------------------------
+
+      if (num == 0 && _this.$route.name != val.name) {
+        _this.$router.push({
+          name: val.name
+        });
+        window.scrollTo(0, 0);
+        return;
+      }
+    },
+    openNav_n(val, va) {
+      let _this = this;
+      _this.$parent.rightNavShow = false;
+      _this.$router.push({
+        path: `/${val.name}`,
+        query: {
+          title: va.title
+        }
+      });
+      window.scrollTo(0, 0);
     }
   }
 };
@@ -234,5 +258,8 @@ export default {
   #right-btn {
     transform: rotate(90deg) !important;
   }
+}
+.right-nav-title {
+  color: $base !important;
 }
 </style>

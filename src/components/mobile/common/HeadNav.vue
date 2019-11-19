@@ -4,7 +4,7 @@
       <div class="right-nav-close" v-show="rightNavShow" @click="rightNavShow = false"></div>
     </transition>
     <transition name="move">
-      <right-nav ref="right-nav" v-if="rightNavShow"></right-nav>
+      <right-nav ref="right-nav" v-show="rightNavShow"></right-nav>
     </transition>
     <div class="mobile-headNav">
       <span class="left-btn" v-if="back_btn" @click="goBack()">
@@ -28,24 +28,17 @@ export default {
   components: {
     "right-nav": rightNav
   },
-  watch: {
-    rightNavShow(newVal, oldVal) {
-      if (newVal == true) {
-        document.getElementsByTagName("body")[0].style.overflow = "hidden";
-      } else {
-        document.getElementsByTagName("body")[0].style.overflow = "auto";
-      }
-    }
-  },
   data() {
     return {
-      rightNavShow: false
+      rightNavShow: false,
     };
   },
   methods: {
     openRightNav() {
       let _this = this;
       _this.rightNavShow = true;
+      _this.$refs['right-nav'].nowRoute = _this.$route.name
+      // console.log(_this.$route.name)
     },
     goBack(){
       this.$router.go(-1)

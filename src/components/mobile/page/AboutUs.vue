@@ -1,49 +1,30 @@
 <template>
   <div>
-    <head-nav class="head-nav-show"></head-nav>
+    <head-nav class="head-nav-show" :headerTitle="headerTitle"></head-nav>
     <div id="article-box">
-      <div id="article-tab" :class="navShow?'article-tab-active':''">
-        <div class="article-tab">
-          <span
-            @click="changeActiveIndex(i.title)"
-            class="tab"
-            :class="activeIndex == i.title?'tab-active':''"
-            v-for="(i,index) in AboutUsList"
-            :key="index"
-          >{{i.title}}</span>
-        </div>
-      </div>
-
-      <div class="article-box">
-        <div
-          class="article-content"
-          v-for="(i,index) in AboutUsList"
-          :key="index"
-          v-show="activeIndex == i.title"
-        >
-          <div class="img">{{i.img}}</div>
-          <div class="msg" v-html="i.msg"></div>
-        </div>
+      <div
+        class="article-content"
+        v-for="(i,index) in AboutUsList"
+        :key="index"
+        v-show="headerTitle == i.title"
+      >
+        <div class="img">{{i.img}}</div>
+        <div class="msg" v-html="i.msg"></div>
       </div>
     </div>
-    <foot-nav></foot-nav>
   </div>
 </template>
 
 <script>
 import headNav from "../common/HeadNav.vue";
-import footNav from "../common/FootNav.vue";
 export default {
   name: "AboutUs",
   components: {
-    "head-nav": headNav,
-    "foot-nav": footNav
+    "head-nav": headNav
   },
   data() {
     return {
-      activeIndex: "中心介绍",
-      windowH: window.innerHeight,
-      navShow: false,
+      headerTitle: "",
       AboutUsList: [
         {
           title: "中心介绍",
@@ -284,7 +265,7 @@ mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
 </div>`
         },
         {
-          title: "法律声明",
+          title: "法律申明",
           img: "img2",
           msg: "msg2"
         },
@@ -293,42 +274,42 @@ mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
           img: "img3",
           msg: "msg3"
         }
-      ]
+      ],
+      key: ""
     };
   },
-  mounted() {
-    window.addEventListener("scroll", this.handleScroll);
-  },
-  destroyed() {
-    window.removeEventListener("scroll", this.handleScroll);
-  },
-  methods: {
-    changeActiveIndex(index) {
-      window.scrollTo(0, 0);
-      this.activeIndex = index;
-    },
-    //监听滚轮方法
-    handleScroll(val) {
+  watch: {
+    $route(newVal, oldVal) {
       let _this = this;
-      let scrollTop =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop;
-      if (scrollTop > 100) {
-        _this.navShow = true;
-      } else {
-        _this.navShow = false;
-      }
+      _this.headerTitle = _this.$route.query.title;
     }
-  }
+  },
+  created() {
+    let _this = this;
+    _this.headerTitle = _this.$route.query.title;
+  },
+  mounted() {},
+  methods: {}
 };
 </script>
 
 <style lang="scss" scoped>
-// 头部导航栏样式
-.head-nav-show {
-  background: $headNav_bck;
-  box-shadow: 0 0 5px #5c5c5c;
-  position: absolute !important;
+#article-box {
+  padding: 1rem;
+  padding-top: 4rem;
+  .article-content {
+    .img {
+      height: 300px;
+      background: $base;
+      font-size: 2rem;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .msg {
+      padding: 20px 0;
+    }
+  }
 }
 </style>
