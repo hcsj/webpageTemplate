@@ -11,6 +11,12 @@ let router = new Router({
       component: resolve => require(['@/components/mobile/Home'], resolve),
       meta: { title: '首页' }
     },
+    {
+      name:'ViewArticle',
+      path: '/viewArticle/:title/:content',
+      component: resolve => require(['@/components/mobile/common/ViewArticle'], resolve),
+      meta: { title: '文章阅读页' }
+    },
   ]
 })
 /**

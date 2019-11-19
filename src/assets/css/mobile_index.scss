@@ -6,3 +6,15 @@
 body,html{
     height: 100%;
 }
+
+//文章阅读页样式
+.ViewArticle {
+    word-break: break-all;
+    padding: 1rem;
+    padding-top: 4rem;
+    position: relative;
+    z-index: 5;
+    img{
+        width: 100% !important;
+    }
+  }

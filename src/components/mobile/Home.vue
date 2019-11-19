@@ -6,6 +6,22 @@
       :class="headNavShow?'head-nav-show':''"
       ref="head-nav"
     ></head-nav>
+    <div class="notice-inform" v-if="NoticeList.length">
+      <div class="notice">
+        <i class="el-icon-s-flag"></i>
+        <ul :style="`animation-duration: ${NoticeList.length*2}s;`">
+          <li v-for="(i,index) in NoticeList" :key="index">
+            <span class="title">{{i.title}}</span>
+            <span class="time">{{i.time}}</span>
+          </li>
+          <li>
+            <span class="title">{{NoticeList[0].title}}</span>
+            <span class="time">{{NoticeList[0].time}}</span>
+          </li>
+        </ul>
+        <span class="more">查看更多</span>
+      </div>
+    </div>
     <div id="banner" ref="go0">
       <div class="swiper-container">
         <div class="swiper-wrapper">
@@ -141,12 +157,7 @@
         <h2>关于我们</h2>
         <p class="English">About Us</p>
         <div class="content-aboutUs">
-          <div
-          id="block"
-            class="aboutUs"
-            v-for="(i,index) in aboutUsList"
-            :key="index"
-          >
+          <div id="block" class="aboutUs" v-for="(i,index) in aboutUsList" :key="index">
             <div class="aboutUs-hover">
               <div class="msg">
                 <div class="msg-t">{{i.content}}</div>
@@ -197,6 +208,28 @@ export default {
         },
         {
           text: "BANNER3"
+        }
+      ],
+      NoticeList: [
+        {
+          title: "你好! 欢迎进入东北亚金融资产交易中心",
+          time: "2019-11-15"
+        },
+        {
+          title: "欢迎进入东北亚金融资产交易中心",
+          time: "2019-11-02"
+        },
+        {
+          title: "你好! 欢迎进入东北亚金融资产交易中心",
+          time: "2019-11-05"
+        },
+        {
+          title: "欢迎进入东北亚金融资产交易中心",
+          time: "2019-11-04"
+        },
+        {
+          title: "东北亚金融资产交易中心",
+          time: "2019-11-01"
         }
       ],
       AdvantageList: [
@@ -400,6 +433,16 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    //首页打开新闻资讯
+    openNews(row) {
+      this.$router.push({
+        name: "ViewArticle",
+        params: {
+          title: row.noticeTitle,
+          content: row.noticeText
+        }
+      });
     }
   }
 };
@@ -409,6 +452,104 @@ export default {
 .head-nav-show {
   background: $headNav_bck;
   box-shadow: 0 0 5px black;
+}
+.notice-inform {
+  width: 100%;
+  height: 40px;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  z-index: 9;
+  display: flex;
+  justify-content: center;
+  // filter: drop-shadow(0px 2px 5px rgb(58, 58, 58));
+  .notice {
+    width: 90%;
+    padding-right: 40px;
+    padding-left: 10px;
+    max-width: 1200px;
+    background: rgba(255, 255, 255, 0.582);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    color: #949494;
+    transition: 0.5s;
+    clip-path: polygon(
+      0 50%,
+      20px 0,
+      calc(100% - 10px) 0,
+      calc(100% - 25px) 15%,
+      calc(100% - 0px) 30%,
+      calc(100% - 20px) 45%,
+      calc(100% - 5px) 60%,
+      calc(100% - 30px) 75%,
+      calc(100% - 0px) 100%,
+      95% 100%,
+      20px 100%
+    );
+    &:hover {
+      background: rgba(255, 255, 255, 0.87);
+    }
+    i {
+      font-size: 1rem;
+      min-width: 50px;
+      color: $base;
+    }
+    .more {
+      cursor: pointer;
+      font-size: 0.75rem;
+      min-width: 70px;
+      &:hover {
+        color: $base;
+        text-decoration: underline;
+      }
+    }
+    ul {
+      align-self: flex-start;
+      width: calc(100% - 100px);
+      margin: 0 auto;
+      list-style: none;
+      animation: noticeMove linear infinite;
+      animation-delay: 2s;
+      &:hover {
+        animation-play-state: paused;
+      }
+      li {
+        display: block;
+        height: 40px;
+        line-height: 40px;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        cursor: pointer;
+        // &:hover {
+        //   color: $base;
+        //   text-decoration: underline;
+        // }
+        .title {
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-size: 0.75rem;
+        }
+        .time {
+          min-width: 70px;
+          font-size: 0.75rem;
+        }
+      }
+    }
+    @keyframes noticeMove {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(calc(-100% + 40px));
+      }
+    }
+  }
 }
 #banner {
   width: 100%;

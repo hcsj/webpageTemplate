@@ -7,7 +7,7 @@
       <right-nav ref="right-nav" v-if="rightNavShow"></right-nav>
     </transition>
     <div class="mobile-headNav">
-      <span class="left-btn" v-if="back_btn">
+      <span class="left-btn" v-if="back_btn" @click="goBack()">
         <i class="el-icon-arrow-left"></i>
       </span>
       <span class="title">{{headerTitle}}</span>
@@ -46,6 +46,9 @@ export default {
     openRightNav() {
       let _this = this;
       _this.rightNavShow = true;
+    },
+    goBack(){
+      this.$router.go(-1)
     }
   }
 };
@@ -99,6 +102,7 @@ export default {
   background: rgba(0, 0, 0, 0.541);
   left: 0;
   top: 0;
+  z-index: 99;
 }
 
 .move-enter-active {
