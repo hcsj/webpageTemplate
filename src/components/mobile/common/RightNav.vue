@@ -7,9 +7,11 @@
     <div class="user">
       <div class="user-msg">
         <div class="user-img">
-          <i class="el-icon-user"></i>
+          <i class="el-icon-user" v-if="!isUserLogin"></i>
+          <img v-else :src="userInfo.userAvatar" alt />
         </div>
-        <p class="user-name">未登录</p>
+        <p class="user-name" v-if="!isUserLogin">登录</p>
+        <p class="user-name" v-else>{{userInfo.loginName | phoneHideMiddle}}</p>
       </div>
     </div>
     <ul class="tab-nav">
@@ -28,12 +30,43 @@
           >{{n.title}}</div>
         </div>
       </li>
+      <!-- right-nav-n 重新定义一个class 防止打开折叠栏出现问题 -->
+      <li v-for="(i,index) in noLogin" :key="index + 'n'" v-show="!isUserLogin">
+        <div class="right-nav-n" @click="openNav(index,i.list.length,i)">
+          <i class="el-icon-s-home"></i>
+          <span>{{i.title}}</span>
+        </div>
+      </li>
+      <li v-show="isUserLogin">
+        <div class="right-nav-n" @click="logout()">
+          <i class="el-icon-s-home"></i>
+          <span>退出登录</span>
+        </div>
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
 export default {
+  computed: {
+    isUserLogin() {
+      if (this.$store.state.user.isUserLogin) {
+        return this.$store.state.user.isUserLogin;
+      } else {
+        this.$store.commit("USER_INFO_COMMIT");
+        return this.$store.state.user.isUserLogin;
+      }
+    },
+    userInfo() {
+      if (this.$store.state.user.isUserLogin) {
+        return this.$store.state.user.userInfo;
+      } else {
+        this.$store.commit("USER_INFO_COMMIT");
+        return this.$store.state.user.userInfo;
+      }
+    }
+  },
   data() {
     return {
       nowRoute: "home",
@@ -92,7 +125,9 @@ export default {
               name: "BusinessIntroduction"
             }
           ]
-        },
+        }
+      ],
+      noLogin: [
         {
           title: "登录",
           name: "login",
@@ -108,11 +143,11 @@ export default {
   },
   mounted() {},
   methods: {
+    // 打开父级菜单栏
     openNav(index, num, val) {
       let _this = this;
       let nav = document.querySelectorAll(".right-nav"); //获取父级菜单栏，以便添加选中样式
       let items = document.querySelectorAll(".nav-n-box"); //获取容纳子级菜单栏的容器，以便动态设置高度，实现下拉效果
-
       //-----------------可注释部分开始------注释后则不是手风琴效果------------------
       // 遍历菜单栏，移除所有选中后的样式   添加此段可实现手风琴效果，注释则实现多展示效果
       for (let i = 0; i < nav.length; i++) {
@@ -155,6 +190,7 @@ export default {
         return;
       }
     },
+    //打开子级菜单栏
     openNav_n(val, va) {
       let _this = this;
       _this.$parent.rightNavShow = false;
@@ -165,6 +201,33 @@ export default {
         }
       });
       window.scrollTo(0, 0);
+    },
+    //退出登录
+    logout() {
+      let _this = this;
+      _this.$parent.rightNavShow = false;
+      this.$axios
+        .get("core-api/base/logout")
+        .then(function(res) {
+          console.log(res);
+          let resData = res.data;
+          if (resData.retCode == "N00000") {
+            _this.$store.commit("USER_SIGNOUT");
+            // if (_this.$route.name == "home") {
+            //   window.location.reload(); //解决token与极验信息不匹配，页面强制刷新
+            // } else {
+              _this.$router.push({
+                name: "home"
+              });
+            // }
+          } else {
+            _this.$Toast(resData.retMsg);
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+          _this.$Toast("服务器出现问题，请稍后再试");
+        });
     }
   }
 };
@@ -201,7 +264,9 @@ export default {
     justify-content: center;
     align-items: center;
     .user-msg {
+      text-align: center;
       .user-img {
+        margin: 0 auto;
         width: 4rem;
         height: 4rem;
         border-radius: 50%;
@@ -209,9 +274,13 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+        overflow: hidden;
         i {
           font-size: 2rem;
           color: #808080;
+        }
+        img {
+          width: 100%;
         }
       }
       .user-name {
@@ -228,7 +297,8 @@ export default {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      .right-nav {
+      .right-nav,
+      .right-nav-n {
         padding: 1rem 0;
         width: 100%;
         display: flex;

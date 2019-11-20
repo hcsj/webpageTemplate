@@ -17,8 +17,11 @@
             <span class="line"></span>
             <i class="el-icon-key"></i>
           </div>
+          <div id="captcha">
+            <span id="wait" class="geetest_wait_text">正在加载验证码....</span>
+          </div>
         </div>
-        <div class="button-login">登录</div>
+        <div class="button-login" @click="login()">登录</div>
         <div class="bottom-msg">
           <span>忘记密码?</span>
           <span class="to-register" @click="skip('register')">免费注册</span>
@@ -29,18 +32,158 @@
 </template>
 
 <script>
+import gtInit from "@/assets/js/gt";
+import validates from "@/assets/js/validate.js";
 export default {
   data() {
     return {
       mobileNumber: "",
-      password: ""
+      password: "",
+      captchaObj: "",
+      gtCapValid: ""
     };
+  },
+  mounted() {
+    this.accquireToken();
   },
   methods: {
     skip(name) {
       this.$router.push({
         name: name
       });
+    },
+    //进入登录页，无token时获取token
+    accquireToken() {
+      let _this = this;
+      this.$axios
+        .get("core-api/base/getToken")
+        .then(function(res) {
+          console.log(res);
+          let resData = res.data;
+          if (resData.retCode == "N00000") {
+            let XAuthToken = resData.body["X-AUTH-TOKEN"];
+            console.log(XAuthToken);
+            sessionStorage.setItem("XAuthToken", XAuthToken);
+            _this.initGtCaptcha();
+          } else {
+            _this.$Toast(resData.retMsg);
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+          _this.$Toast("服务器出现问题，请稍后再试");
+        });
+    },
+    //密码登录初始化极验
+    initGtCaptcha() {
+      var _this = this;
+      this.$axios
+        .get("core-api/token/startCaptcha?t=" + new Date().getTime())
+        .then(function(res) {
+          console.log(res);
+          let resData = res.data;
+          if (resData.retCode == "N00000") {
+            let bodyResult = resData.body;
+            window.initGeetest(
+              {
+                // 以下 4 个配置参数为必须，不能缺少
+                gt: bodyResult.gt,
+                challenge: bodyResult.challenge,
+                offline: !bodyResult.success, // 表示用户后台检测极验服务器是否宕机
+                new_captcha: bodyResult.new_captcha, // 用于宕机时表示是新验证码的宕机
+                product: "popup", // 产品形式，包括：float，popup
+                width: "100%"
+              },
+              function(captchaObj) {
+                _this.captchaObj = captchaObj;
+                captchaObj.appendTo("#captcha");
+                captchaObj.onReady(function() {
+                  document.getElementById("wait").style.display = "none";
+                });
+                captchaObj.onSuccess(function() {
+                  _this.gtCapValid = captchaObj.getValidate();
+                });
+                captchaObj.onError(function() {
+                  // 出错啦，可以提醒用户稍后进行重试
+                  _this.$Toast("出错啦，请稍后进行重试");
+                });
+              }
+            );
+          } else {
+            // 出错啦，可以提醒用户稍后进行重试
+            _this.$Toast(resData.retMsg);
+            _this.accquireToken();
+          }
+        })
+        .catch(function(err) {
+          _this.$Toast("服务器出现问题，请稍后再试");
+        });
+    },
+    //密码登录
+    login() {
+      let _this = this;
+      if (!validates.isvalidPhone(_this.mobileNumber)) {
+        _this.$Toast("请输入正确的11位手机号码");
+        return;
+      }
+      if (!validates.isPwd(_this.password)) {
+        _this.$Toast("密码为6-18位字母和数字组合");
+        return;
+      }
+      if (_this.gtCapValid == "") {
+         _this.$Toast("请拖动滑块验证");
+        return
+      }
+      let params = {
+        mobileNumber: _this.mobileNumber,
+        password: _this.password,
+        geetestChallenge: _this.gtCapValid.geetest_challenge,
+        geetestValidate: _this.gtCapValid.geetest_validate,
+        geetestSeccode: _this.gtCapValid.geetest_seccode
+      };
+      this.$axios
+        .post("core-api/token/signIn", params)
+        .then(function(res) {
+          console.log(res);
+          let resData = res.data;
+          if (resData.retCode == "N00000") {
+            _this.getUserInfo();
+          } else {
+            _this.$Toast(resData.retMsg);
+            _this.gtCapValid = "";
+            _this.captchaObj.reset();
+          }
+        })
+        .catch(function(err) {
+          _this.gtCapValid = "";
+          _this.captchaObj.reset();
+          console.log(err);
+          _this.$Toast("服务器出现问题，请稍后再试");
+        });
+    },
+    //储存用户信息
+    getUserInfo() {
+      let _this = this;
+      this.$axios
+        .get("core-api/userSignIn/loginUserInfo")
+        .then(function(res) {
+          console.log(res);
+          let resData = res.data;
+          if (resData.retCode == "N00000") {
+            if (resData.body) {
+              _this.$store.commit("USER_SIGNIN", resData.body);
+              _this.$router.push({
+                name: "home"
+              });
+            }
+          } else {
+            _this.$Toast(resData.retMsg);
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+          _this.$Toast("服务器出现问题，请稍后再试");
+        });
     }
   }
 };
@@ -75,7 +218,6 @@ export default {
 }
 
 #login-box {
-  overflow: hidden;
   text-align: center;
   width: 400px;
   height: 420px;
@@ -83,38 +225,6 @@ export default {
   top: -2rem;
   padding: 40px;
   transition: 0.5s;
-  &::after,
-  &::before {
-    content: "";
-    width: 100%;
-    height: 100%;
-    background: white;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    z-index: -1;
-    transition: 0.5s;
-  }
-  &::after {
-    opacity: 0.7;
-    transform: rotate(0deg);
-    animation: boxChangeA 0.5s 0.5s ease both 1;
-  }
-  &::before {
-    opacity: 0.4;
-    transform: rotate(0deg);
-    animation: boxChangeB 0.5s 0.7s ease both 1;
-  }
-  @keyframes boxChangeB {
-    100% {
-      transform: rotate(-4deg);
-    }
-  }
-  @keyframes boxChangeA {
-    100% {
-      transform: rotate(4deg);
-    }
-  }
   .title {
     margin: 0 auto;
     display: inline-block;

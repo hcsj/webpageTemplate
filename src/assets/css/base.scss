@@ -1,0 +1,27 @@
+//极验滑块样式
+.geetest_holder.geetest_wind .geetest_radar_btn{
+    background-image: none !important;
+}
+.geetest_holder.geetest_wind .geetest_radar_btn, .geetest_holder.geetest_wind .geetest_success_btn{
+    border: none !important;
+    box-shadow:0rem 0rem 0.19rem 0rem rgba(193,193,193,0.5);
+}
+/**解决极验右边进官网的小图标*/
+.geetest_logo{
+    display: none;
+  }
+  
+  #captcha{
+      height: 45px;
+      line-height: 45px;
+  }
+  .geetest_wait_text{
+    padding: 0.4rem 1rem;
+    font-size: 0.88rem;
+    color: #808080;
+    //border: 1px solid #cccccc;
+  }
+  .geetest_copyright,.geetest_success_logo{
+      opacity: 0;
+      display: none;
+  }

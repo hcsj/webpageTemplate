@@ -60,6 +60,7 @@ export default {
 
 <style lang="scss" scoped>
 .rightNav {
+  text-align: center;
   position: fixed;
   right: 5%;
   bottom: 5%;

@@ -15,9 +15,17 @@
         >{{i.title}}</span>
         <div id="user" v-if="head_loginShow">
           <div class="user-img">
-            <i class="el-icon-user"></i>
+            <i class="el-icon-user" v-if="!isUserLogin"></i>
+            <img v-else :src="userInfo.userAvatar" alt />
           </div>
-          <span @click="loginShow = true" class="login-text">登录</span>
+          <span @click="loginShow = true" class="login-text" v-if="!isUserLogin">登录</span>
+          <span v-else class="login-text" style="cursor: default;">
+            {{userInfo.loginName | phoneHideMiddle}}&#x3000;
+            <span
+              style="cursor: pointer;"
+              @click="logout()"
+            >退出</span>
+          </span>
         </div>
       </div>
     </div>
@@ -30,11 +38,29 @@
 <script>
 import LoginBox from "../common/LoginBox.vue";
 export default {
-  props:{
-     head_loginShow:{default:true} //是否显示头部栏上的登录
+  props: {
+    head_loginShow: { default: true } //是否显示头部栏上的登录
   },
   components: {
     "login-box": LoginBox
+  },
+  computed: {
+    isUserLogin() {
+      if (this.$store.state.user.isUserLogin) {
+        return this.$store.state.user.isUserLogin;
+      } else {
+        this.$store.commit("USER_INFO_COMMIT");
+        return this.$store.state.user.isUserLogin;
+      }
+    },
+    userInfo() {
+      if (this.$store.state.user.isUserLogin) {
+        return this.$store.state.user.userInfo;
+      } else {
+        this.$store.commit("USER_INFO_COMMIT");
+        return this.$store.state.user.userInfo;
+      }
+    }
   },
   data() {
     return {
@@ -68,6 +94,30 @@ export default {
       this.$router.push({
         name: name
       });
+    },
+    //退出登录
+    logout() {
+      let _this = this;
+      _this.$parent.rightNavShow = false;
+      this.$axios
+        .get("core-api/base/logout")
+        .then(function(res) {
+          console.log(res);
+          let resData = res.data;
+          if (resData.retCode == "N00000") {
+            _this.$store.commit("USER_SIGNOUT");
+            _this.$Toast.success('退出成功!')
+            _this.$router.push({
+              name: "home"
+            });
+          } else {
+            _this.$Toast(resData.retMsg);
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+          _this.$Toast("服务器出现问题，请稍后再试");
+        });
     }
   }
 };
@@ -102,9 +152,9 @@ export default {
         font-size: 3rem;
         color: white;
       }
-      img{
+      img {
         width: 100%;
-        transform: scale(0.6)
+        transform: scale(0.6);
       }
     }
     .nav-tab {
@@ -153,8 +203,12 @@ export default {
           display: flex;
           justify-content: center;
           align-items: center;
+          overflow: hidden;
           i {
             font-size: 1.5rem;
+          }
+          img {
+            width: 100%;
           }
         }
         .login-text {

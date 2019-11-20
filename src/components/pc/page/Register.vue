@@ -142,6 +142,7 @@ export default {
 }
 .register-webpage {
   //   position: absolute;
+  text-align: center;
   margin-top: 80px;
   width: 100%;
   height: 100%;

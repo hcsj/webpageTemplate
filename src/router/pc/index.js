@@ -51,6 +51,7 @@ router.beforeEach((to, from, next) => {
     window.location.href = '/m_index.html#/'
     return
   }
+  window.scrollTo(0,0)
   next()
 })
 export default router
