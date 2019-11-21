@@ -30,6 +30,12 @@ let router = new Router({
       meta: { title: '业务介绍' }
     },
     {
+      name:'News',
+      path: '/News',
+      component: resolve => require(['@/components/mobile/page/News'], resolve),
+      meta: { title: '新闻资讯', keepAlive: true }
+    },
+    {
       name: 'login',
       path: '/login',
       component: resolve => require(['@/components/mobile/page/Login'], resolve),

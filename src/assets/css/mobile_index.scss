@@ -114,3 +114,63 @@ html {
       border-bottom: 1px solid #a0cfff !important;
     }
   }
+
+//公司新闻等部分
+  .BusinessIntroduction-content {
+    padding: 1rem;
+    padding-top: 4rem;
+    .tab-msg-hover {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      cursor: pointer;
+    }
+    .tab-msg {
+      transition: 0.5s;
+      margin-bottom: 10px;
+      .date {
+        text-align: center;
+        transition: 0.5s;
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+        background: $base;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        clip-path: polygon(10px 0, 100% 0, 100% 100%, 0% 100%, 0 10px);
+        section {
+          transform: scale(0.85);
+          p {
+            font-size: 12px;
+          }
+        }
+      }
+      .msg {
+        //   padding: 0 10px;
+        transition: 0.5s;
+        width: calc(100% - 70px);
+        height: 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px dashed #ccc;
+        .m {
+          width: 100%;
+          display: inline-block;
+          font-size: 0.88rem;
+          font-weight: 200;
+          transition: 0.5s;
+          color: #808080;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          word-break: break-all;
+        }
+        i {
+          transition: 0.5s;
+        }
+      }
+    }
+  }

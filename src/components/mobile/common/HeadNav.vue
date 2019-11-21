@@ -30,18 +30,18 @@ export default {
   },
   data() {
     return {
-      rightNavShow: false,
+      rightNavShow: false
     };
   },
   methods: {
     openRightNav() {
       let _this = this;
       _this.rightNavShow = true;
-      _this.$refs['right-nav'].nowRoute = _this.$route.name
+      _this.$refs["right-nav"].nowRoute = _this.$route.name;
       // console.log(_this.$route.name)
     },
-    goBack(){
-      this.$router.go(-1)
+    goBack() {
+      this.$router.go(-1);
     }
   }
 };
@@ -60,10 +60,26 @@ export default {
   top: 0;
   left: 0;
   z-index: 99;
+  .mobile-headNav {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
   .title {
+    max-width: calc(100% - 6rem);
+    text-align: center;
+    margin: 0 auto;
     color: white;
     font-weight: bold;
     font-size: 1rem;
+    display: -webkit-box;
+    /*! autoprefixer: off */
+    -webkit-box-orient: vertical;
+    /* autoprefixer: on */
+    -webkit-line-clamp: 2;
+    word-wrap: break-word;
+    overflow: hidden;
+    word-break: break-all;
   }
   .right-btn {
     position: absolute;

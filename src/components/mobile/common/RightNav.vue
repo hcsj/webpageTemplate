@@ -10,7 +10,7 @@
           <i class="el-icon-user" v-if="!isUserLogin"></i>
           <img v-else :src="userInfo.userAvatar" alt />
         </div>
-        <p class="user-name" v-if="!isUserLogin">登录</p>
+        <p class="user-name" v-if="!isUserLogin"></p>
         <p class="user-name" v-else>{{userInfo.loginName | phoneHideMiddle}}</p>
       </div>
     </div>
