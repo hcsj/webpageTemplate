@@ -13,7 +13,21 @@
           >{{i.title}}</span>
         </div>
       </div>
-
+      <div id="notice-search" v-if="activeIndex == '公告通知'">
+        <div class="notice-search">
+          <input
+            type="text"
+            placeholder="请输入搜索内容"
+            v-model="searchMsg"
+            :style="searchMsg?' border-bottom: 2px solid #a0cfff;':''"
+            :class="navShow?'input-search-active':''"
+            @keyup.enter="toSearch()"
+          />
+          <div class="btn-search" @click="toSearch()">
+            <i class="el-icon-search"></i>
+          </div>
+        </div>
+      </div>
       <div class="article-box">
         <div class="article-content">
           <el-table
@@ -76,10 +90,11 @@ export default {
   data() {
     return {
       activeIndex: "公告通知",
+      searchMsg: "", //公告搜索内容
       windowH: window.innerHeight,
       navShow: false,
       Article: "",
-      Article_title:'',
+      Article_title: "",
       AboutUsList: [
         {
           title: "公告通知",
@@ -146,13 +161,13 @@ export default {
     handleClick(row) {
       this.$refs.viewArticle.ViewArticleShow = true;
       this.Article = row.noticeText;
-      this.Article_title = row.noticeTitle
+      this.Article_title = row.noticeTitle;
     },
     //获取公告通知
     getNoticeInquire() {
       let _this = this;
       let params = {
-        noticeTitle: "",
+        noticeTitle: _this.searchMsg,
         pageNumber: _this.currentPage,
         pageSize: _this.pageSize
       };
@@ -170,6 +185,13 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    //搜索方法
+    toSearch() {
+      let _this = this;
+      _this.currentPage = 0;
+      _this.pageSize = 10;
+      _this.getNoticeInquire();
     },
     //获取公司和行业新闻 100000000000000000001（公司）  100000000000000000002（行业）
     getNewsPage(templateId) {
@@ -221,10 +243,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 // 头部导航栏样式
 .head-nav-show {
-   background: $headNav_bck;
+  background: $headNav_bck;
   box-shadow: 0 0 5px #5c5c5c;
   position: absolute !important;
 }
@@ -239,5 +260,61 @@ export default {
   align-items: center;
   clip-path: polygon(10px 0, 100% 0, 100% 100%, 0% 100%, 0 10px);
   text-align: center;
+}
+#notice-search {
+  width: 100%;
+  position: sticky;
+  top: 90px;
+  z-index: 88;
+  .notice-search {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    input {
+      // transition: 0.3s;
+      outline: none;
+      height: 40px;
+      display: inline-block;
+      width: 33%;
+      border: 2px dashed transparent;
+      border-bottom: 2px solid #e7e7e7;
+      color: #808080;
+      font-size: 15px;
+      // background: transparent;
+      background: rgba(255, 255, 255, 0.726);
+      // border-top: none !important;
+      padding: 0 10px;
+      padding-right: 70px;
+    }
+    .btn-search {
+      opacity: 0.9;
+      user-select: none;
+      position: absolute;
+      right: 0;
+      font-size: 15px;
+      // background: $base;
+      width: 50px;
+      height: 40px;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      i {
+        color: $base;
+        font-size: 1.5rem;
+      }
+      &:active {
+        opacity: 0.8;
+      }
+    }
+  }
+  .input-search-active {
+    border: 2px dashed $base !important;
+    border-top: 2px solid white !important;
+  }
 }
 </style>
