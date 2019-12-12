@@ -1,0 +1,124 @@
+// 主页面业务介绍部分的公用样式
+.news-contents {
+    width: 85%;
+    height: 40px;
+    // background: red;
+    cursor: pointer;
+    position: relative;
+    margin-top: 10px;
+    animation-name: move;
+    animation-duration: 0.5s;
+  }@keyframes move{
+      0%{
+          transform: translateX(30px);
+          opacity: 0;
+      }
+      100%{
+          transform: translateX(0);
+          opacity: 1;
+      }
+  }
+  .news-contents:hover .news-contentsl {
+      left: 5px;
+  }
+  .news-contents:hover .news-contentsr {
+    right: 5px;
+}
+  .news-contentsl {
+    width: 40px;
+    height: 100%;
+    background: $white;
+    position: absolute;
+    left: 0;
+    text-align: center;
+    transition: 0.3s;
+    border-bottom-right-radius: 10px;
+  }
+  .news-contentsl h2{
+      color: $themer;
+      font-size: 17px;
+      line-height: 30px;
+  }
+  .news-contents .news-p{
+      display: block;
+      color: $themer;
+      width: 100%;
+      height: 15px;
+      font-size: 12px;
+      position: absolute;
+      bottom: 0;
+      margin-top: 0;
+      transform: scale(0.7);
+  }
+  .news-contentsr {
+    width: 90%;
+    height: 100%;
+  //   background: pink;
+    color: $white;
+    position: absolute;
+    right: 0;
+    line-height: 40px;
+    box-sizing: border-box;
+    transition: 0.3s;
+    border-bottom: 1px dotted $shadow;
+  }
+  .news-contentsr i{
+   position: absolute;
+   top: 10px;
+   color: $white;
+   transition: 0.5s;
+  }
+  .news-more i:nth-of-type(1),.news-contentsr i:nth-of-type(1){
+      right: 0;
+  }
+  .news-more i:nth-of-type(2),.news-contentsr i:nth-of-type(2){
+      right: 5px;
+  }
+  .news-more:hover i:nth-of-type(2),.news-contentsr:hover i:nth-of-type(2){
+      color: $white;
+      right: 0;
+  }
+
+  //详细内容部分
+.details{
+    width: 100%;
+    min-height: 100%;
+    // height: 115%;
+    background: white;
+    position: absolute;
+    top: 0;
+    z-index: 9;
+    animation: open 0.5s ease-in-out both 1;
+    .title{
+        position: absolute;
+        top: 0;
+        background: white;
+        opacity: 0.8;
+        z-index: 1;
+    }
+    i{
+      padding: 20px;
+      position: absolute;
+      z-index: 8;
+      right: 0;
+      cursor: pointer;
+      color: $second;
+    }
+    .ql-editor{
+     padding: 50px;
+     padding-top: 100px;
+     word-break: break-all;
+    }
+  }@keyframes open{
+    0%{
+      opacity: 0;
+      transform: scale(0.1)
+    }
+    100%{
+      opacity: 1;
+      transform:scale(1)
+    }
+  }
+  .el-icon-close{
+    font-size: 35px;
+  }

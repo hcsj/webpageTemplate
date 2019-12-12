@@ -1,0 +1,53 @@
+// TabNav公共标题CSS样式(新闻公告标题部分)
+.TabNav-text{
+    width: 100%;
+    height: 180px;
+    // padding-top: 100px;
+    position: relative;
+  }
+  .TabNav-text .TabNav-p{
+    text-align: center;
+    color: $shadow;
+    // letter-spacing: 0.1em;
+    padding-top: 5px;
+  }
+  .TabNav-title{
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    color: $title;
+    font-size: 27px;
+    padding-top: 30px;
+    font-weight: 500;
+  }
+  .TabNav-dot{
+    width: 15px;
+    height: 15px;
+    // border-radius: 50%;
+    background: $title;
+    position: relative;
+  }
+  .TabNav-dot::before,.TabNav-dot::after{
+      content: '';
+      width: 150px;
+      height: 2px;
+      position: absolute;
+      top: 7px;
+      transition: 1s;
+  }
+  .TabNav-dot::before{
+    background: $title;
+    left: -150px;
+  }
+  .TabNav-dot::after{
+    background: $title;
+    right: -150px;
+  }
+
+  #overall:hover .TabNav-dot::before{
+    left: -60px;
+  }
+   #overall:hover .TabNav-dot::after{
+     right: -60px;
+   }

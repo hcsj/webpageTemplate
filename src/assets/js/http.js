@@ -18,7 +18,7 @@ axios.interceptors.request.use(
     config => {
         config.headers['Content-Type'] = "application/json;charset=utf-8";
         config.headers['channel-code'] = "WEBSITE";
-        config.headers['client-type'] = "MOH5";
+        config.headers['client-type'] = "PCH5";
         config.headers['version'] = "0.0.1";
         if (window.sessionStorage.XAuthToken) {
             config.headers['x-auth-token'] = window.sessionStorage.XAuthToken;

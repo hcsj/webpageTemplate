@@ -1,0 +1,281 @@
+<template>
+  <!-- 中心介绍组件 -->
+  <div id="introduce">
+    <el-breadcrumb class="press-tr">
+      <el-breadcrumb-item>您当前的位置是:</el-breadcrumb-item>
+      <el-breadcrumb-item>关于我们</el-breadcrumb-item>
+      <el-breadcrumb-item>中心介绍</el-breadcrumb-item>
+    </el-breadcrumb>
+    <div class="img">
+      <img src="@/assets/images/about_1.jpg" alt>
+    </div>
+
+    <div v-html="message" class="message"></div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      message: `<div class=WordSection1 style='layout-grid:15.6pt'>
+
+<p class=MsoNormal align=center style='text-align:center;mso-pagination:widow-orphan;
+background:white'><span style='font-size:18.0pt;font-family:宋体;mso-ascii-font-family:
+"microsoft yahei";mso-hansi-font-family:"microsoft yahei";mso-bidi-font-family:
+宋体;color:#255A8E;mso-font-kerning:0pt'>中心介绍</span><span lang=EN-US
+style='font-size:18.0pt;font-family:"microsoft yahei","serif";mso-fareast-font-family:
+宋体;mso-bidi-font-family:宋体;color:#255A8E;mso-font-kerning:0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='text-align:center;mso-pagination:widow-orphan'><span
+style='font-size:13.5pt;font-family:宋体;mso-ascii-font-family:"microsoft yahei";
+mso-hansi-font-family:"microsoft yahei";mso-bidi-font-family:宋体;color:#999999;
+mso-font-kerning:0pt'>发布时间：</span><span lang=EN-US style='font-size:13.5pt;
+font-family:"microsoft yahei","serif";mso-fareast-font-family:宋体;mso-bidi-font-family:
+宋体;color:#999999;mso-font-kerning:0pt'>2017-02-16<o:p></o:p></span></p><br><br><br>
+
+<p class=MsoNormal align=left style='text-align:left;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span lang=EN-US
+style='font-size:13.5pt;font-family:"microsoft yahei","serif";mso-fareast-font-family:
+宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'>&nbsp; &nbsp; &nbsp;</span><span style='font-size:13.5pt;font-family:宋体;
+mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:"microsoft yahei";
+mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'>东北亚创新金融资产交易中心（以下简称</span><span lang=EN-US style='font-size:13.5pt;
+font-family:"microsoft yahei","serif";mso-fareast-font-family:宋体;mso-bidi-font-family:
+宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:0pt'>“</span><span
+style='font-size:13.5pt;font-family:宋体;mso-ascii-font-family:"microsoft yahei";
+mso-hansi-font-family:"microsoft yahei";mso-bidi-font-family:宋体;color:#255A8E;
+letter-spacing:.6pt;mso-font-kerning:0pt'>东金中心</span><span lang=EN-US
+style='font-size:13.5pt;font-family:"microsoft yahei","serif";mso-fareast-font-family:
+宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'>”</span><span style='font-size:13.5pt;font-family:宋体;mso-ascii-font-family:
+"microsoft yahei";mso-hansi-font-family:"microsoft yahei";mso-bidi-font-family:
+宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:0pt'>）是在吉林省人民政府的指导和大力支持下，于</span><span
+lang=EN-US style='font-size:13.5pt;font-family:"microsoft yahei","serif";
+mso-fareast-font-family:宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:
+.6pt;mso-font-kerning:0pt'>2014</span><span style='font-size:13.5pt;font-family:
+宋体;mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:"microsoft yahei";
+mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'>年</span><span lang=EN-US style='font-size:13.5pt;font-family:"microsoft yahei","serif";
+mso-fareast-font-family:宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:
+.6pt;mso-font-kerning:0pt'>11</span><span style='font-size:13.5pt;font-family:
+宋体;mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:"microsoft yahei";
+mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'>月</span><span lang=EN-US style='font-size:13.5pt;font-family:"microsoft yahei","serif";
+mso-fareast-font-family:宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:
+.6pt;mso-font-kerning:0pt'>7</span><span style='font-size:13.5pt;font-family:
+宋体;mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:"microsoft yahei";
+mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'>日省政府批准设立的综合性金融资产交易平台。</span><span
+lang=EN-US style='font-size:13.5pt;font-family:"microsoft yahei","serif";
+mso-fareast-font-family:宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:
+.6pt;mso-font-kerning:0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal align=left style='text-align:left;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span lang=EN-US
+style='font-size:13.5pt;font-family:"microsoft yahei","serif";mso-fareast-font-family:
+宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal align=left style='text-align:left;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span lang=EN-US
+style='font-size:13.5pt;font-family:"microsoft yahei","serif";mso-fareast-font-family:
+宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'>&nbsp; &nbsp; &nbsp;</span><span style='font-size:13.5pt;font-family:宋体;
+mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:"microsoft yahei";
+mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'>东金中心</span><span lang=EN-US style='font-size:13.5pt;font-family:"microsoft yahei","serif";
+mso-fareast-font-family:宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:
+.6pt;mso-font-kerning:0pt'>“</span><span style='font-size:13.5pt;font-family:
+宋体;mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:"microsoft yahei";
+mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'>立足吉林，面向全国</span><span lang=EN-US style='font-size:13.5pt;font-family:"microsoft yahei","serif";
+mso-fareast-font-family:宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:
+.6pt;mso-font-kerning:0pt'>”</span><span style='font-size:13.5pt;font-family:
+宋体;mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:"microsoft yahei";
+mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'>，坚持政府指导、市场化运作，在资产证券化、利率市场化浪潮下，为各类金融资产提供公开、公正、公平的交易平台，实现资金需求方、供给方的自由撮合交易，促进金融资产流转和产品创新，打造专业化、规范化、标准化的全国性金融资产和金融产品交易平台。</span><span
+lang=EN-US style='font-size:13.5pt;font-family:"microsoft yahei","serif";
+mso-fareast-font-family:宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:
+.6pt;mso-font-kerning:0pt'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoNormal align=left style='text-align:left;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span lang=EN-US
+style='font-size:13.5pt;font-family:"microsoft yahei","serif";mso-fareast-font-family:
+宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='text-align:center;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span style='font-size:18.0pt;
+font-family:宋体;mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:
+"microsoft yahei";mso-bidi-font-family:宋体;color:#333333;letter-spacing:.6pt;
+mso-font-kerning:0pt'>中心文化</span><span lang=EN-US style='font-size:13.5pt;
+font-family:"microsoft yahei","serif";mso-fareast-font-family:宋体;mso-bidi-font-family:
+宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal align=left style='text-align:left;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span lang=EN-US
+style='font-size:13.5pt;font-family:"microsoft yahei","serif";mso-fareast-font-family:
+宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'>“</span><span style='font-size:13.5pt;font-family:宋体;mso-ascii-font-family:
+"microsoft yahei";mso-hansi-font-family:"microsoft yahei";mso-bidi-font-family:
+宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:0pt'>笃信、互通、增益、明远</span><span
+lang=EN-US style='font-size:13.5pt;font-family:"microsoft yahei","serif";
+mso-fareast-font-family:宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:
+.6pt;mso-font-kerning:0pt'>”</span><span style='font-size:13.5pt;font-family:
+宋体;mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:"microsoft yahei";
+mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'>作为公司的企业文化，告诉每个员工予人方便才能自己方便，我们所做的就是让我们的合作伙伴真正受益。所以，每一个东金人都坚定地相信，合作伙伴的认可才是我们继续向前的动力，只有解决了客户痛点，努力才没有白费。在此基础上，我们的企业文化应运而生</span><span
+lang=EN-US style='font-size:13.5pt;font-family:"microsoft yahei","serif";
+mso-fareast-font-family:宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:
+.6pt;mso-font-kerning:0pt'>——“</span><span style='font-size:13.5pt;font-family:
+宋体;mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:"microsoft yahei";
+mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'>笃信、互通、增益、明远</span><span lang=EN-US style='font-size:13.5pt;font-family:
+"microsoft yahei","serif";mso-fareast-font-family:宋体;mso-bidi-font-family:宋体;
+color:#255A8E;letter-spacing:.6pt;mso-font-kerning:0pt'>”</span><span
+style='font-size:13.5pt;font-family:宋体;mso-ascii-font-family:"microsoft yahei";
+mso-hansi-font-family:"microsoft yahei";mso-bidi-font-family:宋体;color:#255A8E;
+letter-spacing:.6pt;mso-font-kerning:0pt'>。</span><span lang=EN-US
+style='font-size:13.5pt;font-family:"microsoft yahei","serif";mso-fareast-font-family:
+宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='text-align:center;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span lang=EN-US
+style='font-size:13.5pt;font-family:"microsoft yahei","serif";mso-fareast-font-family:
+宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal align=center style='text-align:center;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span style='font-size:18.0pt;
+font-family:宋体;mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:
+"microsoft yahei";mso-bidi-font-family:宋体;color:#333333;letter-spacing:.6pt;
+mso-font-kerning:0pt'>主要功能</span><span lang=EN-US style='font-size:13.5pt;
+font-family:"microsoft yahei","serif";mso-fareast-font-family:宋体;mso-bidi-font-family:
+宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='text-align:center;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span style='font-size:13.5pt;
+font-family:宋体;mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:
+"microsoft yahei";mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;
+mso-font-kerning:0pt'>汇聚金融信息资源</span><span lang=EN-US style='font-size:13.5pt;
+font-family:"microsoft yahei","serif";mso-fareast-font-family:宋体;mso-bidi-font-family:
+宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:0pt'> &nbsp;&nbsp;</span><span
+style='font-size:13.5pt;font-family:宋体;mso-ascii-font-family:"microsoft yahei";
+mso-hansi-font-family:"microsoft yahei";mso-bidi-font-family:宋体;color:#255A8E;
+letter-spacing:.6pt;mso-font-kerning:0pt'>优化金融资源配置</span><span lang=EN-US
+style='font-size:13.5pt;font-family:"microsoft yahei","serif";mso-fareast-font-family:
+宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='text-align:center;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span style='font-size:13.5pt;
+font-family:宋体;mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:
+"microsoft yahei";mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;
+mso-font-kerning:0pt'>规范金融资产交易</span><span lang=EN-US style='font-size:13.5pt;
+font-family:"microsoft yahei","serif";mso-fareast-font-family:宋体;mso-bidi-font-family:
+宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:0pt'> &nbsp;&nbsp;</span><span
+style='font-size:13.5pt;font-family:宋体;mso-ascii-font-family:"microsoft yahei";
+mso-hansi-font-family:"microsoft yahei";mso-bidi-font-family:宋体;color:#255A8E;
+letter-spacing:.6pt;mso-font-kerning:0pt'>加速金融助力企业</span><span lang=EN-US
+style='font-size:13.5pt;font-family:"microsoft yahei","serif";mso-fareast-font-family:
+宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='text-align:center;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span lang=EN-US
+style='font-size:13.5pt;font-family:"microsoft yahei","serif";mso-fareast-font-family:
+宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='text-align:center;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span style='font-size:18.0pt;
+font-family:宋体;mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:
+"microsoft yahei";mso-bidi-font-family:宋体;color:#333333;letter-spacing:.6pt;
+mso-font-kerning:0pt'>战略定位</span><span lang=EN-US style='font-size:13.5pt;
+font-family:"microsoft yahei","serif";mso-fareast-font-family:宋体;mso-bidi-font-family:
+宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='text-align:center;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span style='font-size:13.5pt;
+font-family:宋体;mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:
+"microsoft yahei";mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;
+mso-font-kerning:0pt'>类金融产业创新引导者</span><span lang=EN-US style='font-size:13.5pt;
+font-family:"microsoft yahei","serif";mso-fareast-font-family:宋体;mso-bidi-font-family:
+宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:0pt'> &nbsp; </span><span
+style='font-size:13.5pt;font-family:宋体;mso-ascii-font-family:"microsoft yahei";
+mso-hansi-font-family:"microsoft yahei";mso-bidi-font-family:宋体;color:#255A8E;
+letter-spacing:.6pt;mso-font-kerning:0pt'>类金融风险管理实践者</span><span lang=EN-US
+style='font-size:13.5pt;font-family:"microsoft yahei","serif";mso-fareast-font-family:
+宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'> &nbsp; </span><span style='font-size:13.5pt;font-family:宋体;mso-ascii-font-family:
+"microsoft yahei";mso-hansi-font-family:"microsoft yahei";mso-bidi-font-family:
+宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:0pt'>类金融资源配置服务商</span><span
+lang=EN-US style='font-size:13.5pt;font-family:"microsoft yahei","serif";
+mso-fareast-font-family:宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:
+.6pt;mso-font-kerning:0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='text-align:center;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span lang=EN-US
+style='font-size:13.5pt;font-family:"microsoft yahei","serif";mso-fareast-font-family:
+宋体;mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='text-align:center;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span style='font-size:18.0pt;
+font-family:宋体;mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:
+"microsoft yahei";mso-bidi-font-family:宋体;color:#333333;letter-spacing:.6pt;
+mso-font-kerning:0pt'></span><span lang=EN-US style='font-size:13.5pt;
+font-family:"microsoft yahei","serif";mso-fareast-font-family:宋体;mso-bidi-font-family:
+宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='text-align:center;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span style='font-size:13.5pt;
+font-family:宋体;mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:
+"microsoft yahei";mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;
+mso-font-kerning:0pt'></span><span lang=EN-US style='font-size:
+13.5pt;font-family:"microsoft yahei","serif";mso-fareast-font-family:宋体;
+mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='text-align:center;text-indent:24.0pt;
+line-height:20.25pt;mso-pagination:widow-orphan'><span style='font-size:13.5pt;
+font-family:宋体;mso-ascii-font-family:"microsoft yahei";mso-hansi-font-family:
+"microsoft yahei";mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;
+mso-font-kerning:0pt'></span><span lang=EN-US style='font-size:
+13.5pt;font-family:"microsoft yahei","serif";mso-fareast-font-family:宋体;
+mso-bidi-font-family:宋体;color:#255A8E;letter-spacing:.6pt;mso-font-kerning:
+0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-US><o:p>&nbsp;</o:p></span></p>
+
+</div>
+
+`
+    };
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+#introduce {
+  width: 100%;
+  height: 1500px;
+  position: absolute;
+  .message {
+    padding: 2em;
+  }
+}
+.img {
+  height: 300px;
+  overflow: hidden;
+  img {
+    width: 100%;
+    position: relative;
+    top: -25%;
+  }
+}
+</style>
+

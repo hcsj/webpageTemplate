@@ -1,0 +1,167 @@
+// 輪播圖樣式
+#banner {
+    width: 100%;
+    height: 500px;
+    background: $white;
+    position: relative;
+    // max-width: $MaxWidth;
+    max-width:1250px;
+    .title{
+      width: 100%;
+      position: absolute;
+      text-align: center;
+      top: 45%;
+      z-index: 5;
+      color: white;
+      cursor: default;
+      text-shadow: 0 0 1px blue;
+     h2{
+      letter-spacing: 0.2em;
+      font-size: 30px;
+      font-weight: 550;
+     
+     }
+     p{
+      letter-spacing: 0.1em;
+      padding-top: 10px;
+     }
+    }
+    .box{
+      width:950px;
+      position: absolute;
+      left: 0;
+    }
+  }
+   #banner-login{
+    text-align: center;
+    width: 300px;
+    height: 100%;
+    background: white;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 9;
+    .logo-up{
+      width: 70%;
+      height: 40px;
+      background: $second;
+      color: white;
+      line-height: 40px;
+      margin-top: 10px;
+      cursor: pointer;
+     
+    }
+    .logo-t{
+      width: 100%;
+      height: 110px;
+      line-height: 120px;
+      i{
+        font-size: 3em;
+        color: #252525;
+        background: #e6e5e5;
+        padding: 15px;
+        border-radius: 50%;
+      }
+    }
+    h3{
+      font-weight: 200;
+    }
+    p{
+      color: $shadow;
+      font-size: 12px;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+    .userName{
+      color: orangered;
+      font-size: 20px;
+    }
+    .hint{
+      font-size: 16px;
+      color: #272727;
+    }
+    .searchBox{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      // bottom:-280px;
+      section{
+        width: 100%;
+        height:50%;
+        position: relative;
+        overflow: hidden;
+        img{
+          position: absolute;
+          width: 100%;
+          top: 0;
+          left: 0;
+          z-index: -1;
+        }
+        .top{
+          width: 100%;
+          height: 90px;
+          display: flex;
+       color: white;
+         .left{
+          line-height: 90px;
+              width: 35%;
+              text-align: right;
+              i{
+                font-size: 4rem;
+              }
+         }
+         .right{
+           font-size: 19px;
+           font-weight: bold;
+           padding-top: 15px;
+           padding-left: 15px;
+           letter-spacing: 0.1rem;
+           box-sizing: border-box;
+             width: 65%;
+             text-align: left;
+         }
+        }
+        .btn{
+          color: $theme;
+          line-height: 40px;
+          text-align: center;
+          width: 70%;
+          height: 40px;
+          background: white;
+          cursor: pointer;
+          font-weight: bold;
+          transition: 0.5s;
+          &:hover{
+            background: $theme;
+            color: white !important;
+          }
+        }
+        .btn-w{
+          color: white;
+          line-height: 40px;
+          text-align: center;
+          width: 70%;
+          height: 40px;
+          // margin-top: 55px;
+          border: 2px solid white;
+          cursor: pointer;
+          font-weight: bold;
+         
+          a{
+            color: white;
+            display: block;
+            width: 100%;
+            height: 100%;
+            transition: 0.5s;
+            &:hover{
+              background: white;
+              color: $theme !important;
+            }
+          }
+        }
+      }
+    }
+  }
+  

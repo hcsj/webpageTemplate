@@ -1,1385 +1,918 @@
 <template>
   <div>
-    <head-nav :class="headNavShow?'head-nav-show':''" ref="head-nav"></head-nav>
-    <div class="notice-inform" v-if="NoticeList.length">
-      <div class="notice">
-        <i class="el-icon-s-flag"></i>
-        <ul :style="`animation-duration: ${NoticeList.length*2}s;`">
-          <li v-for="(i,index) in NoticeList" :key="index">
-            <span class="title">{{i.title}}</span>
-            <span class="time">{{i.time}}</span>
+    <beautyAlert
+      ref="beautyAlert"
+      :message="beautyAlertMsg"
+      :callBackFuncType="beautyAlertFuncType"
+    ></beautyAlert>
+    <!-- 头部导航 -->
+    <head-nav></head-nav>
+    <div class="dealSearch" v-if="dealSearchShow"  @click="skip()">
+      <div class="search">
+        <i class="icon iconfont icon-xinxichaxun"></i>
+      </div>交易确认查询
+    </div>
+    <!-- 轮播图 -->
+    <div style="padding:3rem 0;" class="banner-bck">
+      <div id="banner">
+        <div id="banner-login" v-if="!isUserLogin">
+          <!-- <div class="logo-t">
+            <i class="icon iconfont icon-icon"></i>
+          </div>
+          <h3>hi，您好!</h3>
+          <router-link to="/login">
+            <div class="logo-up">会员登录</div>
+          </router-link>
+          <p>
+            <router-link to="/register/0" style="color:#5c5a5a">
+              还不是东金中心会员?
+              <span style="color:orangered">立即注册</span>
+            </router-link>
+          </p> -->
+          <div class="searchBox">
+            <section>
+              <!-- <img src="@/assets/images/5.png" alt> -->
+              <div class="top" style="color:#004282;margin-top:50px">
+                <div class="left">
+                  <i class="icon iconfont icon-xinxichaxun"></i>
+                </div>
+                <div class="right" style="padding-top:20px">
+                  <span >投资者交易</span>
+                  <br>
+                  <span>确认查询</span>
+                </div>
+              </div>
+               <div class="btn" @click="skip()" style="border:2px solid #004282">立即查询>></div>
+            </section>
+            <section>
+              <img src="@/assets/images/4.png" alt>
+              <div class="top" style="margin-top:50px;">
+                <div class="left">
+                  <i class="icon iconfont icon-jigoufuwuchaxun"></i>
+                </div>
+                <div class="right" style="padding-top:20px;padding-right:10px;">
+                  <span >广东天象股份<br>资产投资入口</span>
+                </div>
+              </div>
+               <div class="btn-w"><a :href="$siteSet.unifyUrl" target="_blank">立即进入>></a></div>
+            </section>
+          </div>
+        </div>
+        <div id="banner-login" v-else>
+          <!-- <div class="logo-t" style="margin-top:20px;">
+            <i class="icon iconfont icon-icon"></i>
+          </div>
+          <p class="userName">{{userInfo.loginName | phoneHideMiddle}}</p>
+          <p class="hint">hi，您好! 欢迎来到东金中心</p> -->
+          <div class="searchBox">
+            <section>
+              <!-- <img src="@/assets/images/5.png" alt> -->
+              <div class="top" style="color:#004282;margin-top:50px">
+                <div class="left">
+                  <i class="icon iconfont icon-xinxichaxun"></i>
+                </div>
+               <div class="right" style="padding-top:20px">
+                  <span >投资者交易</span>
+                  <br>
+                  <span>确认查询</span>
+                </div>
+              </div>
+                <div class="btn" @click="skip()" style="border:2px solid #004282">立即查询>></div>
+            </section>
+            <section>
+              <img src="@/assets/images/4.png" alt>
+              <div class="top" style="margin-top:50px;">
+                <div class="left">
+                  <i class="icon iconfont icon-jigoufuwuchaxun"></i>
+                </div>
+                <div class="right" style="padding-top:20px;padding-right:10px;">
+                   <span >广东天象股份<br>资产投资入口</span>
+                </div>
+              </div>
+               <div class="btn-w"><a :href="$siteSet.unifyUrl" target="_blank">立即进入>></a></div>
+            </section>
+          </div>
+        </div>
+        <ul class="box">
+          <!-- 装图片的盒子 -->
+          <el-carousel trigger="click" :class="'box'" height="500px" arrow="always">
+            <el-carousel-item v-for="(ban,index) in banner" :key="index">
+              <!-- <div class="title">
+                <h2>{{ban.headline}}</h2>
+                <p>{{ban.alias}}</p>
+              </div>-->
+              <img :src="ban.picUrl" height="100%">
+              <!-- <img src="@/assets/images/banner1.jpg" height="100%"> -->
+            </el-carousel-item>
+          </el-carousel>
+        </ul>
+      </div>
+    </div>
+    <!-- 小喇叭,公告通知部分 -->
+    <div id="home-notice">
+      <div class="home-notice">
+        <div class="not-l">
+          <i class="icon iconfont icon-gonggaolaba"></i>
+          <span>&nbsp;公告通知</span>
+        </div>
+        <div class="not-c">
+          <!-- 通告部分最多有5个 -->
+          <li v-for="(not,index) in HomeNotice" :key="index">
+            <p class="not-cl">{{not.noticeTitle}}</p>
+            <p class="not-cr">{{not.createTime}}</p>
+          </li>
+        </div>
+        <div class="not-r">
+          <div class="not-more">
+            <router-link to="/PressRelease">
+              <p>查看更多</p>
+            </router-link>
+            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 我们的优势部分 -->
+    <div id="advantage" style="background:white">
+      <div class="advantage">
+        <div class="ad-title">我们的优势</div>
+        <div class="ad-dot"></div>
+        <p class="ad-p">Advantage</p>
+        <ul class="ad-ul">
+          <li>
+            <div class="ad-img">
+              <div class="ad-imgs"></div>
+              <router-link to="/licence" target="_blank">
+                <div class="ad-logo">
+                  <i :class="`icon iconfont icon-paizhaozizhiai`"></i>
+                </div>
+              </router-link>
+              <h3>牌照资质</h3>
+              <p>省政府批准设立省金融办监督</p>
+            </div>
           </li>
           <li>
-            <span class="title">{{NoticeList[0].title}}</span>
-            <span class="time">{{NoticeList[0].time}}</span>
+            <div class="ad-img">
+              <div class="ad-imgs"></div>
+              <router-link to="/perfect" target="_blank">
+                <div class="ad-logo">
+                  <i :class="`icon iconfont icon-fengkongwanshan`"></i>
+                </div>
+              </router-link>
+              <h3>风控完善</h3>
+              <p>银行级风控体系多样化风控措施</p>
+            </div>
+          </li>
+          <li>
+            <div class="ad-img">
+              <div class="ad-imgs"></div>
+              <a href="https://xwbank.com/#/depository" target="_blank">
+                <div class="ad-logo">
+                  <i :class="`icon iconfont icon-zijincunguan`"></i>
+                </div>
+              </a>
+              <h3>资金存管</h3>
+              <p>银行存管账户保障资金安全</p>
+            </div>
+          </li>
+          <li>
+            <div class="ad-img">
+              <div class="ad-imgs"></div>
+              <router-link to="/approve" target="_blank">
+                <div class="ad-logo">
+                  <i :class="`icon iconfont icon-huiyuanrenzheng`"></i>
+                </div>
+              </router-link>
+              <h3>会员认证</h3>
+              <p>会员管理机制完善会员信息严格保密</p>
+            </div>
           </li>
         </ul>
-        <span class="more">查看更多</span>
       </div>
     </div>
-    <div id="banner" ref="go0">
-      <div class="swiper-container">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="(i,index) in list" :key="index">
-            <div class="bck">
-              <span class="text">
-                <span class="text-anime" v-for="(t,indexT) in textCut(i.text)" :key="indexT">{{t}}</span>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev swiper-button-white"></div>
-        <!--左箭头。如果放置在swiper-container外面，需要自定义样式。-->
-        <div class="swiper-button-next swiper-button-white"></div>
-        <!--右箭头。如果放置在swiper-container外面，需要自定义样式。-->
-      </div>
-    </div>
-    <div id="module" ref="go1">
-      <div class="module">
-        <h2>行业优势</h2>
-        <p class="English">Advantage</p>
-        <div class="content-Advantage">
-          <section class="block" v-for="(i,index) in AdvantageList" :key="index">
-            <section class="icon" :style="` transition-delay: ${index/10}s`">
-              <section class="icon-hover">
-                <i :class="i.icon"></i>
-              </section>
-            </section>
-            <h3 :style="` transition-delay: ${index/5}s`">{{i.title}}</h3>
-            <p :style="` transition-delay: ${index/5}s`">{{i.text}}</p>
-          </section>
-        </div>
-      </div>
-    </div>
-    <div id="module" ref="go2" style=" background: #f6f7f8;">
-      <div class="module">
-        <h2>交易服务</h2>
-        <p class="English">Transaction Service</p>
-        <div class="content-Transaction">
-          <div class="top">
-            <div class="block">
-              <div class="content">
-                <i class="el-icon-user"></i>
-                <h3>入会指引</h3>
-              </div>
-            </div>
-            <div class="block">
-              <div class="content">
-                <i class="el-icon-setting"></i>
-                <h3>管理办法</h3>
-              </div>
-            </div>
-          </div>
-          <div class="bottom">
-            <div class="b-title">
-              <span class="title-l"></span>
-              <span class="title-msg">会员咨询</span>
-            </div>
-            <div class="content">
-              <div
-                class="con"
-                v-for="(i,index) in 4"
-                :key="index"
-                :style="` transition-delay: ${index/5}s`"
-              >
-                <div class="con-hover">
-                  <div class="con-img">IMG</div>
-                  <div class="con-msg">新闻公告测试模板</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="module" ref="go3">
-      <div class="module">
-        <h2>业务介绍</h2>
-        <p class="English">Business Introduction</p>
-        <div class="content-Business">
-          <div class="top">
-            <div class="table">交易规则</div>
-            <div class="table">政策法规</div>
-          </div>
-          <div class="content">
-            <div
-              class="tab-msg"
-              :style="` transition-delay: ${index/10}s`"
-              v-for="(i,index) in 5"
+
+    <!-- 新闻公告部分 -->
+    <div id="TabNav">
+      <div class="TabNav">
+        <div class="tab-content">
+          <div class="tab-nav">
+            <li
+              @click="changeNav(index)"
+              v-for="(act,index) in TabNav"
               :key="index"
-            >
-              <div class="tab-msg-hover">
-                <div class="date">
-                  <section>
-                    <h3>01</h3>
-                    <p>2018/12</p>
-                  </section>
-                </div>
-                <div class="msg">
-                  <span class="m">吉林东北亚创新金融资产交易中心有限公司《东金中心挂牌方管理办法》</span>
-                  <i class="el-icon-arrow-right"></i>
-                </div>
-              </div>
-            </div>
+              :class="['tab-button',{active:currenTab === act.tab}]"
+              :data-to="'go' + index"
+            >{{act.nav}}</li>
           </div>
+          <member-services id="go0"></member-services>
+          <business-introduction id="go1"></business-introduction>
+          <press-release id="go2"></press-release>
+          <about-us id="go3"></about-us>
+          <!-- <cooperative-partner id="go4"></cooperative-partner> -->
         </div>
       </div>
     </div>
-    <div id="module" ref="go4" style=" background: #f6f7f8;">
-      <div class="module">
-        <h2>新闻资讯</h2>
-        <p class="English">News</p>
-        <div class="content-News">
-          <div
-            class="news"
-            v-for="(i,index) in NewsList"
-            :key="index"
-            :style="` transition-delay: ${index/10}s`"
-            @click="openNews(i)"
-          >
-            <div class="news-hover">
-              <div class="news-noImg" v-if="!i.imgUrl">
-                <p>{{i.noticeTitle}}</p>
-                <span class="time">{{dateFormatting(i.createTime)}}</span>
-              </div>
-              <div v-else class="news-Img">
-                <div class="text">
-                  <p>{{i.noticeTitle}}</p>
-                  <span class="time">{{dateFormatting(i.createTime)}}</span>
-                </div>
-                <div class="img">IMG</div>
-              </div>
-            </div>
-          </div>
-          <div class="more">
-            <section @click="skip('News')">
-              <span>查看更多</span>
-              <i class="el-icon-arrow-right"></i>
-            </section>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="module" ref="go5">
-      <div class="module">
-        <h2>关于我们</h2>
-        <p class="English">About Us</p>
-        <div class="content-aboutUs">
-          <div
-            class="aboutUs"
-            v-for="(i,index) in aboutUsList"
-            :key="index"
-            :style="` transition-delay: ${index/10}s`"
-          >
-            <div class="aboutUs-hover">
-              <div class="msg">
-                <div class="msg-t">{{i.content}}</div>
-                <div class="more">
-                  <section>
-                    <span>查看更多</span>
-                    <i class="el-icon-arrow-right"></i>
-                  </section>
-                </div>
-              </div>
-              <div class="img">
-                <div class="bck1" :style="` animation-delay: ${-index}s`"></div>
-                <div class="bck2" :style="` animation-delay: ${-index*2}s`"></div>
-                <div class="img-url"></div>
-                <h3>{{i.title}}</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- 页脚组件 -->
     <foot-nav></foot-nav>
-    <right-nav ref="right-nav" :class="rightNavShow?'right-nav-show':''"></right-nav>
-    <view-article ref="viewArticle" :ArticleContent="Article" :ArticleTitle="Article_title"></view-article>
+    <!--弹出层公告-->
+    <el-dialog :visible.sync="noticeDialogVisible" width="50%">
+      <div v-html="alerMessage"></div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="noticeDialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- <div class="dialog-box" v-if="noticeDialogVisible" :style="scrollTop>1010?`top:0px;opacity:${1 - 1010*0.0005};`:`bottom:${100 + scrollTop*0.8}px; opacity:${1 - scrollTop*0.0005};`">
+      <div class="header-top">通知 <i class="el-icon-close" @click="noticeDialogVisible = false"> </i></div>
+     <div class="dialog-content">
+        <div v-html="alerMessage"></div>
+     </div>
+    </div>-->
   </div>
 </template>
 
 <script>
-import Swiper from "swiper";
-import viewArticle from "./common/ViewArticle.vue";
-import headNav from "./common/HeadNav.vue";
-import footNav from "./common/FootNav.vue";
-import rightNav from "./common/RightNav.vue";
+// import "@/utils/banner";
+// import { banner } from "@/utils/banner";
+import HeadNav from "./common/HeadNav";
+import FootNav from "./common/FootNav";
+import PressRelease from "./HomePage/PressRelease";
+import MemberServices from "./HomePage/MemberServices";
+import BusinessIntroduction from "./HomePage/BusinessIntroduction";
+import AboutUs from "./HomePage/AboutUs";
+import CooperativePartner from "./HomePage/CooperativePartner";
+import beautyAlert from "@/components/pc/common/BeautyAlert";
+
+import request from "@/utils/request";
 export default {
-  name: "Home",
+  name: "home",
+  computed: {
+    isUserLogin() {
+      if (this.$store.state.user.isUserLogin) {
+        return this.$store.state.user.isUserLogin;
+      } else {
+        this.$store.commit("USER_INFO_COMMIT");
+        return this.$store.state.user.isUserLogin;
+      }
+    },
+    userInfo() {
+      if (this.$store.state.user.isUserLogin) {
+        return this.$store.state.user.userInfo;
+      } else {
+        this.$store.commit("USER_INFO_COMMIT");
+        return this.$store.state.user.userInfo;
+      }
+    }
+  },
   components: {
-    "head-nav": headNav,
-    "foot-nav": footNav,
-    "right-nav": rightNav,
-    "view-article": viewArticle
+    HeadNav,
+    FootNav,
+    PressRelease,
+    MemberServices,
+    BusinessIntroduction,
+    AboutUs,
+    CooperativePartner,
+    beautyAlert
   },
   data() {
     return {
-      realIndex: 0,
-      headNavShow: false,
-      rightNavShow: false,
-      leftNavShow: false,
-      items: [],
-      Article: "",
-      Article_title: "",
-      list: [
-        {
-          text: "BANNER1"
-        },
-        {
-          text: "BANNER2"
-        },
-        {
-          text: "BANNER3"
-        }
-      ],
-      windowH: window.innerHeight,
-      NoticeList: [
-        {
-          title: "你好! 欢迎进入东北亚金融资产交易中心",
-          time: "2019-11-15"
-        },
-        {
-          title: "欢迎进入东北亚金融资产交易中心",
-          time: "2019-11-02"
-        },
-        {
-          title: "你好! 欢迎进入东北亚金融资产交易中心",
-          time: "2019-11-05"
-        },
-        {
-          title: "欢迎进入东北亚金融资产交易中心",
-          time: "2019-11-04"
-        },
-        {
-          title: "东北亚金融资产交易中心",
-          time: "2019-11-01"
-        }
-      ],
-      AdvantageList: [
-        {
-          icon: "el-icon-s-order",
-          title: "牌照资质",
-          text: "省政府批准设立省金融办监督"
-        },
-        {
-          icon: "el-icon-s-platform",
-          title: "牌照资质",
-          text: "省政府批准设立省金融办监督"
-        },
-        {
-          icon: "el-icon-s-marketing",
-          title: "牌照资质",
-          text: "省政府批准设立省金融办监督"
-        },
-        {
-          icon: "el-icon-upload",
-          title: "牌照资质",
-          text: "省政府批准设立省金融办监督"
-        }
-      ],
-      NewsList: [
-        {
-          date: "2019-10-20",
-          title:
-            "新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯",
-          img: false
-        },
-        {
-          date: "2019-10-20",
-          title: "新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯",
-          img: true
-        },
-        {
-          date: "2019-10-20",
-          title: "新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯",
-          img: false
-        },
-        {
-          date: "2019-10-20",
-          title:
-            "新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯",
-          img: true
-        },
-        {
-          date: "2019-10-20",
-          title: "新闻资讯新闻资讯新闻资讯新闻资讯新闻资讯",
-          img: false
-        }
-      ],
-      aboutUsList: [
-        {
-          title: "中心介绍",
-          content:
-            '东北亚创新金融资产交易中心(以下简称 "东金中心" ) 是在吉林省人民政府的指导和大力支持下，于2014年11月7日省政府批准设立的综合性金融资产交易平台，是由长春市国资委下属长发金融控股有限公司、申夏资产共同出资组建的综合性金融资产交易平台，归属地方金融工作办公室监管。申夏资产共同出资组建的综合性金融资产交易平台，归属地方金融工作办公室监管。申夏资产共同出'
-        },
-        {
-          title: "法律申明",
-          content:
-            "本声明包含网络浏览及使用的有关条款。在您浏览及使用本网站及相关网页（以下简称“本网站”）前，请您务必仔细阅读并透彻理解本声明，您可以选择不浏览、不使用本网站及相关网页，如果您浏览及使用本网站及相关网页，您的行为均表示认可并接受本声明全部内容。一、本网站旨在向客户和其他公众介绍吉林东北亚创新金融资产交易中心有限公司（以下“简称东金中心”）提供的产品与服务，以及"
-        },
-        {
-          title: "常见问题",
-          content:
-            "1、东北亚创新金融资产交易中心是一家怎样的公司？东北亚创新金融资产交易中心（以下简称东金中心），于2014年11月7日批准设立。在省金融办大力推动下设立，注册资本2亿元整。2、电子合同有效吗？根据我国合同法第十条“当事人订立合同，有书面形式,口头形式和其他形式。”第十一条“书面形式是指合同书，信件和数据电文（包括电报，电传，传真，电子数据交换和电子邮件）等可"
-        }
+      scrollTop: 0,
+      dealSearchShow: false,
+      beautyAlertMsg: "",
+      noticeDialogVisible: false,
+      alerMessage: "",
+      beautyAlertFuncType: null,
+      // 主页通知部分
+      HomeNotice: [],
+      //轮播图部分
+      banner: [],
+      // 切换导航栏
+      currenTab: "",
+      TabNav: [
+        { tab: "MemberServices", nav: "交易服务" },
+        { tab: "BusinessIntroduction", nav: "业务介绍" },
+        { tab: "PressRelease", nav: "新闻资讯" },
+        { tab: "AboutUs", nav: "关于我们" }
+        // { tab: "CooperativePartner", nav: "合作伙伴" }
       ]
     };
   },
-  created() {
-    this.getNewsPage();
-  },
-  mounted() {
-    let _this = this;
-    _this.items = document.querySelectorAll("#module");
-    window.addEventListener("scroll", this.handleScroll);
-    this.getBanner();
-  },
-  destroyed() {
-    window.removeEventListener("scroll", this.handleScroll);
-  },
   methods: {
-    skip(name) {
-      this.$router.push({
-        name: name
-      });
-    },
-    //时间格式转换
-    dateFormatting(val) {
-      return this.$moment(val).format("YYYY-MM-DD");
-    },
-    //获取轮播图方法
-    getBanner() {
-      let _this = this;
-      var banner = document.getElementById("banner");
-      var bck = document.querySelectorAll(".bck");
-      banner.style.height = _this.windowH + "px";
-      var mySwiper = new Swiper(".swiper-container", {
-        observer: true, //修改swiper自己或子元素时，自动初始化swiper
-        observeParents: true, //修改swiper的父元素时，自动初始化swiper
-        effect: "fade", //切换效果
-        followFinger: false,
-        speed: 800, //切换间隔时间
-        autoplay: true, //开启自动播放
-        //显示底部小圆点
-        pagination: {
-          el: ".swiper-pagination"
-        },
-        //显示左右切换
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev"
-        },
-        autoplay: {
-          delay: 5000 //4秒切换一次
-        },
-        on: {
-          //初始化
-          init: function(swiper) {
-            bck[0].classList.add("bck-end");
-            let text = bck[0].querySelectorAll(".text-anime");
-            for (let i = 0; i < text.length; i++) {
-              _this.$anime({
-                targets: text[i],
-                delay: i * 100,
-                translateY: [-100, 0]
-              });
-            }
-          },
-          //滑动前移除样式
-          transitionStart: function() {
-            bck[this.realIndex].classList.remove("bck-end");
-          },
-          //滑动结束后添加样式，执行动画
-          transitionEnd: function() {
-            bck[this.realIndex].classList.add("bck-end");
-            let text = bck[this.realIndex].querySelectorAll(".text-anime");
-            for (let i = 0; i < text.length; i++) {
-              _this.$anime({
-                targets: text[i],
-                delay: i * 100,
-                translateY: [-100, 0]
-              });
-            }
-          }
-        }
-      });
-    },
-    //分割字符串加载动画
-    textCut(str) {
-      let strArr = str.split("");
-      for (let i = 0; i < strArr.length; i++) {
-        if (strArr[i].match(/^[\s]*$/)) {
-          strArr[i] = null;
-        }
+    //交易订单查询判断方法
+    skip() {
+      //  console.log(window.sessionStorage.XAuthToken) //获取token值
+
+      // console.log(this.$store.state.user.userInfo.loginName) //获取用户是否登陆
+      if (this.$store.state.user.userInfo.loginName) {
+        this.$router.push({
+          name: "order"
+        });
+      } else {
+        this.$router.push({
+          name: "login"
+        });
       }
-      return strArr;
     },
-    //点击导航栏滚动到指定位置
-    goAssignBlock(el, index) {
-      let _this = this;
-      _this.$refs["right-nav"].btnActive = false;
-      let speed = 80;
-      let windowH = window.innerHeight; //浏览器窗口高度
-      let h = this.$refs[el].offsetHeight; //模块内容高度
-      let t = this.$refs[el].offsetTop; //模块相对于内容顶部的距离
-      let top = t - (windowH - h) / 2; //需要滚动到的位置，若改为 t 则滚动到模块顶部位置，此处是滚动到模块相对于窗口垂直居中的位置
-      let scrollTop =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop; //滚动条距离顶部高度
-      let currentTop = scrollTop; //默认滚动位置为当前滚动条位置，若改为0，则每次都会从顶部滚动到指定位置
-      let requestId;
-      //采用requestAnimationFrame，平滑动画
-      function step() {
-        //判断让滚动条向上滚还是向下滚
-        if (scrollTop < top) {
-          if (currentTop <= top) {
-            //   window.scrollTo(x,y) y为上下滚动位置
-            window.scrollTo(0, currentTop);
-            requestId = window.requestAnimationFrame(step);
-          } else {
-            window.cancelAnimationFrame(requestId);
-          }
-          //向下滚动
-          currentTop += speed;
-        } else {
-          if (top <= currentTop) {
-            //注：此处 - speed 是解决居中时存在的问题，可自行设置或去掉
-            window.scrollTo(0, currentTop - speed);
-            requestId = window.requestAnimationFrame(step);
-          } else {
-            window.cancelAnimationFrame(requestId);
-          }
-          //向上滚动
-          currentTop -= speed;
-        }
-      }
-      window.requestAnimationFrame(step);
+    //点击侧边栏跳转方法
+    changeNav(index) {
+      this.currenTab = this.TabNav[index].tab;
     },
-    //判断 模块 是否达到可视范围
-    isElementInViewport(el) {
-      // getBoundingClientRect()用于获得页面中某个元素的左，上，右和下分别相对浏览器视窗的位置。
-      // 注意：如果模块的整体宽或高 大于 浏览器可视窗口 的时候，此方法不可使用
-      var rect = el.getBoundingClientRect();
-      return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom - window.innerHeight / 4 <=
-          (window.innerHeight || document.documentElement.clientHeight)
-      );
-    },
-    //监听滚轮方法
-    handleScroll(val) {
-      let _this = this;
-      let scrollTop =
+    //根据滚轮变化改变侧边栏效果方法
+    handleScroll() {
+      var scrollTop =
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop;
-      if (scrollTop > _this.windowH - 80) {
-        _this.headNavShow = true;
-        _this.leftNavShow = true;
+      this.scrollTop = scrollTop;
+      if (scrollTop > 580) {
+        this.dealSearchShow = true;
       } else {
-        _this.headNavShow = false;
-        _this.leftNavShow = false;
+        this.dealSearchShow = false;
       }
-      if (scrollTop > _this.windowH / 3) {
-        _this.rightNavShow = true;
+      if (scrollTop > 250 && scrollTop <= 1700) {
+        $(".tab-button:nth-child(1)").addClass("actived");
       } else {
-        _this.rightNavShow = false;
-        _this.$refs["right-nav"].btnActive = false;
+        $(".tab-button:nth-child(1)").removeClass("actived");
       }
-      //每次滚轮滚动都会遍历 模块数组，从而添加样式
-      for (let i = 0; i < _this.items.length; i++) {
-        //如果 模块 达到可视范围，那么添加样式
-        if (_this.isElementInViewport(_this.items[i])) {
-          // //滚动时导航栏下标随之改变
-          if (scrollTop < _this.windowH / 1.7) {
-            _this.$refs["right-nav"].navActiveIndex =
-              _this.$refs["right-nav"].tabList[0].title;
-          } else {
-            _this.$refs["right-nav"].navActiveIndex =
-              _this.$refs["right-nav"].tabList[i].title;
-          }
-          _this.items[i].classList.add("in-view");
-        } else {
-          //每次滚动时都会出现过度效果
-          //   _this.items[i].classList.remove("in-view");
-        }
+      if (scrollTop > 1700 && scrollTop <= 2400) {
+        $(".tab-button:nth-child(2)").addClass("actived");
+      } else {
+        $(".tab-button:nth-child(2)").removeClass("actived");
+      }
+      if (scrollTop > 2400 && scrollTop <= 3100) {
+        $(".tab-button:nth-child(3)").addClass("actived");
+      } else {
+        $(".tab-button:nth-child(3)").removeClass("actived");
+      }
+      if (scrollTop > 3100 && scrollTop <= 3500) {
+        $(".tab-button:nth-child(4)").addClass("actived");
+      } else {
+        $(".tab-button:nth-child(4)").removeClass("actived");
+      }
+      if (scrollTop > 3500) {
+        $(".tab-button:nth-child(5)").addClass("actived");
+      } else {
+        $(".tab-button:nth-child(5)").removeClass("actived");
       }
     },
-    //获取公司和行业新闻
-    getNewsPage() {
-      let _this = this;
-      let params = {
-        templateId: "",
-        pageNumber: 0,
-        pageSize: 5
-      };
-      this.$axios
-        .post("website/website/getNewsList", params)
+    // 获取公告方法
+    gainNotice() {
+      request({
+        url: "website/website/getNoticePage",
+        method: "post",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          "channel-code": "AXXXXXXXXX",
+          "client-type": "PCH5",
+          version: "0.0.1",
+          "x-auth-token": window.sessionStorage.XAuthToken
+        },
+        data: {}
+      })
         .then(res => {
-          console.log(res);
-          let resData = res.data;
-          if (resData.retCode == "N00000") {
-            _this.NewsList = resData.body.content;
+          this.HomeNotice = res.data.body.content.splice(0, 6); //截取公告的前6条
+          //  console.log(this.HomeNotice);
+          for (let i = 0; i < 4 || i < 6; i++) {
+            this.HomeNotice[i].createTime = this.HomeNotice[
+              i
+            ].createTime.substring(0, 10);
           }
         })
         .catch(err => {
           console.log(err);
         });
     },
-    //首页打开新闻资讯
-    openNews(row) {
-      this.$refs.viewArticle.ViewArticleShow = true;
-      this.Article = row.noticeText;
-      this.Article_title = row.noticeTitle;
+    //获取弹出层公告
+    getAlertNotice() {
+      request({
+        url: "message-api/message/alertNotice/queryAllAlertNotice",
+        method: "post",
+        headers: {
+          "channel-code": "WEBSITE",
+          "client-type": "PCH5",
+           version: "0.0.1",
+          "x-auth-token": ''
+        }
+      })
+        .then(res => {
+          if (res.data.body.length == 0) {
+            this.noticeDialogVisible = false;
+          } else {
+            if (res.data.body[0].noticeStatus == "Y") {
+              this.noticeDialogVisible = true;
+              this.alerMessage = res.data.body[0].noticeText;
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    //获取轮播图方法
+    getBanner() {
+      request({
+        url: "message-api/message/channelPicInfo/queryAllChannelPicInfo",
+        method: "post",
+        headers: {
+          "channel-code": "WEBSITE",
+          "client-type": "PCH5",
+            version: "0.0.1",
+           "x-auth-token": ''
+        }
+      })
+        .then(res => {
+          // console.log(res)
+          this.banner = res.data.body;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
+  },
+  mounted() {
+    // console.log(this.$store.state.user.userInfo)
+    //定义一个滚轮监听
+    window.addEventListener("scroll", this.handleScroll);
+    //点击侧边栏跳转到当前模块的方法
+    $(".tab-nav").on("click", "li", function(e) {
+      var target = e.target;
+      var id = $(target).data("to");
+      $("html").animate({ scrollTop: $("#" + id).offset().top }, 400);
+    });
+    this.gainNotice();
+  },
+  created() {
+    this.getAlertNotice();
+    this.getBanner();
+    //  console.log(window.sessionStorage.XAuthToken)
   }
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.head-nav-show {
-  background: $headNav_bck;
-  box-shadow: 0 0 5px #5c5c5c;
+@import "../../assets/css/pc/blendent.scss";
+@import "../../assets/css/pc/banner.scss";
+@import "../../assets/icon/pc/font_b29osxrako9/iconfont.css";
+@import "../../assets/icon/pc/font-awesome/css/font-awesome.min.css";
+// 我们的优势css部分-----------------------------------------
+#advantage {
+  width: 100%;
 }
-.right-nav-show {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
+.advantage {
+  width: 70%;
+  max-width: 1025px;
+  padding-top: 20px;
+  height: 390px;
+  background: $white;
+  position: relative;
+  z-index: 2;
 }
-.notice-inform {
+.advantage .ad-p {
+  text-align: center;
+  color: $shadow;
+  padding-top: 5px;
+  font-size: 14px;
+}
+.ad-title {
+  width: 100%;
+  height: 60px;
+  // background: red;
+  line-height: 60px;
+  font-weight: 500;
+  text-align: center;
+  color: $title;
+  font-size: 27px;
+}
+.ad-dot {
+  width: 15px;
+  height: 15px;
+  // border-radius: 50%;
+  background: $title;
+  position: relative;
+}
+.ad-dot::before,
+.ad-dot::after {
+  content: "";
+  width: 150px;
+  height: 2px;
+  position: absolute;
+  top: 7px;
+  transition: 1s;
+}
+#advantage:hover .ad-dot::after {
+  right: -60px;
+}
+#advantage:hover .ad-dot::before {
+  left: -60px;
+}
+.ad-dot::before {
+  // background: linear-gradient(to right,white,#d6d4d4 80%,$text);
+  background: $title;
+  left: -150px;
+}
+.ad-dot::after {
+  // background: linear-gradient(to left,white,#d6d4d4 80%,$text);
+  background: $title;
+  right: -150px;
+}
+.ad-ul {
+  width: 100%;
+  height: 270px;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  overflow: hidden;
+}
+.ad-ul li {
+  // cursor: pointer;
+}
+.ad-img {
+  width: 150px;
+  height: 150px;
+  position: relative;
+  text-align: center;
+}
+.ad-imgs {
+  width: 100%;
+  height: 100%;
+  border-radius: 0%;
+  transform: rotate(45deg) scale(0.1);
+  background: $theme;
+  opacity: 0;
+  transition: 0.3s;
+}
+.ad-logo i {
+  font-size: 7em;
+}
+.ad-logo {
+  width: 100%;
+  height: 100%;
+  transform: scale(0.8);
+  position: absolute;
+  top: 0;
+  transition: 0.5s;
+  line-height: 150px;
+  color: $theme;
+}
+.advantage h3 {
+  transition: 0.5s;
+  font-weight: 500;
+  padding: 20px 0px 10px 0px;
+  color: $text;
+}
+.advantage p {
+  display: block;
+  width: 70%;
+  font-size: 13px;
+  opacity: 0.5;
+}
+
+.advantage li:hover .ad-imgs {
+  opacity: 1;
+  border-radius: 50%;
+  transform: rotate(225deg) scale(0.9);
+}
+.advantage li:hover .ad-logo {
+  color: white;
+  transform: scale(0.7);
+}
+.advantage li:hover h3 {
+  color: $theme;
+}
+//小喇叭,公告通知部分------------------------------------
+#home-notice {
   width: 100%;
   height: 40px;
-  position: absolute;
-  top: 80px;
-  left: 0;
-  z-index: 9;
-  display: flex;
-  justify-content: center;
-  // filter: drop-shadow(0px 2px 5px rgb(58, 58, 58));
-  .notice {
-    text-align: center;
-    width: 50%;
-    padding-right: 20px;
-    padding-left: 10px;
-    max-width: 1200px;
-    background: rgba(255, 255, 255, 0.582);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    overflow: hidden;
-    position: relative;
-    color: #949494;
-    transition: 0.5s;
-    clip-path: polygon(
-      0 50%,
-      20px 0,
-      calc(100% - 10px) 0,
-      calc(100% - 25px) 15%,
-      calc(100% - 0px) 30%,
-      calc(100% - 20px) 45%,
-      calc(100% - 5px) 60%,
-      calc(100% - 30px) 75%,
-      calc(100% - 0px) 100%,
-      95% 100%,
-      20px 100%
-    );
-    &:hover {
-      background: rgba(255, 255, 255, 0.87);
-    }
-    i {
-      font-size: 1rem;
-      min-width: 50px;
-      color: $base;
-    }
-    .more {
-      cursor: pointer;
-      font-size: 13px;
-      min-width: 100px;
-      &:hover {
-        color: $base;
-        text-decoration: underline;
-      }
-    }
-    ul {
-      align-self: flex-start;
-      width: 100%;
-      margin: 0 auto;
-      list-style: none;
-      animation: noticeMove linear infinite;
-      animation-delay: 2s;
-      &:hover {
-        animation-play-state: paused;
-      }
-      li {
-        display: block;
-        height: 40px;
-        line-height: 40px;
-        text-align: left;
-        display: flex;
-        justify-content: space-between;
-        cursor: pointer;
-        // &:hover {
-        //   color: $base;
-        //   text-decoration: underline;
-        // }
-        .title {
-          width: 100%;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          font-size: 14px;
-        }
-        .time {
-          min-width: 100px;
-          font-size: 14px;
-        }
-      }
-    }
-    @keyframes noticeMove {
-      0% {
-        transform: translateY(0);
-      }
-      100% {
-        transform: translateY(calc(-100% + 40px));
-      }
-    }
-  }
-}
-#banner {
-  width: 100%;
-  position: relative;
-  .swiper-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    --swiper-theme-color: white;
-    .swiper-slide {
-      .bck {
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 3rem;
-        color: white;
-        letter-spacing: 0.3rem;
-        background: $base;
-        .text-anime {
-          transition: opacity 0s;
-          display: inline-block;
-          opacity: 0;
-        }
-      }
-      .bck-end {
-        .text-anime {
-          transition: opacity 1s;
-          opacity: 1;
-        }
-      }
-    }
-  }
-  .swiper-button-prev,
-  .swiper-button-next {
-    opacity: 0;
-    transform: scale(0.8);
-    transition: 0.5s;
-    // margin:0 1rem;
-  }
-  .swiper-container:hover .swiper-button-prev {
-    opacity: 1;
-    left: 40px;
-  }
-  .swiper-container:hover .swiper-button-next {
-    opacity: 1;
-    right: 40px;
-  }
-}
-#module {
-  text-align: center;
-  width: 100%;
-  padding: 80px 0;
-  .module {
-    max-width: 1000px;
-    width: 100%;
-    margin: 0 auto;
-  }
-  h2 {
-    font-weight: 500;
-    opacity: 0;
-    transition: 0.5s;
-  }
-  .English {
-    font-weight: bold;
-    color: #a8a8a8;
-    font-size: 14px;
-    margin-top: 5px;
-    letter-spacing: 0.1rem;
-    opacity: 0;
-    transition: 1s;
-  }
-  // 行业优势
-  .content-Advantage {
-    margin-top: 50px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    .block {
-      width: 200px;
-      // background: red;
-      .icon-hover {
-        width: 100%;
-        height: 200px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: $base;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: 0.5s;
-        &:hover {
-          opacity: 0.8;
-        }
-      }
-      .icon {
-        transition: 0.5s;
-        transform: scale(0.3);
-        opacity: 0;
-        i {
-          font-size: 5rem;
-          color: white;
-        }
-      }
-      h3 {
-        transition: 0.5s;
-        transform: translateY(50px);
-        opacity: 0;
-        margin-top: 20px;
-      }
-      p {
-        margin-top: 10px;
-        transition: 1s;
-        transform: translateY(50px);
-        opacity: 0;
-        font-size: 15px;
-        color: #a8a8a8;
-      }
-    }
-  }
-  //交易服务
-  .content-Transaction {
-    margin-top: 50px;
-    .top {
-      width: 100%;
-      height: 250px;
-      display: flex;
-      justify-content: space-between;
-      .block {
-        width: 49%;
-        height: 100%;
-        background: $base;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transform: scale(0.5);
-        opacity: 0;
-        transition: 0.5s;
-        .content {
-          i {
-            font-size: 4.5rem;
-            color: white;
-          }
-          h3 {
-            color: white;
-            margin-top: 10px;
-            font-size: 20px;
-          }
-        }
-      }
-    }
-    .bottom {
-      margin-top: 20px;
-      .b-title {
-        display: flex;
-        span {
-          display: inline-block;
-        }
-        .title-l {
-          transition: 0.5s;
-          width: 20px;
-          height: 20px;
-          background: $base;
-          transform: translateX(-20px);
-          opacity: 0;
-          clip-path: polygon(0% 0%, 50% 50%, 0% 100%);
-        }
-        .title-msg {
-          transition: 0.5s;
-          font-weight: bold;
-          font-size: 17px;
-          transform: translateX(20px);
-          opacity: 0;
-        }
-      }
-      .content {
-        display: flex;
-        justify-content: space-between;
-        .con-hover {
-          &:hover .con-img {
-            background: $base;
-          }
-          &:hover .con-msg {
-            color: $base;
-          }
-        }
-        .con {
-          margin-top: 20px;
-          transition: 0.5s;
-          transform: translateX(50px);
-          opacity: 0;
-          .con-img {
-            transition: 0.5s;
-            width: 200px;
-            height: 200px;
-            background: $base;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 2rem;
-          }
-          .con-msg {
-            transition: 0.5s;
-            margin-top: 10px;
-          }
-        }
-      }
-    }
-  }
-  //业务介绍
-  .content-Business {
-    margin-top: 50px;
-    .top {
-      height: 50px;
-      display: flex;
-      .table {
-        transition: 0.5s;
-        cursor: pointer;
-        font-weight: bold;
-        display: flex;
-        color: #808080;
-        justify-content: center;
-        align-items: center;
-        font-size: 17px;
-        flex-grow: 1;
-        background: #ececec;
-        transform: translateX(-50px);
-        opacity: 0;
-        clip-path: polygon(
-          0 0,
-          calc(100% - 25px) 0,
-          100% 50%,
-          calc(100% - 25px) 100%,
-          0 100%,
-          25px 50%
-        );
-        &:hover {
-          background: $base;
-          color: white;
-        }
-      }
-    }
-    .content {
-      padding: 20px;
-      .tab-msg-hover {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-        &:hover {
-          background: #f3f3f3;
-        }
-        &:hover .date {
-          transform: translateX(5px);
-          clip-path: polygon(
-            0 100%,
-            0 0,
-            calc(100% - 10px) 0,
-            100% 10px,
-            100% 100%
-          );
-        }
-        &:hover .msg {
-          transform: translateX(-5px);
-        }
-        &:hover i {
-          transform: translateX(10px);
-          color: $base;
-        }
-      }
-      .tab-msg {
-        transition: 0.5s;
-        margin-bottom: 10px;
-        transform: translateY(50px);
-        opacity: 0;
-        .date {
-          transition: 0.5s;
-          width: 50px;
-          height: 50px;
-          min-width: 50px;
-          background: $base;
-          color: white;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          clip-path: polygon(10px 0, 100% 0, 100% 100%, 0% 100%, 0 10px);
-          section {
-            transform: scale(0.85);
-            p {
-              font-size: 12px;
-            }
-          }
-        }
-        .msg {
-          padding: 0 10px;
-          transition: 0.5s;
-          margin-left: 20px;
-          width: 100%;
-          height: 50px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          border-bottom: 1px dashed #ccc;
-          background-size: 100%;
-          .m {
-            font-weight: 200;
-            transition: 0.5s;
-            color: #808080;
-          }
-          i {
-            transition: 0.5s;
-          }
-        }
-      }
-    }
-  }
-  //新闻资讯
-  .content-News {
-    margin: 0 auto;
-    margin-top: 50px;
-    max-width: 800px;
-    .news-hover {
-      position: relative;
-      padding: 15px;
-      transition: 0.5s;
-      border: 2px dashed transparent;
-      &:hover {
-        background: white;
-        box-shadow: 2px 2px 5px #ccc;
-        border: 2px dashed $base;
-      }
-      &:hover::after {
-        opacity: 1;
-        transform: translateX(20px);
-      }
-      &::after {
-        content: "";
-        width: 20px;
-        height: 20px;
-        clip-path: polygon(0% 0%, 50% 50%, 0% 100%);
-        position: absolute;
-        top: calc(50% - 10px);
-        left: -50px;
-        background: $base;
-        transition: 0.5s;
-        opacity: 0;
-      }
-    }
-    .news {
-      margin-bottom: 5px;
-      transition: 0.5s;
-      cursor: pointer;
-      .news-noImg {
-        transition: 0.5s;
-        position: relative;
-        z-index: 2;
-        display: flex;
-        justify-content: space-between;
-        p {
-          display: inline-block;
-          width: 100%;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          text-align: left;
-          word-break: break-all;
-          color: #808080;
-          font-size: 15px;
-        }
-        .time {
-          min-width: 200px;
-          font-size: 15px;
-          color: #808080;
-          text-align: right;
-          font-weight: bold;
-        }
-      }
-      .news-Img {
-        transition: 0.5s;
-        display: flex;
-        justify-content: space-between;
-        position: relative;
-        z-index: 2;
-        .img {
-          margin-left: 20px;
-          min-width: 200px;
-          height: 100px;
-          background: $base;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-weight: bold;
-          color: white;
-          font-size: 20px;
-        }
-        .text {
-          min-width: 200px;
-          position: relative;
-          p {
-            text-align: left;
-            display: -webkit-box;
-            /*! autoprefixer: off */
-            -webkit-box-orient: vertical;
-            /* autoprefixer: on */
-            -webkit-line-clamp: 3;
-            word-wrap: break-word;
-            overflow: hidden;
-            word-break: break-all;
-            color: #808080;
-            font-size: 15px;
-          }
-          .time {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            font-size: 15px;
-            color: #808080;
-            font-weight: bold;
-          }
-        }
-      }
-    }
-    .news:nth-child(2n) {
-      opacity: 0;
-      transform: translateX(50px);
-    }
-    .news:nth-child(2n + 1) {
-      opacity: 0;
-      transform: translateX(-50px);
-    }
-    .more {
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      opacity: 0;
-      transition: 0.5s;
-      section {
-        font-size: 14px;
-        cursor: pointer;
-        transition: 0.5s;
-        color: #b6b6b6;
-        i {
-          transition: 0.5s;
-        }
-        &:hover {
-          color: $base;
-        }
-        &:hover i {
-          transform: translateX(10px);
-        }
-      }
-    }
-  }
-  // 关于我们
-  .content-aboutUs {
-    margin: 0 auto;
-    // max-width: 800px;
-    margin-top: 50px;
-    //  background: red;
-    .aboutUs {
-      transition: 0.5s;
-      width: 100%;
-      height: 200px;
-      display: flex;
-      margin-bottom: 10px;
-      .aboutUs-hover {
-        width: 100%;
-        height: 200px;
-        display: flex;
-        border: 2px dashed transparent;
-        transition: 0.5s;
-        position: relative;
-        &:hover {
-          background: #f6f7f8;
-          box-shadow: 2px 2px 5px #ccc;
-          border: 2px dashed $base;
-        }
-        &:hover .img-url {
-          opacity: 1;
-        }
-        &::after {
-          content: "";
-          width: 20px;
-          height: 20px;
-          position: absolute;
-          top: calc(50% - 10px);
-          // left: -50px;
-          background: $base;
-          transition: 0.5s;
-          opacity: 0;
-        }
-      }
-      .msg {
-        padding: 20px;
-        width: 50%;
-        height: 100%;
-        text-align: left;
-        line-height: 1.5rem;
-        color: #808080;
-        font-size: 15px;
-        cursor: default;
-        position: relative;
-        .msg-t {
-          display: -webkit-box;
-          /*! autoprefixer: off */
-          -webkit-box-orient: vertical;
-          /* autoprefixer: on */
-          -webkit-line-clamp: 5;
-          word-wrap: break-word;
-          overflow: hidden;
-          word-break: break-all;
-        }
-        .more {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-          transition: 0.5s;
-          position: absolute;
-          bottom: 20px;
-          right: 20px;
-          section {
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.5s;
-            color: #b6b6b6;
-            i {
-              transition: 0.5s;
-            }
-            &:hover {
-              color: $base;
-            }
-            &:hover i {
-              transform: translateX(10px);
-            }
-          }
-        }
-      }
-      .img {
-        overflow: hidden;
-        width: 50%;
-        height: 100%;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        overflow: hidden;
-        text-shadow: 0 0 5px #747474;
-        h3 {
-          position: relative;
-          z-index: 5;
-        }
-        .bck1,
-        .bck2,
-        .img-url {
-          transition: 0.5s;
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          clip-path: polygon(50% 25%, 60% 65%, 40% 65%);
-        }
-        //存放图片处
-        .img-url {
-          opacity: 0;
-          background: $base;
-          clip-path: none;
-        }
-        .bck1 {
-          opacity: 0.8;
-          background: $base;
-          animation: zhuan 8s linear infinite;
-        }
-        .bck2 {
-          background: $base;
-          opacity: 0.5;
-          animation: zhuan 10s linear infinite;
-        }
-      }
-      @keyframes zhuan {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-    }
-    .aboutUs:nth-child(2) {
-      .bck1 {
-        background: orangered;
-      }
-      .bck2 {
-        background: orangered;
-      }
-      .img-url {
-        background: orangered;
-      }
-    }
-    .aboutUs:nth-child(3) {
-      .bck1 {
-        background: #00ff80;
-      }
-      .bck2 {
-        background: #00ff80;
-      }
-      .img-url {
-        background: #00ff80;
-      }
-    }
-    .aboutUs:nth-child(2n) .aboutUs-hover {
-      &:hover::after {
-        opacity: 1;
-        transform: translateX(20px);
-      }
-    }
-    .aboutUs:nth-child(2n + 1) .aboutUs-hover {
-      flex-direction: row-reverse;
-      &:hover::after {
-        opacity: 1;
-        transform: translateX(-20px);
-      }
-    }
-    .aboutUs:nth-child(2n) .aboutUs-hover:after {
-      clip-path: polygon(0% 0%, 50% 50%, 0% 100%);
-      left: -50px;
-    }
-    .aboutUs:nth-child(2n + 1) .aboutUs-hover:after {
-      clip-path: polygon(50% 50%, 100% 0%, 100% 100%);
-      right: -50px;
-    }
-    .aboutUs:nth-child(2n) {
-      opacity: 0;
-      transform: translateX(50px);
-    }
-    .aboutUs:nth-child(2n + 1) {
-      opacity: 0;
-      transform: translateX(-50px);
-    }
-  }
+  background: $white;
+  font-size: 14px;
+  padding-top: 10px;
 }
 
-//可视范围动画过渡效果
-.in-view {
-  h2 {
-    opacity: 1 !important;
-  }
-  .English {
-    opacity: 1 !important;
-  }
-  .content-Advantage {
-    .block {
-      .icon {
-        transform: scale(0.8) !important;
-        opacity: 1 !important;
-      }
-      h3 {
-        transform: translateY(0px) !important;
-        opacity: 1 !important;
-      }
+.home-notice {
+  max-width: 1025px;
+  min-width: 800px;
+  transition: 0.3s;
+  width: 70%;
+  height: 100%;
+  // background: yellow;
+  // background: $base;
+  background: linear-gradient(to left, $white 20%, $base 40%, $white 100%);
+  position: relative;
+  overflow: hidden;
+  color: $text;
+  cursor: pointer;
+  .not-r {
+    width: 100px;
+    height: 100%;
+    position: absolute;
+    // background: pink;
+    top: 0;
+    right: 0;
+    .not-more {
+      line-height: 40px;
+      // background: red;
+      position: relative;
+
       p {
-        transform: translateY(0px) !important;
-        opacity: 1 !important;
+        position: absolute;
+        left: 0;
+        color: $text;
+      }
+      i {
+        position: absolute;
+        top: 12px;
+        transition: 0.3s;
+      }
+      i:nth-child(3) {
+        right: 10px;
+      }
+      i:nth-child(2) {
+        right: 15px;
       }
     }
   }
-  .content-Transaction {
-    .top {
-      .block {
-        transform: scale(1) !important;
-        opacity: 1 !important;
-      }
-    }
-    .bottom {
-      .b-title {
-        span {
-          display: inline-block;
-        }
-        .title-l {
-          transform: translateX(0px) !important;
-          opacity: 1 !important;
-        }
-        .title-msg {
-          transform: translateX(0px) !important;
-          opacity: 1 !important;
-        }
-      }
-      .content {
-        .con {
-          transform: translateX(0px) !important;
-          opacity: 1 !important;
-        }
-      }
+
+  .not-l {
+    width: 100px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    text-align: center;
+    line-height: 40px;
+    color: $second;
+    span {
+      position: relative;
+      top: -5px;
     }
   }
-  .content-Business {
-    .top {
-      .table {
-        transform: translateX(0px) !important;
-        opacity: 1 !important;
-      }
+  .not-l i {
+    font-size: 28px;
+  }
+  .not-l::before {
+    content: "";
+    width: 1px;
+    height: 50%;
+    position: absolute;
+    background: #ccc;
+    right: -10px;
+    top: 11px;
+  }
+  .not-c {
+    width: 60%;
+    // background: green;
+    position: relative;
+    top: 50px;
+    animation: toTop 10s linear infinite;
+
+    // overflow: hidden;
+    .not-cl {
+      position: absolute;
+      left: 0;
+      text-align: left;
     }
-    .content {
-      .tab-msg {
-        transform: translateY(0px) !important;
-        opacity: 1 !important;
-      }
+    .not-cr {
+      text-align: right;
+    }
+    li {
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      line-height: 40px;
     }
   }
-  .content-News {
-    .news:nth-child(2n) {
-      opacity: 1 !important;
-      transform: translateX(0px) !important;
-    }
-    .news:nth-child(2n + 1) {
-      opacity: 1 !important;
-      transform: translateX(0px) !important;
-    }
-    .more {
-      opacity: 1 !important;
+  @keyframes toTop {
+    100% {
+      top: -200px;
     }
   }
-  .content-aboutUs {
-    .aboutUs:nth-child(2n) {
-      opacity: 1 !important;
-      transform: translateX(0px) !important;
-    }
-    .aboutUs:nth-child(2n + 1) {
-      opacity: 1 !important;
-      transform: translateX(0px) !important;
+}
+.home-notice:hover {
+  box-shadow: 0 0 2px $shadow;
+}
+.home-notice:hover .not-more i:nth-child(2) {
+  right: 10px;
+}
+.home-notice:hover .not-c {
+  animation-play-state: paused;
+}
+.img0 {
+  position: relative;
+  top: -15%;
+}
+//切换导航栏css部分-----------------------------------------
+#TabNav {
+  // max-width: $MaxWidth;
+  width: 100%;
+  height: 3130px;
+  position: relative;
+  // background: red;
+}
+.TabNav {
+  width: 100%;
+  background: red;
+  position: absolute;
+}
+
+// .tab-nav::before{
+//   content: '';
+//   width: 0;
+//   height: 0;
+//   border-left: 5px solid transparent;
+//   border-top: 5px solid transparent;
+//   border-right: 5px solid $base;
+//   border-bottom: 5px solid $base;
+//   position: absolute;
+//   z-index: 2;
+//   right: 0;
+//   bottom: 0;
+// }
+.tab-nav li {
+  display: block;
+  width: 70px;
+  height: 55px;
+  background: $theme;
+  opacity: 0.9;
+  line-height: 55px;
+  text-align: center;
+  cursor: pointer;
+  color: white;
+  font-size: 12px;
+  overflow: hidden;
+  position: relative;
+}
+// .tab-nav li::after{
+//   content: '';
+//   width: 80%;
+//   height: 1px;
+//   // background: #dfdddd;
+//   position: absolute;
+//   left: 10%;
+//   bottom: 0px;
+//   z-index: -2;
+// }
+.tab-nav li:last-child::after {
+  height: 0px;
+}
+.tab-nav li::before {
+  content: "";
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: $second;
+  z-index: -1;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  transform: scale(0);
+  opacity: 0;
+  transition: 0.5s;
+}
+.tab-nav li:hover::before {
+  opacity: 1;
+  transform: scale(2);
+}
+.tab-content {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  // display: flex;
+}
+.tab-nav {
+  width: 70px;
+  z-index: 2;
+  position: sticky;
+  top: 150px;
+  margin-left: 9%;
+  overflow: hidden;
+}
+.tab-nav li:last-child {
+  border-bottom-right-radius: 20px;
+}
+
+.tab-button.actived {
+  opacity: 1;
+  background: $second;
+}
+.dealSearch {
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 50px;
+  padding-left: 15px;
+  box-sizing: border-box;
+  color: white;
+  width: 160px;
+  height: 50px;
+  position: fixed;
+  z-index: 99;
+  bottom: 50%;
+  right: 1%;
+  background: #19437e;
+  box-shadow: 0 0 3px $shadow;
+  border-bottom-right-radius: 10px;
+  transition: 0.5s;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  &:hover {
+    box-shadow: 1px 1px 3px $shadow;
+  }
+  .search {
+    position: absolute;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background: $themes;
+    text-align: center;
+    border-bottom-right-radius: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+
+    i {
+      transition: 0.3s;
+      color: white;
+      font-size: 35px;
     }
   }
+}
+.dialog-box {
+  width: 400px;
+  height: 200px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  position: fixed;
+  z-index: 99;
+  right: 0px;
+  box-shadow: 0 0 3px #ccc;
+  animation: move 1s 1s ease both 1;
+  &:hover {
+    opacity: 1 !important;
+  }
+  &::-webkit-scrollbar {
+    background: transparent !important;
+    width: 3px;
+  }
+  &::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #fd8570;
+  }
+  &::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    // -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    // border-radius: 10px;
+    background: #e9e7e7;
+    //  -webkit-scrollBar-track-color:black;
+  }
+  @keyframes move {
+    0% {
+      transform: translateX(400px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  .header-top {
+    font-size: 20px;
+    color: rgb(122, 122, 122);
+    line-height: 30px;
+    letter-spacing: 0.2rem;
+    padding-left: 30px;
+    box-sizing: border-box;
+    height: 30px;
+    width: 100%;
+    font-weight: bold;
+    background: linear-gradient(
+      125deg,
+      white 0%,
+      white 40%,
+      $themer 40%,
+      $themer 100%
+    );
+    animation: bckMove 1s linear infinite alternate-reverse;
+    i {
+      color: white;
+      float: right;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+  }
+  @keyframes bckMove {
+    0% {
+      background-size: 100%;
+    }
+    100% {
+      background-size: 120%;
+    }
+  }
+  .dialog-content {
+    padding: 10px 20px;
+    background: #f1f1f1;
+    color: rgb(121, 120, 120);
+  }
+}
+.banner-bck{
+  background-image: url('../../assets/images/banner-bck.png');
+  background-size: 100%;
 }
 </style>

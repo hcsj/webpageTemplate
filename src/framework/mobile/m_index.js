@@ -10,8 +10,8 @@ import vfilters from '../../assets/js/vfilters.js'
 for (let key in vfilters) {
   Vue.filter(key, vfilters[key])
 }
-import '@/assets/css/mobile_index.scss'
-import '@/assets/css/base.scss'
+import '@/assets/css/mobile/mobile_index.scss'
+import '@/assets/css/mobile/base.scss'
 
 import router from '../../router/mobile/index'
 import ElementUI from 'element-ui';

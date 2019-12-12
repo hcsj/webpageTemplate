@@ -140,7 +140,7 @@ export default {
         pageSize: _this.pageSize
       };
       this.$axios
-        .post("website/website/getNewsPage", params)
+        .post("website/website/website/getNewsPage", params)
         .then(res => {
           console.log(res);
           let resData = res.data;

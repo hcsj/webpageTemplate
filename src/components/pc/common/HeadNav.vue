@@ -1,56 +1,58 @@
 <template>
-  <div class="head-nav">
-    <div class="nav">
-      <div class="logo">
-        <i class="el-icon-knife-fork"></i>
-        <!-- <img src="@/assets/img/logo1.png" alt=""> -->
-      </div>
-      <div class="nav-tab">
-        <span
-          class="tab"
-          :class="$route.name == i.name?'tab-active':''"
-          v-for="(i,index) in navList"
-          :key="index"
-          @click="skip(i.name)"
-        >{{i.title}}</span>
-        <div id="user" v-if="head_loginShow">
-          <div class="user-img">
-            <i class="el-icon-user" v-if="!isUserLogin"></i>
-            <img v-else :src="userInfo.userAvatar" alt />
-          </div>
-          <span @click="loginShow = true" class="login-text" v-if="!isUserLogin">登录</span>
-          <span v-else class="login-text" style="cursor: default;">
-            {{userInfo.loginName | phoneHideMiddle}}&#x3000;
-            <span
-              style="cursor: pointer;"
-              @click="logout()"
-            >退出</span>
-          </span>
+  <div id="nav">
+    <!-- 导航栏头部通知部分 -->
+    <div class="nav-t">
+      <div class="nav-ts">
+        <div class="nav-tl">
+          <p>你好! 欢迎进入东北亚金融资产交易中心</p>
+        </div>
+        <div v-if="isUserLogin" class="nav-trr">
+          <a>欢迎 / {{userInfo.loginName}}&nbsp;</a>
+          <a href="javascript:;">
+            <a @click="logout()" style="color:white">|&#x3000;退出</a>
+          </a>
+        </div>
+        <div v-if="!isUserLogin" class="nav-trr">
+          <router-link to="/login" style="color:white">登录/</router-link>
+          <router-link to="/register/0" style="color:white">注册</router-link>
+        </div>
+        <div class="nav-tr">
+          <p>客服电话 : 0439-6660660&#x3000;工作日 : 9:00-18:00</p>
         </div>
       </div>
     </div>
-    <div class="login-alert" v-if="loginShow">
-      <login-box></login-box>
-    </div>
+    <nav>
+      <div class="parcel">
+        <div class="logo">
+          <router-link to="/">
+            <img src="@/assets/images/logo.png" alt />
+          </router-link>
+        </div>
+        <div class="nav">
+          <li
+            :class="{active:TabNav === nav.router}"
+            v-for="(nav,index) in Nav"
+            :key="index"
+            @click="skip(index)"
+          >{{nav.textLeft}}</li>
+        </div>
+      </div>
+    </nav>
   </div>
 </template>
 
 <script>
-import LoginBox from "../common/LoginBox.vue";
 export default {
-  props: {
-    head_loginShow: { default: true } //是否显示头部栏上的登录
-  },
-  components: {
-    "login-box": LoginBox
-  },
   computed: {
     isUserLogin() {
+      //判断用户是否登录
       if (this.$store.state.user.isUserLogin) {
-        return this.$store.state.user.isUserLogin;
+        //如果登录
+        return this.$store.state.user.isUserLogin; //返回 isUserLogin为false 登录模块消失
       } else {
-        this.$store.commit("USER_INFO_COMMIT");
-        return this.$store.state.user.isUserLogin;
+        //没有登录
+        this.$store.commit("USER_INFO_COMMIT"); //调用方法
+        return this.$store.state.user.isUserLogin; //返回 isUserLogin为ture 登录模块出现
       }
     },
     userInfo() {
@@ -64,180 +66,170 @@ export default {
   },
   data() {
     return {
-      loginShow: false,
-      navList: [
-        {
-          title: "首页",
-          name: "home"
-        },
-        {
-          title: "业务介绍",
-          name: "BusinessIntroduction"
-        },
-        {
-          title: "新闻资讯",
-          name: "News"
-        },
-        {
-          title: "关于我们",
-          name: "AboutUs"
-        }
+      uid: this.$route.params.r,
+      TabNav: this.$route.path,
+      Nav: [
+        { textLeft: "首页", router: "/" },
+        // { textLeft: "交易服务", router: "/MemberServices",},
+        { textLeft: "业务介绍", router: "/BusinessIntroduction" },
+        { textLeft: "新闻资讯", router: "/PressRelease" },
+        // { textLeft: "资产交易", router: "/PropertyDeal" },
+        { textLeft: "关于我们", router: "/AboutUs" }
       ]
     };
   },
   methods: {
-    skip(name) {
-      window.scrollTo(0, 0);
-      if (name == this.$route.name) {
-        return;
-      }
+    skip(index) {
       this.$router.push({
-        name: name
+        path: this.Nav[index].router
       });
+      this.TabNav = this.Nav[index].router;
     },
-    //退出登录
     logout() {
       let _this = this;
-      _this.$parent.rightNavShow = false;
       this.$axios
         .get("core-api/base/logout")
         .then(function(res) {
-          console.log(res);
+          // console.log(res);
           let resData = res.data;
           if (resData.retCode == "N00000") {
             _this.$store.commit("USER_SIGNOUT");
-            _this.$Toast.success('退出成功!')
-            _this.$router.push({
-              name: "home"
-            });
+            if (_this.$route.name == "home") {
+              _this.$parent.accquireToken();
+            } else {
+              _this.$router.replace({
+                name: "home"
+              });
+            }
           } else {
-            _this.$Toast(resData.retMsg);
+            _this.beautyAlertMsg = resData.retMsg;
+            _this.$refs["beautyAlert"].showDialogDiv();
           }
         })
         .catch(function(err) {
           console.log(err);
-          _this.$Toast("服务器出现问题，请稍后再试");
+          _this.beautyAlertMsg = "服务器出现问题，请稍后再试～";
+          _this.$refs["beautyAlert"].showDialogDiv();
         });
     }
+  },
+  created() {
+    // console.log(this.$route.path)
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.head-nav {
+@import "../../../assets/css/pc/blendent.scss";
+#nav {
   width: 100%;
-  height: 80px;
-  position: fixed;
-  top: 0;
-  z-index: 99;
-  transition: 0.5s;
-  color: white;
+  height: 100px;
+  left: 0;
+  z-index: 8;
   min-width: 1200px;
-  .nav {
-    width: 100%;
-    max-width: 1200px;
-    height: 80px;
-    margin: 0 auto;
-    // background: blue;
-    display: flex;
-    justify-content: space-between;
-    .logo {
-      width: 200px;
-      min-width: 200px;
-      //   background: red;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      i {
-        font-size: 3rem;
-        color: white;
-      }
-      img {
-        width: 100%;
-        transform: scale(0.6);
-      }
-    }
-    .nav-tab {
-      width: 100%;
-      //   background: orangered;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 20px;
-      .tab {
-        margin: 0 20px;
-        font-weight: bold;
-        font-size: 17px;
-        cursor: pointer;
-        position: relative;
-        padding: 10px;
-        &::after {
-          content: "";
-          width: 100%;
-          height: 3px;
-          background: white;
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          opacity: 0;
-          transition: 0.5s;
-          //   transform: scaleX(0);
-          //   transform-origin: right;
-          border-radius: 3px;
-        }
-        &:hover::after {
-          opacity: 1;
-          //   transition: transform 0.5s;
-          //   transform: scaleX(1);
-          //   transform-origin: left;
-        }
-      }
-      #user {
-        margin-left: 50px;
-        display: flex;
-        align-items: center;
-        .user-img {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          overflow: hidden;
-          i {
-            font-size: 1.5rem;
-          }
-          img {
-            width: 100%;
-          }
-        }
-        .login-text {
-          cursor: pointer;
-          margin-left: 5px;
-          font-size: 13px;
-        }
-      }
-    }
-  }
+  box-shadow: 2px 0px 3px #ccc;
+  z-index: 99;
+  position: relative;
 }
-.tab-active {
-  &::after {
-    opacity: 1 !important;
-    // transform: scaleX(1) !important;
-    // transform-origin: left !important;
+.nav-ts {
+  width: 100%;
+  background: red;
+  position: relative;
+  max-width: $MaxWidth;
+}
+.nav-t {
+  height: 35px;
+  background: $header;
+  position: relative;
+  line-height: 35px;
+  color: $white;
+  font-size: 15px;
+}
+.nav-tl {
+  width: 300px;
+  height: 35px;
+  overflow: hidden;
+  position: absolute;
+}
+.nav-tl p {
+  animation: move 10s linear infinite;
+}
+@keyframes move {
+  0% {
+    transform: translateX(300px);
+  }
+  100% {
+    transform: translateX(-300px);
   }
 }
 
-.login-alert {
-  position: fixed;
-  z-index: 999;
+.nav-tr {
+  text-align: center;
+  width: 350px;
+  height: 35px;
+  // position: absolute;
+  // right: 0%;
+  float: right;
+  line-height: 35px;
+}
+
+nav {
+  line-height: 65px;
+  text-align: center;
+  background: $white;
+}
+.parcel {
+  max-width: 1250px;
   width: 100%;
+  height: 65px;
+  position: relative;
+}
+.logo {
+  width: 150px;
+  height: 60px;
+  position: absolute;
+  left: 3%;
+  text-align: center;
+}
+.logo img {
   height: 100%;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.575);
+}
+.nav {
+  width: 84%;
+  height: 65px;
+  position: absolute;
+  right: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
+}
+.nav li {
+  overflow: hidden;
+  text-align: center;
+  flex-grow: 1;
+  list-style: none;
+  cursor: pointer;
+  color: $theme;
+  font-weight: 500;
+  transition: 0.3s;
+  position: relative;
+}
+.nav li:hover {
+  // background: $shadow;
+  background: $theme;
+  color: $white;
+}
+.nav .active {
+  color: $white;
+  background: $theme;
+}
+.activel {
+  background: $theme;
+  transform: skewY(-3deg);
+}
+.activer {
+  background: $themer;
+  transform: skewY(3deg);
+}
+.nav-trr {
+  float: right;
 }
 </style>
