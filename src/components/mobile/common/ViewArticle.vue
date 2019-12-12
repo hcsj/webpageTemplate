@@ -1,7 +1,7 @@
 <template>
   <div class="overall">
     <div class="Article-logo">
-      <img src="@/assets/img/logo1.png" alt />
+      <!-- <img src="@/assets/img/logo1.png" alt /> -->
     </div>
     <head-nav :headerTitle="headerTitle" :class="'head-nav-show'" ref="head-nav"></head-nav>
     <div class="ViewArticle">

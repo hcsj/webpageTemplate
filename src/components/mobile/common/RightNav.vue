@@ -1,7 +1,7 @@
 <template>
   <div class="rightNav">
     <div class="rightNav-logo">
-      <img src="@/assets/img/logo1.png" alt />
+      <!-- <img src="@/assets/img/logo1.png" alt /> -->
     </div>
     <!-- 右侧隐藏蓝 -->
     <div class="user">

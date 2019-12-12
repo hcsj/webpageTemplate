@@ -2,7 +2,7 @@
   <div>
     <div class="login-webpage">
       <div class="bck">
-        <img src="@/assets/img/logo1.png" alt />
+        <!-- <img src="@/assets/img/logo1.png" alt /> -->
       </div>
       <div id="login-box">
         <div class="title">会员登录</div>

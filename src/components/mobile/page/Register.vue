@@ -51,7 +51,7 @@
         </div>
       </div>
       <div class="bck">
-        <img src="@/assets/img/logo1.png" alt />
+        <!-- <img src="@/assets/img/logo1.png" alt /> -->
       </div>
     </div>
   </div>

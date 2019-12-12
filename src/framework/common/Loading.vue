@@ -1,7 +1,7 @@
 <template>
   <div class="logo-overall">
     <div class="logo-box">
-      <img src="@/assets/img/logo1.png" alt />
+      <!-- <img src="@/assets/img/logo1.png" alt /> -->
     </div>
   </div>
 </template>
