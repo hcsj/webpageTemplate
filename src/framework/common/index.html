@@ -22,10 +22,11 @@
     return flag
   }
   //页面进入时获取相关参数，防止直接进入首页
-  var URL_hash = window.location.hash
-  if (isMobile()) {
-    window.location.href = '/mobile.html'+ URL_hash
-  } else {
-    window.location.href = '/pc.html'+ URL_hash
-  }
+  // var URL_hash = window.location.hash
+  // if (isMobile()) {
+  //   window.location.href = '/mobile.html'+ URL_hash
+  // } else {
+  //   window.location.href = '/pc.html'+ URL_hash
+  // }
+  window.location.href = '/pc.html'+ URL_hash
 </script>

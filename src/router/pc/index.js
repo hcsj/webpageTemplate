@@ -198,10 +198,10 @@ let router = new Router({
  * 判断是否为移动设备，是，则跳转到移动端的路径
  */
 router.beforeEach((to, from, next) => {
-  if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
-    window.location.href = '/m_index.html#/'
-    return
-  }
+  // if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  //   window.location.href = '/m_index.html#/'
+  //   return
+  // }
   window.scrollTo(0,0)
   next()
 })

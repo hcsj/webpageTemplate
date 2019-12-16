@@ -195,7 +195,7 @@ export default {
     // 公告信息查询接口(官网)
     noticeInquire() {
       request({
-        url: "website/website/website/getNoticePage",
+        url: "website/website/getNoticePage",
         method: "post",
         headers: {
           "channel-code": "WEBSITE",
