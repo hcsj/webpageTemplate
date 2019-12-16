@@ -74,7 +74,7 @@
                   </div>
                 </template>
               </el-table-column>
-              <el-table-column prop="noticeTitle" label="内容">
+              <el-table-column prop="noticeTitle" label="公告">
                 <template slot-scope="scope">
                   <span class="noticeTitle">{{scope.row.noticeTitle}}</span>
                 </template>
@@ -197,7 +197,7 @@
                     <div class="logo" style="border: 1px solid #2CDB2F;">
                       <img src="@/assets/images/weixin_logo.png" alt />
                     </div>
-                    <div class="pay-btn" style="background:#2CDB2F" @click="weixinPay()">
+                    <div class="pay-btn" style="background:#2CDB2F" @click="payOrderQuery('1')">
                       <span>微信支付</span>
                       <i class="el-icon-arrow-right"></i>
                     </div>
@@ -206,7 +206,7 @@
                     <div class="logo" style="border: 1px solid #04A1E9;">
                       <img src="@/assets/images/zhifubao_logo.png" alt />
                     </div>
-                    <div class="pay-btn" style="background:#04A1E9" @click="zhifubaoPay()">
+                    <div class="pay-btn" style="background:#04A1E9" @click="payOrderQuery('2')">
                       <span>支付宝支付</span>
                       <i class="el-icon-arrow-right"></i>
                     </div>
@@ -243,13 +243,13 @@
                 <el-form :model="searchForm" label-width="100px" class="demo-ruleForm">
                   <section>
                     <div class="hang" style="width:25%">
-                      <el-form-item label="项目编号:" prop="name">
-                        <el-input v-model="searchForm.name"></el-input>
+                      <el-form-item label="项目编号:" prop="projectCode">
+                        <el-input v-model="searchForm.projectCode"></el-input>
                       </el-form-item>
                     </div>
                     <div class="hang" style="width:25%">
-                      <el-form-item label="项目名称:" prop="name">
-                        <el-input v-model="searchForm.name"></el-input>
+                      <el-form-item label="项目名称:" prop="projectName">
+                        <el-input v-model="searchForm.projectName"></el-input>
                       </el-form-item>
                     </div>
                     <div class="hang" style="width:35%">
@@ -264,7 +264,7 @@
                         ></el-date-picker>
                       </el-form-item>
                     </div>
-                    <div class="button-box" @click="search()">搜索</div>
+                    <div class="button-box" @click="getMsgList()">搜索</div>
                   </section>
                   <div class="btn">
                     <div class="button-box" @click="downloadNow()">立即下载</div>
@@ -273,25 +273,25 @@
               </div>
               <div class="content-msg-table">
                 <el-table
-                  :data="tableData"
+                  :data="searchList"
                   style="width: 100%"
                   :header-cell-style="{'background-color': '#e8e8e8','font-size':'12px'}"
                 >
-                  <el-table-column prop="date" label="订单号"></el-table-column>
-                  <el-table-column prop="name" label="项目编号"></el-table-column>
-                  <el-table-column prop="address" label="项目名称"></el-table-column>
-                  <el-table-column prop="date" label="协议甲方"></el-table-column>
-                  <el-table-column prop="name" label="协议乙方"></el-table-column>
-                  <el-table-column prop="address" label="协议登记手机号"></el-table-column>
-                  <el-table-column prop="address" label="协议乙方证件号"></el-table-column>
-                  <el-table-column prop="address" label="协议金额(元)"></el-table-column>
-                  <el-table-column prop="address" label="协议存续期(天)"></el-table-column>
-                  <el-table-column prop="address" label="协议签署日"></el-table-column>
+                  <el-table-column prop="orderId" label="订单号"></el-table-column>
+                  <el-table-column prop="projectCode" label="项目编号"></el-table-column>
+                  <el-table-column prop="projectName" label="项目名称"></el-table-column>
+                  <el-table-column prop="relatedPartyName" label="协议甲方"></el-table-column>
+                  <el-table-column prop="agreementCounterparty" label="协议乙方"></el-table-column>
+                  <el-table-column prop="agreementCounterpartyPhone" label="协议登记手机号"></el-table-column>
+                  <el-table-column prop="agreementCounterpartyCredentialNo" label="协议乙方证件号"></el-table-column>
+                  <el-table-column prop="agreementAmount" label="协议金额(元)"></el-table-column>
+                  <el-table-column prop="agreementDuration" label="协议存续期(天)"></el-table-column>
+                  <el-table-column prop="agreementSignDate" label="协议签署日"></el-table-column>
                 </el-table>
-                <div class="content-msg-pagination">
+                <div class="content-msg-pagination" v-if="searchList.length">
                   <span
                     class="pagination-left"
-                  >共{{totalElements}}条记录&#x3000;第{{currentPage}}/{{totalPages}}页</span>
+                  >共{{totalElements}}条记录&#x3000;第{{currentPage + 1}}/{{totalPages}}页</span>
                   <span class="pagination-right">
                     <el-pagination
                       @size-change="handleSizeChange"
@@ -351,8 +351,7 @@
 import HeadNav from "./common/HeadNav";
 import validates from "@/assets/js/validate.js";
 import gtInit from "@/assets/js/gt";
-import request from "@/utils/transaction";
-import requestWebsite from "@/utils/request";
+import request from "@/utils/transaction.js";
 export default {
   components: {
     "head-nav": HeadNav
@@ -425,60 +424,22 @@ export default {
       },
       //搜索查询信息
       searchForm: {
-        name: "",
-        date: ""
+        projectCode: "",
+        projectName: "",
+        date: []
       },
       currentPage0: 0,
       pageSize0: 10,
       totalPages0: 0,
       totalElements0: 0,
       noticeList: [],
+      phone: "", // 查询手机号
+      registrationType: null, //查询登记方类型
       currentPage: 0,
       pageSize: 10,
       totalPages: 0,
       totalElements: 0,
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ],
+      searchList: [],
       businessList: [
         {
           createTime: "2019-12-04",
@@ -500,6 +461,9 @@ export default {
     } else if (type == "counterparty") {
       this.activeIndex = "3";
       this.typeIndexShow = "2";
+    } else if (type == "entrance") {
+      this.activeIndex = "3";
+      this.typeIndexShow = false;
     }
     let address = this.$route.query.address;
     if (address == "pay" || window.sessionStorage.payment) {
@@ -512,6 +476,8 @@ export default {
       this.paymentMsg.chargeAmount = payBackParams.chargeAmount;
       this.paymentMsg.validityPeriod = payBackParams.validityPeriod;
       this.paymentMsg.total = payBackParams.total;
+      this.phone = payBackParams.phone;
+      this.registrationType = payBackParams.registrationType;
       //打开webscoket连接
       this.initWebSocket();
       //给支付宝设定一个等待限制，30s后无影响时就断开连接
@@ -520,7 +486,7 @@ export default {
         this.websocketclose();
         this.waiting = false;
         this.$message.warning("支付超时，请重新支付");
-      }, 60000);
+      }, 30000);
     }
   },
   mounted() {
@@ -529,7 +495,7 @@ export default {
   destroyed() {
     window.sessionStorage.removeItem("payment");
     window.sessionStorage.removeItem("payBackParams");
-    window.sessionStorage.removeItem("alipayserialnumber")
+    window.sessionStorage.removeItem("serialnumber");
     this.websocketclose();
   },
   methods: {
@@ -546,8 +512,8 @@ export default {
           _this.isCodeDisabled = false;
           window.clearInterval(_this.interval);
           _this.time = 90;
-          _this.paymentShow = false
-          _this.codeText = '获取验证码'
+          _this.paymentShow = false;
+          _this.codeText = "获取验证码";
         } else {
           _this.typeIndexShow = false;
         }
@@ -569,14 +535,20 @@ export default {
     //交易登记查询列表分页
     handleCurrentChange(val) {
       this.currentPage = val - 1;
+      this.getMsgList();
     },
     handleSizeChange(val) {
       this.currentPage = 0;
       this.pageSize = val;
+      this.getMsgList();
     },
     //时间格式转换
     dateFormatting(val) {
       return this.$moment(val).format("DD");
+    },
+    //登记查询时间格式转换
+    dateFormattingSearch(val) {
+      return this.$moment(val).format("YYYY-MM-DD");
     },
     //交易登记公告查看
     handleClickNotice(row) {
@@ -793,13 +765,10 @@ export default {
           smsCode: _this.queryMsg2.veCode
         };
       }
-      requestWebsite({
-        url: "trade/check",
+      request({
+        url: "website/trade/check",
         method: "POST",
         headers: {
-          "channel-code": "WEBSITE",
-          "client-type": "PCH5",
-          version: "0.0.1",
           "x-auth-token": window.sessionStorage.XAuthToken
         },
         data: params
@@ -807,19 +776,60 @@ export default {
         console.log(res);
         let resData = res.data;
         if (resData.retCode == "N00000") {
-          if (resData.body.chargeMark == "1") {
+          _this.phone = params.phone;
+          _this.registrationType = params.registrationType;
+          sessionStorage.setItem("XTradeToken", resData.body.tradeToken);
+          // -------------标记处上线改为 2 ----------------------------------------
+          if (resData.body.chargeMark == "2") {
             _this.paymentShow = true;
             _this.paymentMsg.chargeAmount = resData.body.chargeAmount;
             _this.paymentMsg.validityPeriod = resData.body.validityPeriod;
             _this.paymentMsg.total = resData.body.total;
           } else {
             _this.queryListShow = true;
+            _this.getMsgList();
           }
-          sessionStorage.setItem("XTradeToken", resData.body.tradeToken);
         } else {
           _this.$message.warning(resData.retMsg);
         }
       });
+    },
+    // 支付订单状态查询
+    payOrderQuery(type) {
+      let _this = this;
+      let params = {
+        serialNumber: window.sessionStorage.serialnumber
+      };
+      this.$axios
+        .post("website/payOrderQuery", params)
+        .then(res => {
+          console.log(res);
+          let resData = res.data;
+          if (resData.retCode == "N00000") {
+            if (resData.body.order_status == "1") {
+              _this.warning = false;
+              _this.paymentShow = false;
+              _this.queryListShow = true;
+              _this.getMsgList();
+            } else {
+              if (type == "1") {
+                _this.weixinPay();
+              } else {
+                _this.zhifubaoPay();
+              }
+            }
+          } else {
+            if (type == "1") {
+              _this.weixinPay();
+            } else {
+              _this.zhifubaoPay();
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          this.$message.error(resData.retMsg);
+        });
     },
     // 微信支付接口
     weixinPay() {
@@ -846,6 +856,9 @@ export default {
       request({
         url: "website/alipay/getPayPage",
         method: "POST",
+        headers: {
+          "x-trade-token": window.sessionStorage.XTradeToken
+        },
         data: params
       }).then(res => {
         console.log(res);
@@ -856,6 +869,7 @@ export default {
             phone: _this.queryMsg2.phone,
             total: _this.paymentMsg.total,
             validityPeriod: _this.paymentMsg.validityPeriod,
+            registrationType: _this.registrationType,
             chargeAmount: _this.paymentMsg.chargeAmount
           };
           window.sessionStorage.setItem(
@@ -863,7 +877,11 @@ export default {
             JSON.stringify(payBackParams)
           );
           window.sessionStorage.setItem("payment", "1");
-          window.sessionStorage.setItem('alipayserialnumber',res.headers.alipayserialnumber)
+          window.sessionStorage.setItem(
+            "serialnumber",
+            res.headers.serialnumber
+          );
+          console.log(res.headers.serialnumber);
           const div = document.createElement("divform");
           div.innerHTML = resData;
           document.body.appendChild(div);
@@ -873,17 +891,55 @@ export default {
           this.$message.error(resData.retMsg);
         }
       });
-      // window.location = "http://192.168.0.124:8082/#/other";
+    },
+    //获取查询列表
+    getMsgList() {
+      let _this = this;
+      let params = {
+        phone: _this.phone,
+        registrationType: _this.registrationType,
+        projectCode: _this.searchForm.projectCode,
+        projectName: _this.searchForm.projectName,
+        startDate: _this.searchForm.date[0]
+          ? _this.dateFormattingSearch(_this.searchForm.date[0])
+          : "",
+        endDate: _this.searchForm.date[1]
+          ? _this.dateFormattingSearch(_this.searchForm.date[1])
+          : "",
+        pageNumber: _this.currentPage,
+        pageSize: _this.pageSize
+      };
+      request({
+        url: "website/trade/page",
+        method: "POST",
+        data: params,
+        headers: {
+          "x-trade-token": window.sessionStorage.XTradeToken
+        }
+      })
+        .then(res => {
+          console.log(res);
+          let resData = res.data;
+          if (resData.retCode == "N00000") {
+            _this.searchList = resData.body.content;
+            _this.totalPages = resData.body.totalPages;
+            _this.totalElements = resData.body.totalElements;
+          } else {
+            this.$message.warning(resData.retMsg);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     //初始化weosocket
     initWebSocket() {
-      let XAuthToken = window.sessionStorage.getItem("XAuthToken");
-      console.log(XAuthToken);
-      if (XAuthToken) {
+      let XTradeToken = window.sessionStorage.getItem("XTradeToken");
+      if (XTradeToken) {
         let websocket = "";
         if ("WebSocket" in window) {
           let wsuri =
-            "wss://" + this.$siteSet.baseIP + "/websocket/" + XAuthToken; //ws地址
+            "wss://" + this.$siteSet.baseIP + "/websocket/" + XTradeToken; //ws地址
           // let wsuri = "ws://192.168.32.191:8088/ws";//ws地址
           window.websock = new WebSocket(wsuri);
           window.websock.onopen = this.websocketonopen;
@@ -921,6 +977,7 @@ export default {
           this.waiting = false;
           this.paymentShow = false;
           this.queryListShow = true;
+          this.getMsgList();
           this.$message.success("支付成功");
         } else {
           this.$message.error("支付失败");
@@ -950,14 +1007,39 @@ export default {
     //立即下载
     downloadNow() {
       let _this = this;
-      let params = {};
-      this.$axios
-        .post("xxxxxxxx", params, { responseType: "blob" })
+      if (!_this.searchList.length) {
+        this.$message.warning("暂无数据下载");
+        return;
+      }
+      let params = {
+        phone: _this.phone,
+        registrationType: _this.registrationType,
+        projectCode: _this.searchForm.projectCode,
+        projectName: _this.searchForm.projectName,
+        startDate: _this.searchForm.date[0]
+          ? _this.dateFormattingSearch(_this.searchForm.date[0])
+          : "",
+        endDate: _this.searchForm.date[1]
+          ? _this.dateFormattingSearch(_this.searchForm.date[1])
+          : ""
+      };
+      request({
+        url: "website/trade/download",
+        method: "POST",
+        responseType: "blob",
+        headers: {
+          "x-trade-token": window.sessionStorage.XTradeToken
+        },
+        data: params
+      })
         .then(res => {
           console.log(res);
           let content = res.data;
+          let time = new Date();
           let blob = new Blob([content]);
-          let fileName = "文件名.pdf";
+          let fileName = `交易登记记录${this.$moment(time).format(
+            "YYYYMMDDHHmmss"
+          )}.pdf`;
           if ("download" in document.createElement("a")) {
             // 非IE下载
             let elink = document.createElement("a");

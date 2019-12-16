@@ -42,11 +42,11 @@
             </select>
       </div>-->
       <div class="footer-t3">
-        <p>客服电话: 0439-6660660</p>
-        <p>工作日: 9:00 - 18:00</p>
+        <p>客服电话: {{$siteSet.servePhone}}</p>
+          <p>工作日: {{$siteSet.serveTime}}</p>
       </div>
       <div class="footer-b">
-        <p>吉林省白山市浑江大街213号经济开发区管委会202室 | 电话: 0439-6660660 | 传真: 0439-6666525 | 邮箱: djzx@neafex.com</p>
+        <p>吉林省白山市浑江大街213号经济开发区管委会202室 | 电话: {{$siteSet.servePhone}} | 传真: 0439-6666525 | 邮箱: djzx@neafex.com</p>
         <p>Copyright@ 2017 吉林东北亚创新金融资产交易中心有限公司 版权所有 备案/许可证号: 吉ICP备15007119号</p>
       </div>
       <!-- 返回顶部 -->

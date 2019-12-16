@@ -17,7 +17,7 @@
           <router-link to="/register/0" style="color:white">注册</router-link>
         </div>
         <div class="nav-tr">
-          <p>客服电话 : 0439-6660660&#x3000;工作日 : 9:00-18:00</p>
+          <p>客服电话 : {{$siteSet.servePhone}}&#x3000;工作日 : {{$siteSet.serveTime}}</p>
         </div>
       </div>
     </div>

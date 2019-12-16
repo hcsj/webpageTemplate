@@ -39,10 +39,9 @@ Vue.prototype.$siteSet = {
   siteName: "东金中心官网",
   callbackTimeout:120000,
   pageSize:5,
+  servePhone:'0439-6660660',
+  serveTime:'9:00 - 17:00',
   baseIP:globalConfig.url.baseIP,//websocket地址
-  apiUrl:globalConfig.url.apiUrl,//官网api地址
-  registerApiUrl:globalConfig.url.registerApiUrl,//注册中心api地址
-  bannerApiUrl:globalConfig.url.bannerApiUrl,
   unifyUrl:globalConfig.url.unifyUrl,
   qr1Url:"https://oss.neafex.com/xiucai-img/xiucai_Android.jpg",//安卓app
   qr2Url:"https://oss.neafex.com/xiucai-img/wxgzh.jpeg",//微信公众号

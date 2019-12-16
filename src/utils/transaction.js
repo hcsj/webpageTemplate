@@ -3,9 +3,8 @@ import axios from 'axios'
 import globalConfig from '../../config/global'
 // console.log(globalConfig)
 const service = axios.create({
-    baseURL: globalConfig.url.registerApiUrl,
+    baseURL: globalConfig.url.apiUrl,
     headers:{
-    'x-trade-token':window.sessionStorage.XTradeToken,
     'Content-Type':'application/json;charset=utf-8',
     'channel-code':'WEBSITE',
     'client-type':'PCH5',
