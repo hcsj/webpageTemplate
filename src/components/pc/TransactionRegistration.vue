@@ -79,7 +79,7 @@
                   <span class="noticeTitle">{{scope.row.noticeTitle}}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="createTime" label="时间" width="110">
+              <el-table-column prop="createTime" label="时间" sortable column-key="data" width="110">
                 <template slot-scope="scope">
                   <span class="createTime">{{$moment(scope.row.createTime).format("YYYY-MM-DD")}}</span>
                 </template>
